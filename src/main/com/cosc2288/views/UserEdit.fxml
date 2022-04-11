@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="190.0" prefWidth="470.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <AnchorPane layoutX="10.0" layoutY="10.0" prefHeight="150.0" prefWidth="150.0" style="-fx-border-style: solid;">
+         <children>
+            <ImageView fx:id="userImage" fitHeight="150.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+         </children>
+      </AnchorPane>
+      <Label layoutX="10.0" layoutY="162.0" prefHeight="17.0" prefWidth="152.0" text="Click to add a profic picture" textAlignment="CENTER" />
+      <Label layoutX="192.0" layoutY="14.0" text="Username" />
+      <TextField fx:id="username" layoutX="258.0" layoutY="10.0" minWidth="200.0" prefWidth="200.0" />
+      <TextField fx:id="firstName" layoutX="258.0" layoutY="46.0" minWidth="200.0" prefWidth="200.0" />
+      <TextField fx:id="lastName" layoutX="258.0" layoutY="83.0" minWidth="200.0" prefWidth="200.0" />
+      <PasswordField fx:id="password" layoutX="258.0" layoutY="119.0" minWidth="200.0" prefWidth="200.0" />
+      <Label layoutX="192.0" layoutY="51.0" text="First Name" />
+      <Label layoutX="192.0" layoutY="88.0" text="Last Name" />
+      <Label layoutX="192.0" layoutY="124.0" text="Password" />
+      <Button fx:id="cancelButton" layoutX="403.0" layoutY="154.0" mnemonicParsing="false" text="Cancel" />
+      <Button fx:id="okButton" layoutX="360.0" layoutY="154.0" mnemonicParsing="false" text="OK" />
+   </children>
+</Pane>
