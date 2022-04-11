@@ -1,4 +1,4 @@
-# COSC2288 Assignment 1
+# COSC2288 Assignment 2
 
 This project is Matt Kellock's assignment 2 submission, a project management
 application.
