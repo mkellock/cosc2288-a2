@@ -1,6 +1,15 @@
+/**
+ * ProjectTask
+ *
+ * v1.0
+ *
+ * 2022-04-12
+ *
+ * © 2022 Matthew Kellock
+ */
 package com.cosc2288.models;
 
-import java.util.Date;
+import java.time.Instant;
 import java.util.UUID;
 
 public class ProjectTask {
@@ -9,8 +18,9 @@ public class ProjectTask {
 	private String name;
 	private String description;
 	private int order;
-	private Date dueDate;
-	private Date completedDate;
+	private Instant dueDate;
+    private Instant completedDate;
+    private UUID projectColumnId;
 	
 	/**
 	 * @return the projectTaskId
@@ -71,29 +81,43 @@ public class ProjectTask {
 	/**
 	 * @return the dueDate
 	 */
-	public Date getDueDate() {
+	public Instant getDueDate() {
 		return dueDate;
 	}
 
 	/**
 	 * @param dueDate the dueDate to set
 	 */
-	public void setDueDate(Date dueDate) {
+	public void setDueDate(Instant dueDate) {
 		this.dueDate = dueDate;
 	}
 
 	/**
 	 * @return the completedDate
 	 */
-	public Date getCompletedDate() {
+	public Instant getCompletedDate() {
 		return completedDate;
 	}
 
 	/**
 	 * @param completedDate the completedDate to set
 	 */
-	public void setCompletedDate(Date completedDate) {
+	public void setCompletedDate(Instant completedDate) {
 		this.completedDate = completedDate;
 	}
+
+    /**
+     * @return the projectColumnId
+     */
+    public UUID getProjectColumnId() {
+        return projectColumnId;
+    }
+
+    /**
+     * @param projectColumnId the projectColumnId to set
+     */
+    public void setProjectColumnId(UUID projectColumnId) {
+        this.projectColumnId = projectColumnId;
+    }
 	
 }

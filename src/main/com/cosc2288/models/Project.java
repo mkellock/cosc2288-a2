@@ -1,20 +1,22 @@
 /**
- * 
+ * Project
+ *
+ * v1.0
+ *
+ * 2022-04-12
+ *
+ * © 2022 Matthew Kellock
  */
 package com.cosc2288.models;
 
-import java.util.Date;
+import java.time.Instant;
 import java.util.UUID;
 
-/**
- * @author mattkellock
- *
- */
 public class Project {
 
 	private UUID projectId;
 	private String name;
-	private Date created;
+	private Instant created;
 	private UUID userId;
 	
 	/**
@@ -48,14 +50,14 @@ public class Project {
 	/**
 	 * @return the created
 	 */
-	public Date getCreated() {
+	public Instant getCreated() {
 		return created;
 	}
 	
 	/**
 	 * @param created the created to set
 	 */
-	public void setCreated(Date created) {
+	public void setCreated(Instant created) {
 		this.created = created;
 	}
 

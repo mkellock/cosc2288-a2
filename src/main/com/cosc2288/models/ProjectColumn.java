@@ -1,3 +1,12 @@
+/**
+ * ProjectColumn
+ *
+ * v1.0
+ *
+ * 2022-04-12
+ *
+ * © 2022 Matthew Kellock
+ */
 package com.cosc2288.models;
 
 import java.util.UUID;
