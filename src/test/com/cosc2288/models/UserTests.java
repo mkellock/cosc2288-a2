@@ -15,13 +15,15 @@ import org.junit.jupiter.api.Test;
 
 class UserTests {
 
-    private static final UUID USER_ID = UUID.fromString("fe31bcf8-8893-4976-ab46-8dc83d68fbfe");
+    private static final UUID USER_ID =
+        UUID.fromString("fe31bcf8-8893-4976-ab46-8dc83d68fbfe");
     private static final String USERNAME = "username";
     private static final String PASSWORD = "Passw0rd123!";
     private static final String FIRST_NAME = "First";
     private static final String LAST_NAME = "Last";
     private static final byte[] IMAGE = {0x00, 0x01, 0x02};
-    private static final UUID DEFAULT_PROJECT_ID = UUID.fromString("a30b5aaf-957a-4914-be2f-489ee12ccea9");
+    private static final UUID DEFAULT_PROJECT_ID =
+        UUID.fromString("a30b5aaf-957a-4914-be2f-489ee12ccea9");
 
     @Test
     void shouldSetAndGetUserId() {

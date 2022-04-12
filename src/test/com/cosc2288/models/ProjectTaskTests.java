@@ -16,19 +16,26 @@ import org.junit.jupiter.api.Test;
 
 class ProjectTaskTests {
 
-    private static final UUID PROJECT_TASK_ID = UUID.fromString("182335a1-cfa1-4251-b2a1-ba63df10cd7e");
+    private static final UUID PROJECT_TASK_ID =
+        UUID.fromString("182335a1-cfa1-4251-b2a1-ba63df10cd7e");
     private static final String NAME = "Name";
     private static final String DESCRIPTION = "Description";
     private static final int ORDER = 1;
-    private static final Instant DUE_DATE = Instant.parse("2022-04-14T00:00:00.00Z");
-    private static final Instant COMPLETED_DATE = Instant.parse("2022-04-13T00:00:00.00Z");
-    private static final UUID PROJECT_COLUMN_ID = UUID.fromString("174a11d4-8d95-4acd-a914-c296428a0053");
+    private static final Instant DUE_DATE =
+        Instant.parse("2022-04-14T00:00:00.00Z");
+    private static final Instant COMPLETED_DATE =
+        Instant.parse("2022-04-13T00:00:00.00Z");
+    private static final UUID PROJECT_COLUMN_ID =
+        UUID.fromString("174a11d4-8d95-4acd-a914-c296428a0053");
 
     @Test
     void shouldSetAndGetProjectTaskId() {
         ProjectTask projectTask = new ProjectTask();
         projectTask.setProjectTaskId(PROJECT_TASK_ID);
-        Assertions.assertEquals(PROJECT_TASK_ID, projectTask.getProjectTaskId());
+        Assertions.assertEquals(
+            PROJECT_TASK_ID,
+            projectTask.getProjectTaskId()
+        );
     }
 
     @Test
@@ -70,6 +77,9 @@ class ProjectTaskTests {
     void shouldSetAndGetProjectColumnId() {
         ProjectTask projectTask = new ProjectTask();
         projectTask.setProjectColumnId(PROJECT_COLUMN_ID);
-        Assertions.assertEquals(PROJECT_COLUMN_ID, projectTask.getProjectColumnId());
+        Assertions.assertEquals(
+            PROJECT_COLUMN_ID,
+            projectTask.getProjectColumnId()
+        );
     }
 }
