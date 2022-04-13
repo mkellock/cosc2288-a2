@@ -16,22 +16,20 @@ import javax.persistence.*;
 public class Quote {
 
     @column(name = "message")
-	private String message;
+    private String message;
 
-	/**
-	 * @return the quote
-	 */
+    /**
+     * @return the quote
+     */
     public String getMessage() {
-		return message;
-	}
+        return message;
+    }
 
-	/**
-	 * @param message the message to set
-	 */
-	public void setMessage(String message) {
-		this.message = message;
-	}
-	
-	
-	
+    /**
+     * @param message the message to set
+     */
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
 }

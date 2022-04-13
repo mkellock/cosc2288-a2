@@ -19,70 +19,70 @@ public class ProjectColumn {
     @id
     @column(name = "project_column_id")
     private UUID projectColumnId;
-    
+
     @column(name = "name")
     private String name;
-    
+
     @column(name = "order")
     private int order;
-    
+
     @column(name = "project_id")
-	private UUID projectId;
-	
-	/**
-	 * @return the projectColumnId
-	 */
-	public UUID getProjectColumnId() {
-		return projectColumnId;
-	}
-	
-	/**
-	 * @param projectColumnId the projectColumnId to set
-	 */
-	public void setProjectColumnId(UUID projectColumnId) {
-		this.projectColumnId = projectColumnId;
-	}
+    private UUID projectId;
 
-	/**
-	 * @return the name
-	 */
-	public String getName() {
-		return name;
-	}
+    /**
+     * @return the projectColumnId
+     */
+    public UUID getProjectColumnId() {
+        return projectColumnId;
+    }
 
-	/**
-	 * @param name the name to set
-	 */
-	public void setName(String name) {
-		this.name = name;
-	}
+    /**
+     * @param projectColumnId the projectColumnId to set
+     */
+    public void setProjectColumnId(UUID projectColumnId) {
+        this.projectColumnId = projectColumnId;
+    }
 
-	/**
-	 * @return the order
-	 */
-	public int getOrder() {
-		return order;
-	}
+    /**
+     * @return the name
+     */
+    public String getName() {
+        return name;
+    }
 
-	/**
-	 * @param order the order to set
-	 */
-	public void setOrder(int order) {
-		this.order = order;
-	}
+    /**
+     * @param name the name to set
+     */
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	/**
-	 * @return the projectId
-	 */
-	public UUID getProjectId() {
-		return projectId;
-	}
+    /**
+     * @return the order
+     */
+    public int getOrder() {
+        return order;
+    }
 
-	/**
-	 * @param projectId the projectId to set
-	 */
-	public void setProjectId(UUID projectId) {
-		this.projectId = projectId;
-	}
-	
+    /**
+     * @param order the order to set
+     */
+    public void setOrder(int order) {
+        this.order = order;
+    }
+
+    /**
+     * @return the projectId
+     */
+    public UUID getProjectId() {
+        return projectId;
+    }
+
+    /**
+     * @param projectId the projectId to set
+     */
+    public void setProjectId(UUID projectId) {
+        this.projectId = projectId;
+    }
+
 }
