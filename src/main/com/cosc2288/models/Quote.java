@@ -9,14 +9,17 @@
  */
 package com.cosc2288.models;
 
+import javax.persistence.*;
+
 public class Quote {
 
+    @column(name = "message")
 	private String message;
 
 	/**
 	 * @return the quote
 	 */
-	public String getMessage() {
+    public String getMessage() {
 		return message;
 	}
 
