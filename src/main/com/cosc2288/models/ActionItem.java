@@ -12,6 +12,8 @@ package com.cosc2288.models;
 import java.util.UUID;
 import javax.persistence.*;
 
+@Entity
+@Table(name = "action_items")
 public class ActionItem {
 
     @id

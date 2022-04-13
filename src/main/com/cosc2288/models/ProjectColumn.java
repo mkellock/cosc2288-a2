@@ -12,6 +12,8 @@ package com.cosc2288.models;
 import java.util.UUID;
 import javax.persistence.*;
 
+@Entity
+@Table(name = "project_columns")
 public class ProjectColumn {
 
     @id

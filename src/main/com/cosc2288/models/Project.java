@@ -13,6 +13,8 @@ import java.time.Instant;
 import java.util.UUID;
 import javax.persistence.*;
 
+@Entity
+@Table(name = "projects")
 public class Project {
 
     @id

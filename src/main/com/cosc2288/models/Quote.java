@@ -11,6 +11,8 @@ package com.cosc2288.models;
 
 import javax.persistence.*;
 
+@Entity
+@Table(name = "quotes")
 public class Quote {
 
     @column(name = "message")
