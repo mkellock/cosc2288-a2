@@ -11,7 +11,7 @@ package com.cosc2288.controllers;
 
 import java.util.List;
 import java.util.UUID;
-import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 
 import com.cosc2288.models.Project;
 
@@ -20,41 +20,49 @@ public static class ProjectController {
     /**
      * Adds a project
      * 
-     * @param project the project to be added
-     * @param session the ORM session
+     * @param project        the project to be added
+     * @param sessionFactory the ORM session factory
      */
-    public static void addProject(Project project, Session session) {
+    public static void addProject(
+            Project project,
+            SessionFactory sessionFactory) {
 
     }
 
     /**
      * Saves an edited project
      * 
-     * @param project the project to be saved
-     * @param session the ORM session
+     * @param project        the project to be saved
+     * @param sessionFactory the ORM session factory
      */
-    public static void editProject(Project project, Session session) {
+    public static void editProject(
+            Project project,
+            SessionFactory sessionFactory) {
 
     }
 
     /**
      * Deletes a project
      * 
-     * @param projectId the project id for the project to be deleted
-     * @param session   the ORM session
+     * @param projectId      the project id for the project to be deleted
+     * @param sessionFactory the ORM session factory
      */
-    public static void deleteProject(UUID projectId, Session session) {
+    public static void deleteProject(
+            UUID projectId,
+            SessionFactory sessionFactory) {
 
     }
 
     /**
      * Loads the user's projects
      * 
-     * @param userId  the user id attached to the projects
-     * @param session the ORM session
+     * @param userId         the user id attached to the projects
+     * @param sessionFactory the ORM session factory
      * @return a list of projects
      */
-    public static List<Project> loadProjects(UUID userId, Session session) {
+    public static List<Project> loadProjects(
+            UUID userId,
+            SessionFactory sessionFactory) {
 
     }
 

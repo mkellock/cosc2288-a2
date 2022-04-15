@@ -11,17 +11,17 @@ package com.cosc2288.controllers;
 
 import com.cosc2288.models.Quote;
 import java.util.List;
-import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 
 public static class QuoteController {
 
     /**
      * Loads a random quote
      * 
-     * @param session the ORM session
+     * @param sessionFactory the ORM session factory
      * @return a quote
      */
-    public static Quote randomQuote(Session session) {
+    public static Quote randomQuote(SessionFactory sessionFactory) {
 
     }
 
