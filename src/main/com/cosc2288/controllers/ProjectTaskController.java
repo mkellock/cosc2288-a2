@@ -14,22 +14,51 @@ import com.cosc2288.models.ProjectTask;
 
 public static class ProjectTaskController {
 
+    /**
+     * Adds a project task
+     * 
+     * @param projectTask the project task to be added
+     */
     private static void addProjectTask(ProjectTask projectTask) {
 
     }
 
+    /**
+     * Saves an edited project task
+     * 
+     * @param projectTask the project task to be saved
+     */
     private static void editProjectTask(ProjectTask projectTask) {
 
     }
 
+    /**
+     * Deletes a project task
+     * 
+     * @param projectTaskId the project task id of the project task to be
+     *                      deleted
+     */
     private static void deleteProjectTask(UUID projectTaskId) {
 
     }
 
-    public static List<ProjectTask> loadProjectTasks() {
+    /**
+     * Loads a project columns tasks
+     * 
+     * @param projectColumnId the project column id attached to the project
+     *                        tasks
+     * @return a list of project tasks
+     */
+    public static List<ProjectTask> loadProjectTasks(UUID projectColumnId) {
 
     }
 
+    /**
+     * Validates a project task
+     * 
+     * @param projectTask the project task to be validated
+     * @return is the project task is valid
+     */
     private static boolean validate(ProjectTask projectTask) {
 
     }

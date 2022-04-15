@@ -15,6 +15,11 @@ import com.cosc2288.models.Quote;
 
 public static class QuoteController {
 
+    /**
+     * Loads a random quote
+     * 
+     * @return a quote
+     */
     public static Quote randomQuote() {
 
     }
