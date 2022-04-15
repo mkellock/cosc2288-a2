@@ -11,6 +11,7 @@ package com.cosc2288.controllers;
 
 import java.util.UUID;
 import com.cosc2288.models.ProjectTask;
+import org.hibernate.Session;
 
 public static class ProjectTaskController {
 
@@ -18,8 +19,11 @@ public static class ProjectTaskController {
      * Adds a project task
      * 
      * @param projectTask the project task to be added
+     * @param session     the ORM session
      */
-    private static void addProjectTask(ProjectTask projectTask) {
+    private static void addProjectTask(
+            ProjectTask projectTask,
+            Session session) {
 
     }
 
@@ -27,8 +31,11 @@ public static class ProjectTaskController {
      * Saves an edited project task
      * 
      * @param projectTask the project task to be saved
+     * @param session     the ORM session
      */
-    private static void editProjectTask(ProjectTask projectTask) {
+    private static void editProjectTask(
+            ProjectTask projectTask,
+            Session session) {
 
     }
 
@@ -37,8 +44,11 @@ public static class ProjectTaskController {
      * 
      * @param projectTaskId the project task id of the project task to be
      *                      deleted
+     * @param session       the ORM session
      */
-    private static void deleteProjectTask(UUID projectTaskId) {
+    private static void deleteProjectTask(
+            UUID projectTaskId,
+            Session session) {
 
     }
 
@@ -47,9 +57,12 @@ public static class ProjectTaskController {
      * 
      * @param projectColumnId the project column id attached to the project
      *                        tasks
+     * @param session         the ORM session
      * @return a list of project tasks
      */
-    public static List<ProjectTask> loadProjectTasks(UUID projectColumnId) {
+    public static List<ProjectTask> loadProjectTasks(
+            UUID projectColumnId,
+            Session session) {
 
     }
 

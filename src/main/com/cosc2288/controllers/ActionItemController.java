@@ -12,14 +12,16 @@ package com.cosc2288.controllers;
 import com.cosc2288.models.ActionItem;
 import java.util.List;
 import java.util.UUID;
+import org.hibernate.Session;
 
 public static class ActionItemController {
     /**
      * Adds an action item
      * 
      * @param actionItem the action item to be added
+     * @param session    the ORM session
      */
-    public static void addActionItem(ActionItem actionItem) {
+    public static void addActionItem(ActionItem actionItem, Session session) {
 
     }
 
@@ -27,16 +29,18 @@ public static class ActionItemController {
      * Saves an edited action item
      * 
      * @param actionItem the action item to be saved
+     * @param session    the ORM session
      */
-    public static void editActionItem(ActionItem actionItem) {
+    public static void editActionItem(ActionItem actionItem, Session session) {
     }
 
     /**
      * Deletes an action item
      * 
      * @param actionItemId the aciton item id to be deleted
+     * @param session      the ORM session
      */
-    public static void deleteActionItem(UUID actionItemId) {
+    public static void deleteActionItem(UUID actionItemId, Session session) {
 
     }
 
@@ -44,9 +48,12 @@ public static class ActionItemController {
      * Loads a project tasks action items
      * 
      * @param projectTaskId the project task id attached to the action items
+     * @param session       the ORM session
      * @return a list of action items
      */
-    public static List<ActionItem> loadActionItems(UUID projectTaskId) {
+    public static List<ActionItem> loadActionItems(
+            UUID projectTaskId,
+            Session session) {
 
     }
 

@@ -9,18 +9,19 @@
  */
 package com.cosc2288.controllers;
 
-import java.util.List;
-
 import com.cosc2288.models.Quote;
+import java.util.List;
+import org.hibernate.Session;
 
 public static class QuoteController {
 
     /**
      * Loads a random quote
      * 
+     * @param session the ORM session
      * @return a quote
      */
-    public static Quote randomQuote() {
+    public static Quote randomQuote(Session session) {
 
     }
 
