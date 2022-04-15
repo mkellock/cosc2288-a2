@@ -15,7 +15,7 @@ import org.hibernate.SessionFactory;
 
 import com.cosc2288.models.Project;
 
-public static class ProjectController {
+public class ProjectController {
 
     /**
      * Adds a project
@@ -63,7 +63,7 @@ public static class ProjectController {
     public static List<Project> loadProjects(
             UUID userId,
             SessionFactory sessionFactory) {
-
+        return null;
     }
 
     /**
@@ -73,7 +73,7 @@ public static class ProjectController {
      * @return is the project is valid
      */
     private static boolean validate(Project project) {
-
+        return false;
     }
 
 }

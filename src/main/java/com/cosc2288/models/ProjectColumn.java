@@ -10,23 +10,12 @@
 package com.cosc2288.models;
 
 import java.util.UUID;
-import javax.persistence.*;
 
-@Entity
-@Table(name = "project_columns")
 public class ProjectColumn {
 
-    @id
-    @column(name = "project_column_id")
     private UUID projectColumnId;
-
-    @column(name = "name")
     private String name;
-
-    @column(name = "order")
     private int order;
-
-    @column(name = "project_id")
     private UUID projectId;
 
     /**

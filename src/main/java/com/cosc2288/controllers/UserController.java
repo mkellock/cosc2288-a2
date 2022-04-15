@@ -12,7 +12,7 @@ package com.cosc2288.controllers;
 import com.cosc2288.models.User;
 import org.hibernate.SessionFactory;
 
-public static class UserController {
+public class UserController {
 
     /**
      * Adds a user
@@ -46,7 +46,7 @@ public static class UserController {
             String username,
             String password,
             SessionFactory sessionFactory) {
-
+        return null;
     }
 
     /**
@@ -56,7 +56,7 @@ public static class UserController {
      * @return if the user is valid
      */
     private static boolean validate(User user) {
-
+        return false;
     }
 
 }

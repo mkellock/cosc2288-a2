@@ -13,7 +13,7 @@ import com.cosc2288.models.Quote;
 import java.util.List;
 import org.hibernate.SessionFactory;
 
-public static class QuoteController {
+public class QuoteController {
 
     /**
      * Loads a random quote
@@ -22,7 +22,7 @@ public static class QuoteController {
      * @return a quote
      */
     public static Quote randomQuote(SessionFactory sessionFactory) {
-
+        return null;
     }
 
 }

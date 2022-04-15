@@ -10,32 +10,15 @@
 package com.cosc2288.models;
 
 import java.util.UUID;
-import javax.persistence.*;
 
-@Entity
-@Table(name = "users")
 public class User {
 
-    @id
-    @column(name = "user_id")
     private UUID userId;
-
-    @column(name = "username")
     private String username;
-
-    @column(name = "password")
     private String password;
-
-    @column(name = "first_name")
     private String firstName;
-
-    @column(name = "last_name")
     private String lastName;
-
-    @column(name = "image")
     private byte[] image;
-
-    @column(name = "default_project_id")
     private UUID defaultProjectId;
 
     /**

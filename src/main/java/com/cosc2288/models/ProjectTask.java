@@ -11,32 +11,15 @@ package com.cosc2288.models;
 
 import java.time.Instant;
 import java.util.UUID;
-import javax.persistence.*;
 
-@Entity
-@Table(name = "project_tasks")
 public class ProjectTask {
 
-    @id
-    @column(name = "project_task_id")
     private UUID projectTaskId;
-
-    @column(name = "name")
     private String name;
-
-    @column(name = "description")
     private String description;
-
-    @column(name = "order")
     private int order;
-
-    @column(name = "due_date")
     private Instant dueDate;
-
-    @column(name = "completed_date")
     private Instant completedDate;
-
-    @column(name = "project_column_id")
     private UUID projectColumnId;
 
     /**

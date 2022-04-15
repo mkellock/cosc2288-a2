@@ -9,11 +9,12 @@
  */
 package com.cosc2288.controllers;
 
+import java.util.List;
 import java.util.UUID;
 import com.cosc2288.models.ProjectTask;
 import org.hibernate.SessionFactory;
 
-public static class ProjectTaskController {
+public class ProjectTaskController {
 
     /**
      * Adds a project task
@@ -63,7 +64,7 @@ public static class ProjectTaskController {
     public static List<ProjectTask> loadProjectTasks(
             UUID projectColumnId,
             SessionFactory sessionFactory) {
-
+        return null;
     }
 
     /**
@@ -73,7 +74,7 @@ public static class ProjectTaskController {
      * @return is the project task is valid
      */
     private static boolean validate(ProjectTask projectTask) {
-
+        return true;
     }
 
 }

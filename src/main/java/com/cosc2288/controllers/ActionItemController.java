@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.UUID;
 import org.hibernate.SessionFactory;
 
-public static class ActionItemController {
+public class ActionItemController {
     /**
      * Adds an action item
      * 
@@ -60,7 +60,7 @@ public static class ActionItemController {
     public static List<ActionItem> loadActionItems(
             UUID projectTaskId,
             SessionFactory sessionFactory) {
-
+        return null;
     }
 
     /**
@@ -70,6 +70,6 @@ public static class ActionItemController {
      * @return if the action item is valid
      */
     private static boolean validate(ActionItem actionItem) {
-
+        return false;
     }
 }

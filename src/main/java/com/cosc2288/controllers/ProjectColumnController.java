@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.UUID;
 import org.hibernate.SessionFactory;
 
-public static class ProjectColumnController {
+public class ProjectColumnController {
     /**
      * Add project column
      * 
@@ -61,7 +61,7 @@ public static class ProjectColumnController {
     public List<ProjectColumn> loadProjectColumns(
             UUID projectId,
             SessionFactory sessionFactory) {
-
+        return null;
     }
 
     /**
@@ -71,6 +71,6 @@ public static class ProjectColumnController {
      * @return if the project column is valid
      */
     private static boolean validate(ProjectColumn projectColumn) {
-
+        return false;
     }
 }

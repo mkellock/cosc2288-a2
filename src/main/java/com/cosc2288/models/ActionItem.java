@@ -10,20 +10,11 @@
 package com.cosc2288.models;
 
 import java.util.UUID;
-import javax.persistence.*;
 
-@Entity
-@Table(name = "action_items")
 public class ActionItem {
 
-    @id
-    @column(name = "action_item_id")
     private UUID actionItemId;
-
-    @column(name = "description")
     private String description;
-
-    @column(name = "complete")
     private boolean complete;
 
     /**
