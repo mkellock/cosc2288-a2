@@ -25,6 +25,13 @@
         <jacoco.unit-tests.limit.method-complexity>5</jacoco.unit-tests.limit.method-complexity>
     </properties>
     <dependencies>
+
+        <dependency>
+            <groupId>org.xerial</groupId>
+            <artifactId>sqlite-jdbc</artifactId>
+            <version>3.36.0.3</version>
+        </dependency>
+
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate</artifactId>
