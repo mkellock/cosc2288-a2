@@ -22,6 +22,40 @@ public class User {
     private UUID defaultProjectId;
 
     /**
+     * Constructs a user
+     */
+    public User() {
+    }
+
+    /**
+     * Constructs a user
+     * 
+     * @param userId
+     * @param username
+     * @param password
+     * @param firstName
+     * @param lastName
+     * @param image
+     * @param defaultProjectId
+     */
+    public User(
+            UUID userId,
+            String username,
+            String password,
+            String firstName,
+            String lastName,
+            byte[] image,
+            UUID defaultProjectId) {
+        this.userId = userId;
+        this.username = username;
+        this.password = password;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.image = image;
+        this.defaultProjectId = defaultProjectId;
+    }
+
+    /**
      * @return the userId
      */
     public UUID getUserId() {

@@ -20,6 +20,28 @@ public class Project {
     private UUID userId;
 
     /**
+     * Constructs a project
+     */
+    public Project() {
+        // Empty constructor
+    }
+
+    /**
+     * Constructs a project
+     * 
+     * @param projectId
+     * @param name
+     * @param created
+     * @param userId
+     */
+    public Project(UUID projectId, String name, Instant created, UUID userId) {
+        this.projectId = projectId;
+        this.name = name;
+        this.created = created;
+        this.userId = userId;
+    }
+
+    /**
      * @return the projectId
      */
     public UUID getProjectId() {

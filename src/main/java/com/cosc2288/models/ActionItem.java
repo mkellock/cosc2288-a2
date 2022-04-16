@@ -18,6 +18,26 @@ public class ActionItem {
     private boolean complete;
 
     /**
+     * Constructs an action item
+     */
+    public ActionItem() {
+        // Empty constructor
+    }
+
+    /**
+     * Constructs an action item
+     * 
+     * @param actionItemId
+     * @param description
+     * @param complete
+     */
+    public ActionItem(UUID actionItemId, String description, boolean complete) {
+        this.actionItemId = actionItemId;
+        this.description = description;
+        this.complete = complete;
+    }
+
+    /**
      * @return the actionItemId
      */
     public UUID getActionItemId() {

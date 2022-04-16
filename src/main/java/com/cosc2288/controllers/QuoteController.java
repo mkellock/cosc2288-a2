@@ -10,19 +10,41 @@
 package com.cosc2288.controllers;
 
 import com.cosc2288.models.Quote;
-import java.util.List;
-import org.hibernate.SessionFactory;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
-public class QuoteController {
+public class QuoteController extends BaseController {
+    /**
+     * Constructor for the class
+     */
+    public QuoteController() {
+        super();
+    }
 
     /**
      * Loads a random quote
      * 
-     * @param sessionFactory the ORM session factory
      * @return a quote
      */
-    public static Quote randomQuote(SessionFactory sessionFactory) {
-        return null;
+    public Quote randomQuote() {
+        // The select query
+        String sql = "SELECT message FROM quotes ORDER BY RANDOM() LIMIT 1";
+
+        // Run the DB select statement
+        try (Connection conn = this.getConnection();
+                PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            ResultSet queryResults = pstmt.executeQuery();
+
+            // Assign the DB results to the result list
+            queryResults.next();
+
+            return new Quote(queryResults.getString("message"));
+        } catch (SQLException e) {
+            // Return an empty list
+            return null;
+        }
     }
 
 }

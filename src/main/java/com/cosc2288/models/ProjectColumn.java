@@ -19,6 +19,32 @@ public class ProjectColumn {
     private UUID projectId;
 
     /**
+     * Constructs a project column
+     */
+    public ProjectColumn() {
+        // Empty constructor
+    }
+
+    /**
+     * Constructs a project column
+     * 
+     * @param projectColumnId
+     * @param name
+     * @param order
+     * @param projectId
+     */
+    public ProjectColumn(
+            UUID projectColumnId,
+            String name,
+            int order,
+            UUID projectId) {
+        this.projectColumnId = projectColumnId;
+        this.name = name;
+        this.order = order;
+        this.projectId = projectId;
+    }
+
+    /**
      * @return the projectColumnId
      */
     public UUID getProjectColumnId() {

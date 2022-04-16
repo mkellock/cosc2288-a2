@@ -23,6 +23,41 @@ public class ProjectTask {
     private UUID projectColumnId;
 
     /**
+     * Constucts a project task
+     */
+    public ProjectTask() {
+        // Empty constructor
+    }
+
+    /**
+     * Constucts a project task
+     * 
+     * @param projectTaskId
+     * @param name
+     * @param description
+     * @param order
+     * @param dueDate
+     * @param completedDate
+     * @param projectColumnId
+     */
+    public ProjectTask(
+            UUID projectTaskId,
+            String name,
+            String description,
+            int order,
+            Instant dueDate,
+            Instant completedDate,
+            UUID projectColumnId) {
+        this.projectTaskId = projectTaskId;
+        this.name = name;
+        this.description = description;
+        this.order = order;
+        this.dueDate = dueDate;
+        this.completedDate = completedDate;
+        this.projectColumnId = projectColumnId;
+    }
+
+    /**
      * @return the projectTaskId
      */
     public UUID getProjectTaskId() {

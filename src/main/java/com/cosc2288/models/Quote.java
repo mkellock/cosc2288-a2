@@ -14,6 +14,22 @@ public class Quote {
     private String message;
 
     /**
+     * Constructs a quote
+     */
+    public Quote() {
+        // Empty constructor
+    }
+
+    /**
+     * Constructs a quote
+     * 
+     * @param message
+     */
+    public Quote(String message) {
+        this.message = message;
+    }
+
+    /**
      * @return the quote
      */
     public String getMessage() {
