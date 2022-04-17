@@ -29,13 +29,35 @@ class ProjectTaskTests {
         UUID.fromString("174a11d4-8d95-4acd-a914-c296428a0053");
 
     @Test
+    void ShouldConstructAndGetAllProperties() {
+        ProjectTask projectTask = new ProjectTask(
+                PROJECT_TASK_ID,
+                NAME,
+                DESCRIPTION,
+                ORDER,
+                DUE_DATE,
+                COMPLETED_DATE,
+                PROJECT_COLUMN_ID);
+        Assertions.assertEquals(
+                PROJECT_TASK_ID,
+                projectTask.getProjectTaskId());
+        Assertions.assertEquals(NAME, projectTask.getName());
+        Assertions.assertEquals(DESCRIPTION, projectTask.getDescription());
+        Assertions.assertEquals(ORDER, projectTask.getOrder());
+        Assertions.assertEquals(DUE_DATE, projectTask.getDueDate());
+        Assertions.assertEquals(COMPLETED_DATE, projectTask.getCompletedDate());
+        Assertions.assertEquals(
+                PROJECT_COLUMN_ID,
+                projectTask.getProjectColumnId());
+    }
+
+    @Test
     void shouldSetAndGetProjectTaskId() {
         ProjectTask projectTask = new ProjectTask();
         projectTask.setProjectTaskId(PROJECT_TASK_ID);
         Assertions.assertEquals(
-            PROJECT_TASK_ID,
-            projectTask.getProjectTaskId()
-        );
+                PROJECT_TASK_ID,
+                projectTask.getProjectTaskId());
     }
 
     @Test
@@ -78,8 +100,7 @@ class ProjectTaskTests {
         ProjectTask projectTask = new ProjectTask();
         projectTask.setProjectColumnId(PROJECT_COLUMN_ID);
         Assertions.assertEquals(
-            PROJECT_COLUMN_ID,
-            projectTask.getProjectColumnId()
-        );
+                PROJECT_COLUMN_ID,
+                projectTask.getProjectColumnId());
     }
 }

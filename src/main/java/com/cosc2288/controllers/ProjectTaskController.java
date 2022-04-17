@@ -23,16 +23,17 @@ public class ProjectTaskController extends BaseController {
     /**
      * Constructor for the class
      */
-    public ProjectTaskController() {
-        super();
+    public ProjectTaskController(String connectionString) {
+        super(connectionString);
     }
 
     /**
      * Adds a project task
      * 
      * @param projectTask the project task to be added
+     * @throws SQLException
      */
-    public boolean addProjectTask(ProjectTask projectTask) {
+    public boolean addProjectTask(ProjectTask projectTask) throws SQLException {
         // The insert script
         String sql = "INSERT INTO project_tasks " +
                 "(project_task_id, name, description, order, due_date, " +
@@ -45,7 +46,7 @@ public class ProjectTaskController extends BaseController {
         // If we have a valid object
         if (Boolean.TRUE.equals(valid)) {
             // Run the DB insert statement
-            try (Connection conn = this.getConnection();
+            try (Connection conn = this.newConnection();
                     PreparedStatement pstmt = conn.prepareStatement(sql)) {
                 pstmt.setString(1, projectTask.getProjectTaskId().toString());
                 pstmt.setString(2, projectTask.getName());
@@ -57,7 +58,8 @@ public class ProjectTaskController extends BaseController {
                 pstmt.executeUpdate();
             } catch (SQLException e) {
                 // Return that the operation failed
-                return false;
+                e.printStackTrace();
+                throw e;
             }
 
             // Object saved successfully
@@ -72,8 +74,10 @@ public class ProjectTaskController extends BaseController {
      * Saves an edited project task
      * 
      * @param projectTask the project task to be saved
+     * @throws SQLException
      */
-    public boolean editProjectTask(ProjectTask projectTask) {
+    public boolean editProjectTask(ProjectTask projectTask)
+            throws SQLException {
         // The update script
         String sql = "UPDATE project_tasks SET" +
                 "name = ?, " +
@@ -90,7 +94,7 @@ public class ProjectTaskController extends BaseController {
         // If we have a valid object
         if (Boolean.TRUE.equals(valid)) {
             // Run the DB update statement
-            try (Connection conn = this.getConnection();
+            try (Connection conn = this.newConnection();
                     PreparedStatement pstmt = conn.prepareStatement(sql)) {
                 pstmt.setString(1, projectTask.getName());
                 pstmt.setString(2, projectTask.getDescription());
@@ -102,7 +106,8 @@ public class ProjectTaskController extends BaseController {
                 pstmt.executeUpdate();
             } catch (SQLException e) {
                 // Return that the operation failed
-                return false;
+                e.printStackTrace();
+                throw e;
             }
 
             // Object saved successfully
@@ -118,19 +123,21 @@ public class ProjectTaskController extends BaseController {
      * 
      * @param projectTaskId the project task id of the project task to be
      *                      deleted
+     * @throws SQLException
      */
-    public boolean deleteProjectTask(UUID projectTaskId) {
+    public boolean deleteProjectTask(UUID projectTaskId) throws SQLException {
         // The delete script
         String sql = "DELETE FROM project_tasks WHERE project_task_id = ?";
 
         // Run the DB delete statement
-        try (Connection conn = this.getConnection();
+        try (Connection conn = this.newConnection();
                 PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, projectTaskId.toString());
             pstmt.executeUpdate();
         } catch (SQLException e) {
             // Return that the operation failed
-            return false;
+            e.printStackTrace();
+            throw e;
         }
 
         // Object deleted successfully
@@ -144,8 +151,10 @@ public class ProjectTaskController extends BaseController {
      *                        tasks
      * @param sessionFactory  the ORM session factory
      * @return a list of project tasks
+     * @throws SQLException
      */
-    public List<ProjectTask> loadProjectTasks(UUID projectColumnId) {
+    public List<ProjectTask> loadProjectTasks(UUID projectColumnId)
+            throws SQLException {
         // The result we'll eventually return
         LinkedList<ProjectTask> returnVal = new LinkedList<>();
 
@@ -155,7 +164,7 @@ public class ProjectTaskController extends BaseController {
                 "FROM action_items WHERE project_column_id = ?";
 
         // Run the DB select statement
-        try (Connection conn = this.getConnection();
+        try (Connection conn = this.newConnection();
                 PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, projectColumnId.toString());
             ResultSet queryResults = pstmt.executeQuery();
@@ -169,8 +178,8 @@ public class ProjectTaskController extends BaseController {
                         queryResults.getString("name"),
                         queryResults.getString("description"),
                         queryResults.getInt("order"),
-                        Instant.ofEpochSecond(queryResults.getLong("due_date")),
-                        Instant.ofEpochSecond(
+                        Instant.ofEpochMilli(queryResults.getLong("due_date")),
+                        Instant.ofEpochMilli(
                                 queryResults.getLong("complated_date")),
                         UUID.fromString(
                                 queryResults.getString("project_task_id"))));
@@ -179,8 +188,9 @@ public class ProjectTaskController extends BaseController {
             // Return the result list
             return returnVal;
         } catch (SQLException e) {
-            // Return an empty list
-            return new LinkedList<>();
+            // Return that the operation failed
+            e.printStackTrace();
+            throw e;
         }
     }
 

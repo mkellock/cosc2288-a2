@@ -20,8 +20,8 @@ public class UserController extends BaseController {
     /**
      * Constructor for the class
      */
-    public UserController() {
-        super();
+    public UserController(String connectionString) {
+        super(connectionString);
     }
 
     /**
@@ -29,7 +29,7 @@ public class UserController extends BaseController {
      * 
      * @param user the user to add
      */
-    public boolean addUser(User user) {
+    public boolean addUser(User user) throws SQLException {
         // The insert script
         String sql = "INSERT INTO users " +
                 "(user_id, username, password, first_name, last_name, image, " +
@@ -42,7 +42,7 @@ public class UserController extends BaseController {
         // If we have a valid object
         if (Boolean.TRUE.equals(valid)) {
             // Run the DB insert statement
-            try (Connection conn = this.getConnection();
+            try (Connection conn = this.newConnection();
                     PreparedStatement pstmt = conn.prepareStatement(sql)) {
                 pstmt.setString(1, user.getUserId().toString());
                 pstmt.setString(2, user.getUsername());
@@ -54,7 +54,8 @@ public class UserController extends BaseController {
                 pstmt.executeUpdate();
             } catch (SQLException e) {
                 // Return that the operation failed
-                return false;
+                e.printStackTrace();
+                throw e;
             }
 
             // Object saved successfully
@@ -70,9 +71,9 @@ public class UserController extends BaseController {
      * 
      * @param user the user to save
      */
-    public boolean editUser(User user) {
+    public boolean editUser(User user) throws SQLException {
         // The update script
-        String sql = "UPDATE users SET" +
+        String sql = "UPDATE users SET " +
                 "username = ?, " +
                 "password = ?, " +
                 "first_name = ?, " +
@@ -87,7 +88,7 @@ public class UserController extends BaseController {
         // If we have a valid object
         if (Boolean.TRUE.equals(valid)) {
             // Run the DB update statement
-            try (Connection conn = this.getConnection();
+            try (Connection conn = this.newConnection();
                     PreparedStatement pstmt = conn.prepareStatement(sql)) {
                 pstmt.setString(1, user.getUsername());
                 pstmt.setString(2, user.getPassword());
@@ -99,7 +100,8 @@ public class UserController extends BaseController {
                 pstmt.executeUpdate();
             } catch (SQLException e) {
                 // Return that the operation failed
-                return false;
+                e.printStackTrace();
+                throw e;
             }
 
             // Object saved successfully
@@ -117,33 +119,43 @@ public class UserController extends BaseController {
      * @param password the user's password
      * @return a user
      */
-    public User logInUser(String username, String password) {
+    public User logInUser(String username, String password)
+            throws SQLException {
         // The select query
         String sql = "SELECT user_id, username, password, first_name, " +
                 "last_name, image, default_project_id FROM users " +
                 "WHERE username = ? AND password = ?";
 
         // Run the DB select statement
-        try (Connection conn = this.getConnection();
+        try (Connection conn = this.newConnection();
                 PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            // Find the user
+            pstmt.setString(1, username);
+            pstmt.setString(2, password);
             ResultSet queryResults = pstmt.executeQuery();
 
-            // Assign the DB results to the result list
-            queryResults.next();
-
-            return new User(
-                    UUID.fromString(
-                            queryResults.getString("user_id")),
-                    queryResults.getString("username"),
-                    queryResults.getString("password"),
-                    queryResults.getString("first_name"),
-                    queryResults.getString("last_name"),
-                    queryResults.getBytes("image"),
-                    UUID.fromString(
-                            queryResults.getString("default_project_id")));
+            // If the user is valid
+            if (queryResults.next()) {
+                // Assign the DB results to a user object
+                return new User(
+                        UUID.fromString(
+                                queryResults.getString("user_id")),
+                        queryResults.getString("username"),
+                        queryResults.getString("password"),
+                        queryResults.getString("first_name"),
+                        queryResults.getString("last_name"),
+                        queryResults.getBytes("image"),
+                        UUID.fromString(
+                                queryResults.getString("default_project_id")));
+            } else {
+                // If the user is invalid
+                return null;
+            }
         } catch (SQLException e) {
-            // Return an empty list
-            return null;
+            // Return that the operation failed
+            e.printStackTrace();
+            throw e;
         }
     }
 
@@ -154,12 +166,16 @@ public class UserController extends BaseController {
      * @return if the user is valid
      */
     private static boolean validate(User user) {
-        return user.getUserId() != null &&
-                user.getUsername().length() > 0 &&
-                user.getPassword().length() > 0 &&
-                user.getFirstName().length() > 0 &&
-                user.getLastName().length() > 0 &&
-                user.getImage() != null;
+        boolean valid = false;
+
+        valid = user.getUserId() != null &&
+                user.getImage() != null &&
+                (user.getUsername() +
+                        user.getPassword() +
+                        user.getFirstName() +
+                        user.getLastName()).length() > 0;
+
+        return valid;
     }
 
 }

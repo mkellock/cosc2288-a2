@@ -22,16 +22,17 @@ public class ActionItemController extends BaseController {
     /**
      * Constructor for the class
      */
-    public ActionItemController() {
-        super();
+    public ActionItemController(String connectionString) {
+        super(connectionString);
     }
 
     /**
      * Adds an action item
      * 
      * @param actionItem the action item to be added
+     * @throws SQLException
      */
-    public boolean addActionItem(ActionItem actionItem) {
+    public boolean addActionItem(ActionItem actionItem) throws SQLException {
         // The insert script
         String sql = "INSERT INTO action_items " +
                 "(action_item_id, description, complete) " +
@@ -43,7 +44,7 @@ public class ActionItemController extends BaseController {
         // If we have a valid object
         if (Boolean.TRUE.equals(valid)) {
             // Run the DB insert statement
-            try (Connection conn = this.getConnection();
+            try (Connection conn = this.newConnection();
                     PreparedStatement pstmt = conn.prepareStatement(sql)) {
                 pstmt.setString(1, actionItem.getActionItemId().toString());
                 pstmt.setString(2, actionItem.getDescription());
@@ -51,7 +52,8 @@ public class ActionItemController extends BaseController {
                 pstmt.executeUpdate();
             } catch (SQLException e) {
                 // Return that the operation failed
-                return false;
+                e.printStackTrace();
+                throw e;
             }
 
             // Object saved successfully
@@ -66,8 +68,9 @@ public class ActionItemController extends BaseController {
      * Saves an edited action item
      * 
      * @param actionItem the action item to be saved
+     * @throws SQLException
      */
-    public boolean editActionItem(ActionItem actionItem) {
+    public boolean editActionItem(ActionItem actionItem) throws SQLException {
         // The update script
         String sql = "UPDATE action_items SET" +
                 "description = ?, " +
@@ -80,7 +83,7 @@ public class ActionItemController extends BaseController {
         // If we have a valid object
         if (Boolean.TRUE.equals(valid)) {
             // Run the DB update statement
-            try (Connection conn = this.getConnection();
+            try (Connection conn = this.newConnection();
                     PreparedStatement pstmt = conn.prepareStatement(sql)) {
                 pstmt.setString(1, actionItem.getDescription());
                 pstmt.setBoolean(2, actionItem.isComplete());
@@ -88,7 +91,8 @@ public class ActionItemController extends BaseController {
                 pstmt.executeUpdate();
             } catch (SQLException e) {
                 // Return that the operation failed
-                return false;
+                e.printStackTrace();
+                throw e;
             }
 
             // Object saved successfully
@@ -103,19 +107,21 @@ public class ActionItemController extends BaseController {
      * Deletes an action item
      * 
      * @param actionItemId the aciton item id to be deleted
+     * @throws SQLException
      */
-    public boolean deleteActionItem(UUID actionItemId) {
+    public boolean deleteActionItem(UUID actionItemId) throws SQLException {
         // The delete script
         String sql = "DELETE FROM action_items WHERE action_item_id = ?";
 
         // Run the DB delete statement
-        try (Connection conn = this.getConnection();
+        try (Connection conn = this.newConnection();
                 PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, actionItemId.toString());
             pstmt.executeUpdate();
         } catch (SQLException e) {
             // Return that the operation failed
-            return false;
+            e.printStackTrace();
+            throw e;
         }
 
         // Object deleted successfully
@@ -127,8 +133,10 @@ public class ActionItemController extends BaseController {
      * 
      * @param projectTaskId the project task id attached to the action items
      * @return a list of action items
+     * @throws SQLException
      */
-    public List<ActionItem> loadActionItems(UUID projectTaskId) {
+    public List<ActionItem> loadActionItems(UUID projectTaskId)
+            throws SQLException {
         // The result we'll eventually return
         LinkedList<ActionItem> returnVal = new LinkedList<>();
 
@@ -137,7 +145,7 @@ public class ActionItemController extends BaseController {
                 "FROM action_items WHERE project_task_id = ?";
 
         // Run the DB select statement
-        try (Connection conn = this.getConnection();
+        try (Connection conn = this.newConnection();
                 PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, projectTaskId.toString());
             ResultSet queryResults = pstmt.executeQuery();
@@ -155,8 +163,9 @@ public class ActionItemController extends BaseController {
             // Return the result list
             return returnVal;
         } catch (SQLException e) {
-            // Return an empty list
-            return new LinkedList<>();
+            // Return that the operation failed
+            e.printStackTrace();
+            throw e;
         }
     }
 

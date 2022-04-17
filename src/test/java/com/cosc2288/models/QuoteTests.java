@@ -14,13 +14,19 @@ import org.junit.jupiter.api.Test;
 
 class QuoteTests {
 
-    private static final String QUOTE = "Quote";
+    private static final String MESSAGE = "Quote";
+
+    @Test
+    void ShouldConstructAndGetAllProperties() {
+        Quote quote = new Quote(MESSAGE);
+        Assertions.assertEquals(MESSAGE, quote.getMessage());
+    }
 
     @Test
     void shouldSetAndGetQuote() {
         Quote quote = new Quote();
-        quote.setMessage(QUOTE);
-        Assertions.assertEquals(QUOTE, quote.getMessage());
+        quote.setMessage(MESSAGE);
+        Assertions.assertEquals(MESSAGE, quote.getMessage());
     }
 
 }

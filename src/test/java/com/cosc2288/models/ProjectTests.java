@@ -25,6 +25,19 @@ class ProjectTests {
         UUID.fromString("b4a55bb8-4cb9-4de2-8489-224bcfb993f6");
 
     @Test
+    void ShouldConstructAndGetAllProperties() {
+        Project project = new Project(
+                PROJECT_ID,
+                NAME,
+                CREATED,
+                USER_ID);
+        Assertions.assertEquals(PROJECT_ID, project.getProjectId());
+        Assertions.assertEquals(NAME, project.getName());
+        Assertions.assertEquals(CREATED, project.getCreated());
+        Assertions.assertEquals(USER_ID, project.getUserId());
+    }
+
+    @Test
     void shouldSetAndGetProjectId() {
         Project project = new Project();
         project.setProjectId(PROJECT_ID);

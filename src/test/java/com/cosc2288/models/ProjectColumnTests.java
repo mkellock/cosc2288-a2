@@ -23,13 +23,28 @@ class ProjectColumnTests {
         UUID.fromString("1f74708e-917a-4b21-b637-77f857e2f4e4");
 
     @Test
+    void ShouldConstructAndGetAllProperties() {
+        ProjectColumn projectColumn = new ProjectColumn(
+                PROJECT_COLUMN_ID,
+                NAME,
+                ORDER,
+                PROJECT_ID);
+        Assertions.assertEquals(
+                PROJECT_COLUMN_ID,
+                projectColumn.getProjectColumnId());
+        Assertions.assertEquals(NAME, projectColumn.getName());
+        Assertions.assertEquals(ORDER, projectColumn.getOrder());
+        Assertions.assertEquals(PROJECT_ID, projectColumn.getProjectId());
+
+    }
+
+    @Test
     void shouldSetAndGetProjectColumnId() {
         ProjectColumn projectColumn = new ProjectColumn();
         projectColumn.setProjectColumnId(PROJECT_COLUMN_ID);
         Assertions.assertEquals(
-            PROJECT_COLUMN_ID,
-            projectColumn.getProjectColumnId()
-        );
+                PROJECT_COLUMN_ID,
+                projectColumn.getProjectColumnId());
     }
 
     @Test

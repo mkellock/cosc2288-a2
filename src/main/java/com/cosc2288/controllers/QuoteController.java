@@ -19,21 +19,22 @@ public class QuoteController extends BaseController {
     /**
      * Constructor for the class
      */
-    public QuoteController() {
-        super();
+    public QuoteController(String connectionString) {
+        super(connectionString);
     }
 
     /**
      * Loads a random quote
      * 
      * @return a quote
+     * @throws SQLException
      */
-    public Quote randomQuote() {
+    public Quote randomQuote() throws SQLException {
         // The select query
         String sql = "SELECT message FROM quotes ORDER BY RANDOM() LIMIT 1";
 
         // Run the DB select statement
-        try (Connection conn = this.getConnection();
+        try (Connection conn = this.newConnection();
                 PreparedStatement pstmt = conn.prepareStatement(sql)) {
             ResultSet queryResults = pstmt.executeQuery();
 
@@ -42,8 +43,9 @@ public class QuoteController extends BaseController {
 
             return new Quote(queryResults.getString("message"));
         } catch (SQLException e) {
-            // Return an empty list
-            return null;
+            // Return that the operation failed
+            e.printStackTrace();
+            throw e;
         }
     }
 

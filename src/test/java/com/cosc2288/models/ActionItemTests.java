@@ -21,6 +21,17 @@ class ActionItemTests {
     private static final boolean COMPLETE = false;
 
     @Test
+    void ShouldConstructAndGetAllProperties() {
+        ActionItem actionItem = new ActionItem(
+                ACTION_ITEM_ID,
+                DESCRIPTION,
+                COMPLETE);
+        Assertions.assertEquals(ACTION_ITEM_ID, actionItem.getActionItemId());
+        Assertions.assertEquals(DESCRIPTION, actionItem.getDescription());
+        Assertions.assertEquals(COMPLETE, actionItem.isComplete());
+    }
+
+    @Test
     void shouldSetAndGetActionItemId() {
         ActionItem actionItem = new ActionItem();
         actionItem.setActionItemId(ACTION_ITEM_ID);

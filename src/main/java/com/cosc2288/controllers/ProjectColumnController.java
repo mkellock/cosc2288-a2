@@ -22,16 +22,18 @@ public class ProjectColumnController extends BaseController {
     /**
      * Constructor for the class
      */
-    public ProjectColumnController() {
-        super();
+    public ProjectColumnController(String connectionString) {
+        super(connectionString);
     }
 
     /**
      * Add project column
      * 
      * @param projectColumn the project column to be added
+     * @throws SQLException
      */
-    public boolean addProjectColumn(ProjectColumn projectColumn) {
+    public boolean addProjectColumn(ProjectColumn projectColumn)
+            throws SQLException {
         // The insert script
         String sql = "INSERT INTO project_columns " +
                 "(project_column_id, name, order, project_id) " +
@@ -43,7 +45,7 @@ public class ProjectColumnController extends BaseController {
         // If we have a valid object
         if (Boolean.TRUE.equals(valid)) {
             // Run the DB insert statement
-            try (Connection conn = this.getConnection();
+            try (Connection conn = this.newConnection();
                     PreparedStatement pstmt = conn.prepareStatement(sql)) {
                 pstmt.setString(1,
                         projectColumn.getProjectColumnId().toString());
@@ -53,7 +55,8 @@ public class ProjectColumnController extends BaseController {
                 pstmt.executeUpdate();
             } catch (SQLException e) {
                 // Return that the operation failed
-                return false;
+                e.printStackTrace();
+                throw e;
             }
 
             // Object saved successfully
@@ -68,8 +71,10 @@ public class ProjectColumnController extends BaseController {
      * Saves an edited project column
      * 
      * @param projectColumn the project column to be saved
+     * @throws SQLException
      */
-    public boolean editProjectColumn(ProjectColumn projectColumn) {
+    public boolean editProjectColumn(ProjectColumn projectColumn)
+            throws SQLException {
         // The update script
         String sql = "UPDATE project_columns SET" +
                 "order = ?, " +
@@ -83,7 +88,7 @@ public class ProjectColumnController extends BaseController {
         // If we have a valid object
         if (Boolean.TRUE.equals(valid)) {
             // Run the DB update statement
-            try (Connection conn = this.getConnection();
+            try (Connection conn = this.newConnection();
                     PreparedStatement pstmt = conn.prepareStatement(sql)) {
                 pstmt.setString(1, projectColumn.getName());
                 pstmt.setInt(2, projectColumn.getOrder());
@@ -93,7 +98,8 @@ public class ProjectColumnController extends BaseController {
                 pstmt.executeUpdate();
             } catch (SQLException e) {
                 // Return that the operation failed
-                return false;
+                e.printStackTrace();
+                throw e;
             }
 
             // Object saved successfully
@@ -109,19 +115,22 @@ public class ProjectColumnController extends BaseController {
      * 
      * @param projectColumnId the project column id to be deleted
      * @param sessionFactory  the ORM session factory
+     * @throws SQLException
      */
-    public boolean deleteProjectColumn(UUID projectColumnId) {
+    public boolean deleteProjectColumn(UUID projectColumnId)
+            throws SQLException {
         // The delete script
         String sql = "DELETE FROM project_columns WHERE project_column_id = ?";
 
         // Run the DB delete statement
-        try (Connection conn = this.getConnection();
+        try (Connection conn = this.newConnection();
                 PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, projectColumnId.toString());
             pstmt.executeUpdate();
         } catch (SQLException e) {
             // Return that the operation failed
-            return false;
+            e.printStackTrace();
+            throw e;
         }
 
         // Object deleted successfully
@@ -133,8 +142,10 @@ public class ProjectColumnController extends BaseController {
      * 
      * @param projectId the project id attached to the project columns
      * @return a list of project columns
+     * @throws SQLException
      */
-    public List<ProjectColumn> loadProjectColumns(UUID projectId) {
+    public List<ProjectColumn> loadProjectColumns(UUID projectId)
+            throws SQLException {
         // The result we'll eventually return
         LinkedList<ProjectColumn> returnVal = new LinkedList<>();
 
@@ -143,7 +154,7 @@ public class ProjectColumnController extends BaseController {
                 "FROM project_columns WHERE project_id = ?";
 
         // Run the DB select statement
-        try (Connection conn = this.getConnection();
+        try (Connection conn = this.newConnection();
                 PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, projectId.toString());
             ResultSet queryResults = pstmt.executeQuery();
@@ -163,8 +174,9 @@ public class ProjectColumnController extends BaseController {
             // Return the result list
             return returnVal;
         } catch (SQLException e) {
-            // Return an empty list
-            return new LinkedList<>();
+            // Return that the operation failed
+            e.printStackTrace();
+            throw e;
         }
     }
 

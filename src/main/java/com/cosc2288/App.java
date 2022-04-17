@@ -1,45 +1,35 @@
 package com.cosc2288;
 
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.Properties;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
-import java.util.UUID;
-import com.cosc2288.models.User;
-
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-
 public class App extends Application {
 
-    public static void connect() {
-        Connection conn = null;
-        try {
-            // db parameters
-            String url = "jdbc:sqlite:cosc2288-2.db";
-            // create a connection to the database
-            conn = DriverManager.getConnection(url);
-
-            System.out.println("Connection to SQLite has been established.");
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                if (conn != null) {
-                    conn.close();
-                }
-            } catch (SQLException ex) {
-                System.out.println(ex.getMessage());
-            }
-        }
-    }
+    private static String connectionString;
 
     public static void main(String[] args) {
-        connect();
+
+        try (
+                FileInputStream settingsFile =
+                    new FileInputStream("app.properties")) {
+            Properties appSettings = new Properties();
+
+            // load config.properties file
+            appSettings.load(settingsFile);
+
+            // This is where you add your config variables:
+            connectionString = (String) appSettings.get("connnection_string");
+        } catch (IOException e) {
+            // Trap the error (returning null if we have an exception)
+            e.printStackTrace();
+        }
+
         launch(args);
     }
 
