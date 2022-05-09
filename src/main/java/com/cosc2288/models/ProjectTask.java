@@ -9,7 +9,6 @@
  */
 package com.cosc2288.models;
 
-import java.time.Instant;
 import java.util.UUID;
 
 public class ProjectTask {
@@ -18,8 +17,8 @@ public class ProjectTask {
     private String name;
     private String description;
     private int order;
-    private Instant dueDate;
-    private Instant completedDate;
+    private Long dueDate;
+    private Long completedDate;
     private UUID projectColumnId;
 
     /**
@@ -45,8 +44,8 @@ public class ProjectTask {
             String name,
             String description,
             int order,
-            Instant dueDate,
-            Instant completedDate,
+            Long dueDate,
+            Long completedDate,
             UUID projectColumnId) {
         this.projectTaskId = projectTaskId;
         this.name = name;
@@ -116,28 +115,28 @@ public class ProjectTask {
     /**
      * @return the dueDate
      */
-    public Instant getDueDate() {
+    public Long getDueDate() {
         return dueDate;
     }
 
     /**
      * @param dueDate the dueDate to set
      */
-    public void setDueDate(Instant dueDate) {
+    public void setDueDate(Long dueDate) {
         this.dueDate = dueDate;
     }
 
     /**
      * @return the completedDate
      */
-    public Instant getCompletedDate() {
+    public Long getCompletedDate() {
         return completedDate;
     }
 
     /**
      * @param completedDate the completedDate to set
      */
-    public void setCompletedDate(Instant completedDate) {
+    public void setCompletedDate(Long completedDate) {
         this.completedDate = completedDate;
     }
 

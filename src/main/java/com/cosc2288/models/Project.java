@@ -9,14 +9,13 @@
  */
 package com.cosc2288.models;
 
-import java.time.Instant;
 import java.util.UUID;
 
 public class Project {
 
     private UUID projectId;
     private String name;
-    private Instant created;
+    private Long created;
     private UUID userId;
 
     /**
@@ -34,7 +33,7 @@ public class Project {
      * @param created
      * @param userId
      */
-    public Project(UUID projectId, String name, Instant created, UUID userId) {
+    public Project(UUID projectId, String name, Long created, UUID userId) {
         this.projectId = projectId;
         this.name = name;
         this.created = created;
@@ -72,14 +71,14 @@ public class Project {
     /**
      * @return the created
      */
-    public Instant getCreated() {
+    public Long getCreated() {
         return created;
     }
 
     /**
      * @param created the created to set
      */
-    public void setCreated(Instant created) {
+    public void setCreated(Long created) {
         this.created = created;
     }
 

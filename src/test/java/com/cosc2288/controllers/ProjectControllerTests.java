@@ -24,7 +24,7 @@ public class ProjectControllerTests extends BaseTests {
     private UUID PROJECT_ID =
         UUID.fromString("d1692273-c891-4950-be04-9620604c2cfe");
     private String NAME = "Project Name";
-    private Instant CREATED = Instant.now();
+    private Long CREATED = Instant.now().toEpochMilli();
     private UUID USER_ID =
         UUID.fromString("b45542c8-f159-4b3d-a268-dcabfaa7443a");
 

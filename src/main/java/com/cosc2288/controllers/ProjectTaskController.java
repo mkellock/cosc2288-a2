@@ -14,7 +14,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.Instant;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
@@ -52,8 +51,8 @@ public class ProjectTaskController extends BaseController {
                 pstmt.setString(2, projectTask.getName());
                 pstmt.setString(3, projectTask.getDescription());
                 pstmt.setInt(4, projectTask.getOrder());
-                pstmt.setLong(5, projectTask.getDueDate().toEpochMilli());
-                pstmt.setLong(6, projectTask.getCompletedDate().toEpochMilli());
+                pstmt.setLong(5, projectTask.getDueDate());
+                pstmt.setLong(6, projectTask.getCompletedDate());
                 pstmt.setString(7, projectTask.getProjectColumnId().toString());
                 pstmt.executeUpdate();
             } catch (SQLException e) {
@@ -99,8 +98,8 @@ public class ProjectTaskController extends BaseController {
                 pstmt.setString(1, projectTask.getName());
                 pstmt.setString(2, projectTask.getDescription());
                 pstmt.setInt(3, projectTask.getOrder());
-                pstmt.setLong(4, projectTask.getDueDate().toEpochMilli());
-                pstmt.setLong(5, projectTask.getCompletedDate().toEpochMilli());
+                pstmt.setLong(4, projectTask.getDueDate());
+                pstmt.setLong(5, projectTask.getCompletedDate());
                 pstmt.setString(6, projectTask.getProjectColumnId().toString());
                 pstmt.setString(7, projectTask.getProjectTaskId().toString());
                 pstmt.executeUpdate();
@@ -178,9 +177,8 @@ public class ProjectTaskController extends BaseController {
                         queryResults.getString("name"),
                         queryResults.getString("description"),
                         queryResults.getInt("order"),
-                        Instant.ofEpochMilli(queryResults.getLong("due_date")),
-                        Instant.ofEpochMilli(
-                                queryResults.getLong("complated_date")),
+                        queryResults.getLong("due_date"),
+                        queryResults.getLong("complated_date"),
                         UUID.fromString(
                                 queryResults.getString("project_task_id"))));
             }

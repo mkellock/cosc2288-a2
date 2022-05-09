@@ -21,10 +21,10 @@ class ProjectTaskTests {
     private static final String NAME = "Name";
     private static final String DESCRIPTION = "Description";
     private static final int ORDER = 1;
-    private static final Instant DUE_DATE =
-        Instant.parse("2022-04-14T00:00:00.00Z");
-    private static final Instant COMPLETED_DATE =
-        Instant.parse("2022-04-13T00:00:00.00Z");
+    private static final Long DUE_DATE =
+        Instant.parse("2022-04-14T00:00:00.00Z").toEpochMilli();
+    private static final Long COMPLETED_DATE =
+        Instant.parse("2022-04-13T00:00:00.00Z").toEpochMilli();
     private static final UUID PROJECT_COLUMN_ID =
         UUID.fromString("174a11d4-8d95-4acd-a914-c296428a0053");
 

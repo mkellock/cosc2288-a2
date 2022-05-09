@@ -13,7 +13,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.Instant;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
@@ -50,7 +49,7 @@ public class ProjectController extends BaseController {
                     PreparedStatement pstmt = conn.prepareStatement(sql)) {
                 pstmt.setString(1, project.getProjectId().toString());
                 pstmt.setString(2, project.getName());
-                pstmt.setLong(3, project.getCreated().toEpochMilli());
+                pstmt.setLong(3, project.getCreated());
                 pstmt.setString(4, project.getUserId().toString());
                 pstmt.executeUpdate();
             } catch (SQLException e) {
@@ -90,7 +89,7 @@ public class ProjectController extends BaseController {
             try (Connection conn = this.newConnection();
                     PreparedStatement pstmt = conn.prepareStatement(sql)) {
                 pstmt.setString(1, project.getName());
-                pstmt.setLong(2, project.getCreated().toEpochMilli());
+                pstmt.setLong(2, project.getCreated());
                 pstmt.setString(3, project.getUserId().toString());
                 pstmt.setString(4, project.getProjectId().toString());
                 pstmt.executeUpdate();
@@ -161,7 +160,7 @@ public class ProjectController extends BaseController {
                         UUID.fromString(
                                 queryResults.getString("project_id")),
                         queryResults.getString("name"),
-                        Instant.ofEpochMilli(queryResults.getLong("created")),
+                        queryResults.getLong("created"),
                         UUID.fromString(
                                 queryResults.getString("user_id"))));
             }
@@ -185,7 +184,6 @@ public class ProjectController extends BaseController {
         // Check the validity of the object
         return project.getProjectId() != null &&
                 project.getName().length() != 0 &&
-                project.getCreated() != null &&
                 project.getUserId() != null;
     }
 

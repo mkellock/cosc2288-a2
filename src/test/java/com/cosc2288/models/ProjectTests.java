@@ -19,8 +19,8 @@ class ProjectTests {
     private static final UUID PROJECT_ID =
         UUID.fromString("035b7b0d-9895-422d-a514-73463bbe4534");
     private static final String NAME = "Name";
-    private static final Instant CREATED =
-        Instant.parse("2022-04-12T00:00:00.00Z");
+    private static final Long CREATED =
+        Instant.parse("2022-04-12T00:00:00.00Z").toEpochMilli();
     private static final UUID USER_ID =
         UUID.fromString("b4a55bb8-4cb9-4de2-8489-224bcfb993f6");
 
