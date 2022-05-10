@@ -89,4 +89,14 @@ public class UserControllerTests extends BaseTests {
         Assertions.assertEquals(USER_ID, user.getUserId());
     }
 
+    @Test
+    void ShouldFindUser() throws SQLException {
+        // Load the user
+        UserController userController = new UserController(getTestConnString());
+        User user = userController.findUser(USERNAME);
+
+        // Assert that the User ID is corrrect
+        Assertions.assertEquals(USER_ID, user.getUserId());
+    }
+
 }

@@ -50,7 +50,13 @@ public class UserController extends BaseController {
                 pstmt.setString(4, user.getFirstName());
                 pstmt.setString(5, user.getLastName());
                 pstmt.setBytes(6, user.getImage());
-                pstmt.setString(7, user.getDefaultProjectId().toString());
+
+                if (user.getDefaultProjectId() != null) {
+                    pstmt.setString(7, user.getDefaultProjectId().toString());
+                } else {
+                    pstmt.setString(7, null);
+                }
+
                 pstmt.executeUpdate();
             } catch (SQLException e) {
                 // Return that the operation failed
@@ -95,7 +101,13 @@ public class UserController extends BaseController {
                 pstmt.setString(3, user.getFirstName());
                 pstmt.setString(4, user.getLastName());
                 pstmt.setBytes(5, user.getImage());
-                pstmt.setString(6, user.getDefaultProjectId().toString());
+
+                if (user.getDefaultProjectId() != null) {
+                    pstmt.setString(6, user.getDefaultProjectId().toString());
+                } else {
+                    pstmt.setString(6, null);
+                }
+
                 pstmt.setString(7, user.getUserId().toString());
                 pstmt.executeUpdate();
             } catch (SQLException e) {
@@ -146,8 +158,55 @@ public class UserController extends BaseController {
                         queryResults.getString("first_name"),
                         queryResults.getString("last_name"),
                         queryResults.getBytes("image"),
+                        queryResults.getString("default_project_id") == null ? null
+                                : UUID.fromString(
+                                        queryResults.getString("default_project_id")));
+            } else {
+                // If the user is invalid
+                return null;
+            }
+        } catch (SQLException e) {
+            // Return that the operation failed
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
+    /**
+     * Validates a user login
+     * 
+     * @param username the user's username
+     * @return a user
+     */
+    public User findUser(String username)
+            throws SQLException {
+        // The select query
+        String sql = "SELECT user_id, username, password, first_name, " +
+                "last_name, image, default_project_id FROM users " +
+                "WHERE username = ?";
+
+        // Run the DB select statement
+        try (Connection conn = this.newConnection();
+                PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            // Find the user
+            pstmt.setString(1, username);
+            ResultSet queryResults = pstmt.executeQuery();
+
+            // If the user is valid
+            if (queryResults.next()) {
+                // Assign the DB results to a user object
+                return new User(
                         UUID.fromString(
-                                queryResults.getString("default_project_id")));
+                                queryResults.getString("user_id")),
+                        queryResults.getString("username"),
+                        queryResults.getString("password"),
+                        queryResults.getString("first_name"),
+                        queryResults.getString("last_name"),
+                        queryResults.getBytes("image"),
+                        queryResults.getString("default_project_id") == null ? null
+                                : UUID.fromString(
+                                        queryResults.getString("default_project_id")));
             } else {
                 // If the user is invalid
                 return null;

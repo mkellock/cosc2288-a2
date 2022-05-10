@@ -8,12 +8,11 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
 
-
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="190.0" prefWidth="470.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="190.0" prefWidth="470.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.cosc2288.views.UserEdit">
    <children>
       <AnchorPane layoutX="10.0" layoutY="10.0" prefHeight="150.0" prefWidth="150.0" style="-fx-border-style: solid;">
          <children>
-            <ImageView fx:id="userImage" fitHeight="150.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+            <ImageView fx:id="userImage" fitHeight="150.0" fitWidth="150.0" onMouseClicked="#onImageClick" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
          </children>
       </AnchorPane>
       <Label layoutX="10.0" layoutY="162.0" prefHeight="17.0" prefWidth="152.0" text="Click to add a profic picture" textAlignment="CENTER" />
@@ -25,7 +24,7 @@
       <Label layoutX="192.0" layoutY="51.0" text="First Name" />
       <Label layoutX="192.0" layoutY="88.0" text="Last Name" />
       <Label layoutX="192.0" layoutY="124.0" text="Password" />
-      <Button fx:id="cancelButton" layoutX="403.0" layoutY="154.0" mnemonicParsing="false" text="Cancel" />
-      <Button fx:id="okButton" layoutX="360.0" layoutY="154.0" mnemonicParsing="false" text="OK" />
+      <Button fx:id="cancelButton" layoutX="358.0" layoutY="149.0" mnemonicParsing="false" onAction="#cancel" text="Cancel" />
+      <Button fx:id="okButton" layoutX="423.0" layoutY="149.0" mnemonicParsing="false" onAction="#ok" text="OK" />
    </children>
 </Pane>
