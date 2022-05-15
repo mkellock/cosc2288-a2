@@ -46,9 +46,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<VBox prefHeight="400.0" prefWidth="640.0"
-    xmlns="http://javafx.com/javafx/18"
-    xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.cosc2288.views.Main">
+<VBox prefHeight="400.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.cosc2288.views.Main">
     <children>
         <MenuBar VBox.vgrow="NEVER">
             <menus>
@@ -80,8 +78,7 @@
         </ToolBar>
         <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS">
             <children>
-                <TabPane fx:id="workArea" prefHeight="308.0" prefWidth="640.0" tabClosingPolicy="UNAVAILABLE" />
-                <TabPane fx:id="workArea1" layoutX="10.0" layoutY="10.0" prefHeight="308.0" prefWidth="640.0" tabClosingPolicy="UNAVAILABLE" />
+                <TabPane fx:id="workArea" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
             </children>
         </AnchorPane>
         <HBox alignment="CENTER" prefHeight="25.0" prefWidth="640.0">

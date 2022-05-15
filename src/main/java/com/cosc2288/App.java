@@ -200,8 +200,11 @@ public class App extends Application {
 
     /**
      * User management methods
+     * @throws SQLException
      */
-    public void logOut() {
+    public void logOut() throws SQLException {
+        setLoggedInUser(null);
+        loadProjects();
         loginStage.showAndWait();
     }
 
@@ -249,9 +252,13 @@ public class App extends Application {
     }
 
     public void loadProjects() throws SQLException {
-        ProjectController projectController = new ProjectController(connectionString);
-        List<Project> projects = projectController.loadProjects(getLoggedInUser().getUserId());
-        main.loadProjects(projects);
+        if (getLoggedInUser() == null) {
+            main.loadProjects(null);
+        } else {
+            ProjectController projectController = new ProjectController(connectionString);
+            List<Project> projects = projectController.loadProjects(getLoggedInUser().getUserId());
+            main.loadProjects(projects);
+        }
     }
 
     public void deleteProject() throws SQLException {

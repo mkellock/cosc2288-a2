@@ -66,8 +66,13 @@ public class Main {
     }
 
     public void setUser(User user) {
-        userFullName.setText(user.getFirstName() + " " + user.getLastName());
-        userImage.setImage(new Image(new ByteArrayInputStream(user.getImage())));
+        if (user == null) {
+            userFullName.setText(null);
+            userImage.setImage(null);
+        } else {
+            userFullName.setText(user.getFirstName() + " " + user.getLastName());
+            userImage.setImage(new Image(new ByteArrayInputStream(user.getImage())));
+        }
     }
 
     @FXML
@@ -76,7 +81,7 @@ public class Main {
     }
 
     @FXML
-    private void logOut() {
+    private void logOut() throws SQLException {
         app.logOut();
     }
 
@@ -88,20 +93,22 @@ public class Main {
     public void loadProjects(List<Project> projects) {
         workArea.getTabs().clear();
 
-        EventHandler<Event> event = e -> {
-            deleteMenuItem.setDisable(false);
-            App.setProject(UUID.fromString(workArea.getSelectionModel().getSelectedItem().getId()));
-        };
+        if (projects != null) {
+            EventHandler<Event> event = e -> {
+                deleteMenuItem.setDisable(false);
+                App.setProject(UUID.fromString(workArea.getSelectionModel().getSelectedItem().getId()));
+            };
 
-        for (Project project : projects) {
-            Tab projectTab = new Tab();
+            for (Project project : projects) {
+                Tab projectTab = new Tab();
 
-            projectTab.setId(project.getProjectId().toString());
-            projectTab.setText(project.getName());
+                projectTab.setId(project.getProjectId().toString());
+                projectTab.setText(project.getName());
 
-            projectTab.setOnSelectionChanged(event);
+                projectTab.setOnSelectionChanged(event);
 
-            workArea.getTabs().add(projectTab);
+                workArea.getTabs().add(projectTab);
+            }
         }
     }
 
