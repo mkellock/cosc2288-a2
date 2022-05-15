@@ -7,7 +7,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
-import javafx.stage.Stage;
 
 public class Login {
     @FXML
@@ -17,33 +16,36 @@ public class Login {
     private TextField password;
 
     private App app;
-    private Stage stage;
 
     public void setApp(App app) {
         this.app = app;
     }
 
-    public void setStage(Stage stage) {
-        this.stage = stage;
-    }
-
     @FXML
     private void newUser() throws IOException {
-        app.newEditUser(stage, false);
+        app.newEditUser(false);
     }
 
     @FXML
-    private void ok() throws IOException, SQLException {
+    private void ok() throws SQLException {
         Alert loginAlert = new Alert(AlertType.ERROR);
 
-        if (username.getLength() == 0) {
+        String usernameVal = username.getText();
+        String passwordVal = password.getText();
+
+        if (usernameVal.length() == 0) {
             loginAlert.setContentText("Please enter a username");
             loginAlert.show();
-        } else if (password.getLength() == 0) {
+        } else if (passwordVal.length() == 0) {
             loginAlert.setContentText("Please enter a password");
             loginAlert.show();
         } else {
-            app.loginOk(username.getText(), password.getText(), stage);
+            // Clear the form
+            username.setText("");
+            password.setText("");
+
+            // Set the login as OK
+            app.loginOk(usernameVal, passwordVal);
         }
     }
 

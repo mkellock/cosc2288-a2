@@ -88,12 +88,12 @@ public class UserEdit {
     }
 
     @FXML
-    private void cancel() throws Exception {
-        app.newUserCancel(stage);
+    private void cancel() {
+        app.newUserCancel();
     }
 
     @FXML
-    private void ok() throws IOException, SQLException {
+    private void ok() throws SQLException {
         Alert addUserAlert = new Alert(AlertType.ERROR);
 
         if (username.getLength() == 0) {
@@ -115,7 +115,7 @@ public class UserEdit {
             user.setPassword(password.getText());
             user.setImage(image);
 
-            app.newEditUserOk(user, stage);
+            app.newEditUserOk(user);
         }
     }
 

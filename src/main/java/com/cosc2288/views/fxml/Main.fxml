@@ -46,13 +46,15 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<VBox prefHeight="400.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.cosc2288.views.Main">
+<VBox prefHeight="400.0" prefWidth="640.0"
+    xmlns="http://javafx.com/javafx/18"
+    xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.cosc2288.views.Main">
     <children>
         <MenuBar VBox.vgrow="NEVER">
             <menus>
                 <Menu mnemonicParsing="false" text="Workspace">
                     <items>
-                        <MenuItem fx:id="newProjectMenuItem" mnemonicParsing="false" text="New project" />
+                        <MenuItem fx:id="newProjectMenuItem" mnemonicParsing="false" onAction="#newProject" text="New project" />
                     </items>
                 </Menu>
                 <Menu mnemonicParsing="false" text="Project">
@@ -63,7 +65,7 @@
                         <MenuItem fx:id="setAsDefaultMenuItem" mnemonicParsing="false" text="Set as default" />
                         <MenuItem fx:id="unsetAsDefaultMenuItem" mnemonicParsing="false" text="Unset default" />
                         <SeparatorMenuItem mnemonicParsing="false" />
-                        <MenuItem fx:id="deleteMenuItem" mnemonicParsing="false" text="Delete" />
+                        <MenuItem fx:id="deleteMenuItem" disable="true" mnemonicParsing="false" onAction="#delete" text="Delete" />
                     </items>
                 </Menu>
             </menus>
@@ -79,6 +81,7 @@
         <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS">
             <children>
                 <TabPane fx:id="workArea" prefHeight="308.0" prefWidth="640.0" tabClosingPolicy="UNAVAILABLE" />
+                <TabPane fx:id="workArea1" layoutX="10.0" layoutY="10.0" prefHeight="308.0" prefWidth="640.0" tabClosingPolicy="UNAVAILABLE" />
             </children>
         </AnchorPane>
         <HBox alignment="CENTER" prefHeight="25.0" prefWidth="640.0">
