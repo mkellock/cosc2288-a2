@@ -106,6 +106,23 @@ public class Main {
         app.project(false);
     }
 
+    private void setDefaultMenuOptions() {
+        // Check if we have a user set
+        if (App.getLoggedInUser() != null) {
+            // If we are not on a default tab, or one has not been set
+            if (App.getLoggedInUser().getDefaultProjectId() == null || App.getLoggedInUser().getDefaultProjectId()
+                    .compareTo(App.getSelectedProject().getProjectId()) != 0) {
+                // Enable setting
+                setAsDefaultMenuItem.setDisable(false);
+                unsetAsDefaultMenuItem.setDisable(true);
+            } else {
+                // Else enable unsetting
+                setAsDefaultMenuItem.setDisable(true);
+                unsetAsDefaultMenuItem.setDisable(false);
+            }
+        }
+    }
+
     public void loadProjects(List<Project> projects, UUID selectedProjectId, UUID defaultProjectId) {
         // Clear the tabs
         workArea.getTabs().clear();
@@ -119,6 +136,9 @@ public class Main {
 
                 // Set the currently selected project
                 App.setSelectedProjectById(UUID.fromString(workArea.getSelectionModel().getSelectedItem().getId()));
+
+                // Change the menu options
+                setDefaultMenuOptions();
             };
 
             // Loop through the projects
@@ -174,7 +194,7 @@ public class Main {
         // Loop through the tabs
         for (Tab projectTab : workArea.getTabs()) {
             // If the tab's Id equals the default tab
-            if (projectTab.getId().equals(defaultProjectId.toString())) {
+            if (defaultProjectId != null && projectTab.getId().equals(defaultProjectId.toString())) {
                 // Select the tab
                 projectTab.styleProperty().bind(Bindings.format("-fx-background-color: yellow"));
             } else {
@@ -211,12 +231,21 @@ public class Main {
 
         // Sets the current project as default
         app.setDefaultProject();
+
+        // Change the menu options
+        setDefaultMenuOptions();
     }
 
     @FXML
     private void unsetDefault() throws SQLException {
+        // Unset the default tab colour
+        colourDefaultTab(null);
+
         // Sets the current project as default
         app.unsetDefaultProject();
+
+        // Change the menu options
+        setDefaultMenuOptions();
     }
 
     @FXML
