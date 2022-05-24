@@ -18,6 +18,7 @@ import java.util.UUID;
 import com.cosc2288.App;
 import com.cosc2288.models.Project;
 import com.cosc2288.models.User;
+import com.cosc2288.views.controls.ProjectTab;
 
 import javafx.beans.binding.Bindings;
 import javafx.event.Event;
@@ -144,7 +145,7 @@ public class Main {
             // Loop through the projects
             for (Project project : projects) {
                 // Create a new tab instance
-                Tab projectTab = new Tab();
+                ProjectTab projectTab = new ProjectTab();
 
                 // The the tabs id and text
                 projectTab.setId(project.getProjectId().toString());
