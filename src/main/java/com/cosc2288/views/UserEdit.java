@@ -77,7 +77,11 @@ public class UserEdit {
         try (FileInputStream imageStream = new FileInputStream(imageFile)) {
             // Set the image into the private variable
             image = new byte[(int) imageFile.length()];
-            imageStream.read(image);
+            
+            int count = 0;
+            while (count >= 0) {
+                count = imageStream.read(image);
+            }
 
             // Set the profile image
             Image profileImage = new Image("file:" + imagePath);

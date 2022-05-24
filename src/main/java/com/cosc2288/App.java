@@ -22,6 +22,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 public class App extends Application {
 
@@ -32,15 +33,34 @@ public class App extends Application {
     private static Stage loginStage;
     private static Stage userStage;
     private static Stage projectStage;
-    private static UUID projectID;
+    private static Project selectedProject;
+    private static List<Project> projects;
 
     public static User getLoggedInUser() {
         return loggedInUser;
     }
 
     public static void setLoggedInUser(User user) {
+        // Set the user object
         loggedInUser = user;
+
+        // Set a project with the default project
+        if (user != null) {
+            Project tempProj = new Project();
+            tempProj.setProjectId(user.getDefaultProjectId());
+            setSelectedProject(tempProj);
+        }
+
+        // Set the user on the main view
         getMainView().setUser(user);
+    }
+
+    public static Main getMain() {
+        return main;
+    }
+
+    public static void setMain(Main main) {
+        App.main = main;
     }
 
     public static Main getMainView() {
@@ -51,12 +71,52 @@ public class App extends Application {
         mainView = main;
     }
 
-    public static void setProject(UUID projectID) {
-        App.projectID = projectID;
+    public static Stage getLoginStage() {
+        return loginStage;
     }
 
-    public static UUID getProject() {
-        return projectID;
+    public static void setLoginStage(Stage loginStage) {
+        App.loginStage = loginStage;
+    }
+
+    public static Stage getUserStage() {
+        return userStage;
+    }
+
+    public static void setUserStage(Stage userStage) {
+        App.userStage = userStage;
+    }
+
+    public static Stage getProjectStage() {
+        return projectStage;
+    }
+
+    public static void setProjectStage(Stage projectStage) {
+        App.projectStage = projectStage;
+    }
+
+    public static void setSelectedProject(Project project) {
+        App.selectedProject = project;
+    }
+
+    public static void setSelectedProjectById(UUID projectId) {
+        for (Project project : getProjects()) {
+            if (projectId.compareTo(project.getProjectId()) == 0) {
+                setSelectedProject(project);
+            }
+        }
+    }
+
+    public static Project getSelectedProject() {
+        return selectedProject;
+    }
+
+    public static void setProjects(List<Project> projects) {
+        App.projects = projects;
+    }
+
+    public static List<Project> getProjects() {
+        return projects;
     }
 
     public static void main(String[] args) {
@@ -85,8 +145,8 @@ public class App extends Application {
         Scene mainScene = new Scene(loader.load());
 
         // Set the app instance
-        main = loader.<Main>getController();
-        main.setApp(this);
+        setMain(loader.<Main>getController());
+        getMain().setApp(this);
 
         // Load the quote
         App.setMainView(loader.<Main>getController());
@@ -106,22 +166,23 @@ public class App extends Application {
         Login login = fxmlLoader.<Login>getController();
         login.setApp(this);
 
-        loginStage = new Stage();
-        loginStage.initModality(Modality.APPLICATION_MODAL);
-        loginStage.setScene(loginScene);
+        setLoginStage(new Stage());
+        getLoginStage().initStyle(StageStyle.UNDECORATED);
+        getLoginStage().initModality(Modality.APPLICATION_MODAL);
+        getLoginStage().setScene(loginScene);
 
         showLogin();
     }
 
     private void showLogin() {
-        loginStage.showAndWait();
+        getLoginStage().showAndWait();
     }
 
     private void showMainScene() throws SQLException {
-        loginStage.close();
+        getLoginStage().close();
 
-        if (userStage != null) {
-            userStage.close();
+        if (getUserStage() != null) {
+            getUserStage().close();
         }
 
         loadProjects();
@@ -153,19 +214,20 @@ public class App extends Application {
         UserEdit userEdit = loader.<UserEdit>getController();
         userEdit.setApp(this);
 
-        userStage = new Stage();
+        setUserStage(new Stage());
 
         if (Boolean.TRUE.equals(edit)) {
-            userStage.setTitle("Edit profile");
+            getUserStage().setTitle("Edit profile");
             userEdit.setUser(loggedInUser);
         } else {
-            loginStage.close();
-            userStage.setTitle("Create a new user");
+            getLoginStage().close();
+            getUserStage().setTitle("Create a new user");
         }
 
-        userStage.initModality(Modality.APPLICATION_MODAL);
-        userStage.setScene(scene);
-        userStage.show();
+        getUserStage().initStyle(StageStyle.UTILITY);
+        getUserStage().initModality(Modality.APPLICATION_MODAL);
+        getUserStage().setScene(scene);
+        getUserStage().show();
     }
 
     /**
@@ -173,8 +235,8 @@ public class App extends Application {
      */
 
     public void newUserCancel() {
-        userStage.close();
-        loginStage.showAndWait();
+        getUserStage().close();
+        getLoginStage().showAndWait();
     }
 
     public void newEditUserOk(User user)
@@ -200,12 +262,14 @@ public class App extends Application {
 
     /**
      * User management methods
+     * 
      * @throws SQLException
      */
     public void logOut() throws SQLException {
         setLoggedInUser(null);
+        setSelectedProject(null);
         loadProjects();
-        loginStage.showAndWait();
+        getLoginStage().showAndWait();
     }
 
     public void profile() throws IOException {
@@ -224,47 +288,76 @@ public class App extends Application {
         ProjectEdit projectEdit = loader.<ProjectEdit>getController();
         projectEdit.setApp(this);
 
-        projectStage = new Stage();
+        setProjectStage(new Stage());
 
         if (Boolean.TRUE.equals(edit)) {
-            projectStage.setTitle("Edit project");
-            // projectEdit.setProject(loggedInUser);
+            getProjectStage().setTitle("Edit project");
+            projectEdit.setProject(selectedProject);
         } else {
-            projectStage.setTitle("Create a project");
+            getProjectStage().setTitle("Create a project");
+            projectEdit.setProject(null);
         }
 
-        projectStage.initModality(Modality.APPLICATION_MODAL);
-        projectStage.setScene(scene);
-        projectStage.show();
+        getProjectStage().initStyle(StageStyle.UTILITY);
+        getProjectStage().initModality(Modality.APPLICATION_MODAL);
+        getProjectStage().setScene(scene);
+        getProjectStage().show();
     }
 
-    public void projectOk(String projectName) throws SQLException {
+    public void projectOk(Project project) throws SQLException {
         ProjectController projectController = new ProjectController(connectionString);
-        projectController.addProject(
-                new Project(UUID.randomUUID(), projectName, Instant.now().toEpochMilli(),
-                        getLoggedInUser().getUserId()));
-        projectStage.close();
+
+        if (project.getProjectId() == null) {
+            projectController.addProject(
+                    new Project(UUID.randomUUID(), project.getName(), Instant.now().toEpochMilli(),
+                            getLoggedInUser().getUserId()));
+        } else {
+            projectController.editProject(project);
+        }
+
+        getProjectStage().close();
         loadProjects();
     }
 
     public void projectCancel() {
-        projectStage.close();
+        getProjectStage().close();
     }
 
     public void loadProjects() throws SQLException {
         if (getLoggedInUser() == null) {
-            main.loadProjects(null);
+            main.loadProjects(null, null, null);
         } else {
             ProjectController projectController = new ProjectController(connectionString);
-            List<Project> projects = projectController.loadProjects(getLoggedInUser().getUserId());
-            main.loadProjects(projects);
+            setProjects(projectController.loadProjects(getLoggedInUser().getUserId()));
+            main.loadProjects(projects, selectedProject.getProjectId(), getLoggedInUser().getDefaultProjectId());
         }
     }
 
     public void deleteProject() throws SQLException {
         ProjectController projectController = new ProjectController(connectionString);
-        projectController.deleteProject(getProject());
+        projectController.deleteProject(getSelectedProject().getProjectId());
         loadProjects();
     }
 
+    public void setDefaultProject() throws SQLException {
+        // Set the default project
+        getLoggedInUser().setDefaultProjectId(getSelectedProject().getProjectId());
+
+        // Save the user
+        saveUser();
+    }
+
+    public void unsetDefaultProject() throws SQLException {
+        // Set the default project to null
+        getLoggedInUser().setDefaultProjectId(null);
+
+        // Save the user
+        saveUser();
+    }
+
+    private void saveUser() throws SQLException {
+        // Save the current user
+        UserController userController = new UserController(connectionString);
+        userController.editUser(getLoggedInUser());
+    }
 }

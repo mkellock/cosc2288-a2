@@ -19,6 +19,7 @@ import com.cosc2288.App;
 import com.cosc2288.models.Project;
 import com.cosc2288.models.User;
 
+import javafx.beans.binding.Bindings;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -50,6 +51,18 @@ public class Main {
     private MenuItem newProjectMenuItem;
 
     @FXML
+    private MenuItem addColumnMenuItem;
+
+    @FXML
+    private MenuItem renameMenuItem;
+
+    @FXML
+    private MenuItem setAsDefaultMenuItem;
+
+    @FXML
+    private MenuItem unsetAsDefaultMenuItem;
+
+    @FXML
     private MenuItem deleteMenuItem;
 
     @FXML
@@ -77,43 +90,138 @@ public class Main {
 
     @FXML
     private void profile() throws IOException {
+        // Show the profile dialog
         app.profile();
     }
 
     @FXML
     private void logOut() throws SQLException {
+        // Log out the user
         app.logOut();
     }
 
     @FXML
     private void newProject() throws IOException {
+        // Open the project edit dialog in add mode
         app.project(false);
     }
 
-    public void loadProjects(List<Project> projects) {
+    public void loadProjects(List<Project> projects, UUID selectedProjectId, UUID defaultProjectId) {
+        // Clear the tabs
         workArea.getTabs().clear();
 
+        // If we have projects
         if (projects != null) {
+            // Create an eventhandler for selecting a project
             EventHandler<Event> event = e -> {
-                deleteMenuItem.setDisable(false);
-                App.setProject(UUID.fromString(workArea.getSelectionModel().getSelectedItem().getId()));
+                // Enable the project menu items
+                setProjectMenuItemsDisabled(false);
+
+                // Set the currently selected project
+                App.setSelectedProjectById(UUID.fromString(workArea.getSelectionModel().getSelectedItem().getId()));
             };
 
+            // Loop through the projects
             for (Project project : projects) {
+                // Create a new tab instance
                 Tab projectTab = new Tab();
 
+                // The the tabs id and text
                 projectTab.setId(project.getProjectId().toString());
                 projectTab.setText(project.getName());
 
+                // Add the handler for the selection change
                 projectTab.setOnSelectionChanged(event);
 
+                // Add the tab
                 workArea.getTabs().add(projectTab);
+            }
+
+            // If the selected project ID isn't null, set the selected tab to the specified
+            // project
+            if (selectedProjectId != null) {
+                selectTabByProjectId(selectedProjectId);
+            }
+
+            // If the default project ID isn't null, set the default project tab to yellow
+            if (defaultProjectId != null) {
+                colourDefaultTab(defaultProjectId);
+            }
+        } else {
+            // Disable the project menu items
+            setProjectMenuItemsDisabled(true);
+
+            // Set the currently selected project to null
+            App.setSelectedProject(null);
+        }
+    }
+
+    private void selectTabByProjectId(UUID selectedProjectId) {
+        // Loop through the tabs
+        for (Tab projectTab : workArea.getTabs()) {
+            // If the tab's Id equals the default tab
+            if (projectTab.getId().equals(selectedProjectId.toString())) {
+                // Select the tab
+                workArea.getSelectionModel().select(projectTab);
+
+                // Exit the loop
+                break;
+            }
+        }
+    }
+
+    private void colourDefaultTab(UUID defaultProjectId) {
+        // Loop through the tabs
+        for (Tab projectTab : workArea.getTabs()) {
+            // If the tab's Id equals the default tab
+            if (projectTab.getId().equals(defaultProjectId.toString())) {
+                // Select the tab
+                projectTab.styleProperty().bind(Bindings.format("-fx-background-color: yellow"));
+            } else {
+                // Remove the background styling
+                projectTab.styleProperty().bind(Bindings.format("-fx-background-color: -fx-color"));
             }
         }
     }
 
     @FXML
     private void delete() throws SQLException {
+        // Delete the selected project
         app.deleteProject();
+
+        // If we have no tabs left
+        if (workArea.getTabs().isEmpty()) {
+            // Disable the project menu items
+            setProjectMenuItemsDisabled(true);
+        }
+    }
+
+    private void setProjectMenuItemsDisabled(boolean state) {
+        addColumnMenuItem.setDisable(state);
+        renameMenuItem.setDisable(state);
+        setAsDefaultMenuItem.setDisable(state);
+        unsetAsDefaultMenuItem.setDisable(state);
+        deleteMenuItem.setDisable(state);
+    }
+
+    @FXML
+    private void setDefault() throws SQLException {
+        // Set the default tab colour
+        colourDefaultTab(App.getSelectedProject().getProjectId());
+
+        // Sets the current project as default
+        app.setDefaultProject();
+    }
+
+    @FXML
+    private void unsetDefault() throws SQLException {
+        // Sets the current project as default
+        app.unsetDefaultProject();
+    }
+
+    @FXML
+    private void rename() throws IOException {
+        // Open the project edit dialog in edit mode
+        app.project(true);
     }
 }

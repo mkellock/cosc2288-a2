@@ -58,10 +58,10 @@
                 <Menu mnemonicParsing="false" text="Project">
                     <items>
                         <MenuItem fx:id="addColumnMenuItem" mnemonicParsing="false" text="Add column" />
-                        <MenuItem fx:id="renameMenuItem" mnemonicParsing="false" text="Rename" />
+                        <MenuItem fx:id="renameMenuItem" mnemonicParsing="false" onAction="#rename" text="Rename" />
                         <SeparatorMenuItem mnemonicParsing="false" />
-                        <MenuItem fx:id="setAsDefaultMenuItem" mnemonicParsing="false" text="Set as default" />
-                        <MenuItem fx:id="unsetAsDefaultMenuItem" mnemonicParsing="false" text="Unset default" />
+                        <MenuItem fx:id="setAsDefaultMenuItem" mnemonicParsing="false" onAction="#setDefault" text="Set as default" />
+                        <MenuItem fx:id="unsetAsDefaultMenuItem" mnemonicParsing="false" onAction="#unsetDefault" text="Unset default" />
                         <SeparatorMenuItem mnemonicParsing="false" />
                         <MenuItem fx:id="deleteMenuItem" disable="true" mnemonicParsing="false" onAction="#delete" text="Delete" />
                     </items>
