@@ -6,9 +6,11 @@
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.SeparatorMenuItem?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="250.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="250.0" style="-fx-border-insets: 1; -fx-border-color: Black; -fx-padding: 2;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <MenuButton fx:id="columnMenu" layoutX="497.0" mnemonicParsing="false" text="Col. Actions" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <items>
@@ -18,10 +20,20 @@
             <MenuItem fx:id="deleteColumn" mnemonicParsing="false" text="Delete Column" />
         </items>
       </MenuButton>
-      <Label fx:id="columnTitle" layoutY="6.0" text="Column  title" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="5.0">
+      <Label fx:id="columnTitle" layoutX="8.0" layoutY="13.0" prefHeight="17.0" prefWidth="133.0" text="This is some sample text, this is some sample text, this is some sample text, this is some sample text...This is some sample text, this is some sample text, this is some sample text, this is some sample text..." AnchorPane.leftAnchor="4.0" AnchorPane.topAnchor="9.0">
          <font>
             <Font name="System Bold" size="13.0" />
          </font></Label>
-      <ScrollPane fx:id="colContents" layoutX="6.0" layoutY="26.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="26.0" />
+      <ScrollPane fx:id="colContents" fitToWidth="true" layoutX="6.0" layoutY="26.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="26.0">
+         <content>
+            <VBox>
+               <children>
+                  <Pane minHeight="150.0" />
+                  <Pane minHeight="150.0" style="-fx-background-color: black;" />
+                  <Pane minHeight="150.0" />
+                  <Pane minHeight="150.0" style="-fx-background-color: black;" />
+               </children>
+            </VBox>
+         </content></ScrollPane>
    </children>
 </AnchorPane>

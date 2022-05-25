@@ -1,11 +1,9 @@
 package com.cosc2288.views.controls;
 
-import javafx.beans.binding.Bindings;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Tab;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
 
 public class ProjectTab extends Tab {
     private HBox hbox;
@@ -31,14 +29,8 @@ public class ProjectTab extends Tab {
         scrollPane.setContent(hbox);
 
         for (int i = 0; i < 10; i++) {
-            Pane pane = new Pane();
-            pane.setMinWidth(200);
-
-            if (i % 2 == 0) {
-                pane.styleProperty().bind(Bindings.format("-fx-background-color: black"));
-            }
-
-            hbox.getChildren().add(pane);
+            Column col = new Column();
+            hbox.getChildren().add(col);
         }
 
         // Add the anchor pane to the tabs contents

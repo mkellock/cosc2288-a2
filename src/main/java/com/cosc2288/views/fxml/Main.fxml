@@ -81,7 +81,7 @@
                 <TabPane fx:id="workArea" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
             </children>
         </AnchorPane>
-        <HBox alignment="CENTER" prefHeight="25.0" prefWidth="640.0">
+        <HBox alignment="CENTER" minHeight="30.0">
             <children>
                 <Text fx:id="quote" nodeOrientation="LEFT_TO_RIGHT" strokeType="OUTSIDE" strokeWidth="0.0" text="Text">
                     <font>
