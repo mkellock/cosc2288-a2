@@ -57,7 +57,7 @@
                 </Menu>
                 <Menu mnemonicParsing="false" text="Project">
                     <items>
-                        <MenuItem fx:id="addColumnMenuItem" mnemonicParsing="false" text="Add column" />
+                        <MenuItem fx:id="addColumnMenuItem" mnemonicParsing="false" onAction="#addColumn" text="Add column" />
                         <MenuItem fx:id="renameMenuItem" mnemonicParsing="false" onAction="#rename" text="Rename" />
                         <SeparatorMenuItem mnemonicParsing="false" />
                         <MenuItem fx:id="setAsDefaultMenuItem" mnemonicParsing="false" onAction="#setDefault" text="Set as default" />

@@ -104,7 +104,7 @@ public class Main {
     @FXML
     private void newProject() throws IOException {
         // Open the project edit dialog in add mode
-        app.project(false);
+        app.projectAddEdit(false);
     }
 
     private void setDefaultMenuOptions() {
@@ -145,9 +145,9 @@ public class Main {
             // Loop through the projects
             for (Project project : projects) {
                 // Create a new tab instance
-                ProjectTab projectTab = new ProjectTab();
+                ProjectTab projectTab = new ProjectTab(this.app, project);
 
-                // The the tabs id and text
+                // The the tabs id, text, and project tabs
                 projectTab.setId(project.getProjectId().toString());
                 projectTab.setText(project.getName());
 
@@ -252,6 +252,12 @@ public class Main {
     @FXML
     private void rename() throws IOException {
         // Open the project edit dialog in edit mode
-        app.project(true);
+        app.projectAddEdit(true);
+    }
+
+    @FXML
+    private void addColumn() throws IOException {
+        // Open the column edit dialog in add mode
+        app.columnAddEdit(false, null);
     }
 }

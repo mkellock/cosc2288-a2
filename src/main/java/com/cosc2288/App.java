@@ -8,10 +8,12 @@ import java.util.List;
 import java.util.Properties;
 import java.util.UUID;
 
+import com.cosc2288.controllers.ProjectColumnController;
 import com.cosc2288.controllers.ProjectController;
 import com.cosc2288.controllers.QuoteController;
 import com.cosc2288.controllers.UserController;
 import com.cosc2288.models.Project;
+import com.cosc2288.models.ProjectColumn;
 import com.cosc2288.models.User;
 import com.cosc2288.views.*;
 
@@ -33,8 +35,10 @@ public class App extends Application {
     private static Stage loginStage;
     private static Stage userStage;
     private static Stage projectStage;
+    private static Stage columnStage;
     private static Project selectedProject;
     private static List<Project> projects;
+    private static List<ProjectColumn> projectColumns;
 
     public static User getLoggedInUser() {
         return loggedInUser;
@@ -95,8 +99,12 @@ public class App extends Application {
         App.projectStage = projectStage;
     }
 
-    public static void setSelectedProject(Project project) {
-        App.selectedProject = project;
+    public static Stage getColumnStage() {
+        return columnStage;
+    }
+
+    public static void setColumnStage(Stage columnStage) {
+        App.columnStage = columnStage;
     }
 
     public static void setSelectedProjectById(UUID projectId) {
@@ -105,6 +113,10 @@ public class App extends Application {
                 setSelectedProject(project);
             }
         }
+    }
+
+    public static void setSelectedProject(Project project) {
+        App.selectedProject = project;
     }
 
     public static Project getSelectedProject() {
@@ -117,6 +129,14 @@ public class App extends Application {
 
     public static List<Project> getProjects() {
         return projects;
+    }
+
+    public static void setProjectColumns(List<ProjectColumn> projectColumns) {
+        App.projectColumns = projectColumns;
+    }
+
+    public static List<ProjectColumn> getProjectColumns() {
+        return projectColumns;
     }
 
     public static void main(String[] args) {
@@ -280,7 +300,7 @@ public class App extends Application {
      * Project management methods
      */
 
-    public void project(Boolean edit) throws IOException {
+    public void projectAddEdit(Boolean edit) throws IOException {
         // Load the main scene
         FXMLLoader loader = new FXMLLoader(getClass().getResource("views/fxml/ProjectEdit.fxml"));
         Scene scene = new Scene(loader.load());
@@ -298,6 +318,7 @@ public class App extends Application {
             projectEdit.setProject(null);
         }
 
+        // Set the modal parameters
         getProjectStage().initStyle(StageStyle.UTILITY);
         getProjectStage().initModality(Modality.APPLICATION_MODAL);
         getProjectStage().setScene(scene);
@@ -323,13 +344,38 @@ public class App extends Application {
         getProjectStage().close();
     }
 
+    public void projectColumnOk(ProjectColumn projectColumn) throws SQLException {
+        ProjectColumnController projectColumnController = new ProjectColumnController(connectionString);
+
+        if (projectColumn.getProjectColumnId() == null) {
+            projectColumnController.addProjectColumn(
+                    new ProjectColumn(UUID.randomUUID(), projectColumn.getName(), 0, projectColumn.getProjectId()));
+        } else {
+            projectColumnController.editProjectColumn(projectColumn);
+        }
+
+        getColumnStage().close();
+        loadProjects();
+    }
+
+    public void projectColumnCancel() {
+        getColumnStage().close();
+    }
+
     public void loadProjects() throws SQLException {
         if (getLoggedInUser() == null) {
             main.loadProjects(null, null, null);
         } else {
             ProjectController projectController = new ProjectController(connectionString);
             setProjects(projectController.loadProjects(getLoggedInUser().getUserId()));
-            main.loadProjects(projects, selectedProject.getProjectId(), getLoggedInUser().getDefaultProjectId());
+
+            ProjectColumnController projectColumnController = new ProjectColumnController(connectionString);
+
+            for (Project project : getProjects()) {
+                project.setProjectColumns(projectColumnController.loadProjectColumns(project.getProjectId()));
+            }
+
+            main.loadProjects(getProjects(), selectedProject.getProjectId(), getLoggedInUser().getDefaultProjectId());
         }
     }
 
@@ -359,5 +405,38 @@ public class App extends Application {
         // Save the current user
         UserController userController = new UserController(connectionString);
         userController.editUser(getLoggedInUser());
+    }
+
+    public void columnAddEdit(Boolean edit, ProjectColumn selectedProjectColumn) throws IOException {
+        // Load the main scene
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("views/fxml/ColumnEdit.fxml"));
+        Scene scene = new Scene(loader.load());
+
+        ColumnEdit columnEdit = loader.<ColumnEdit>getController();
+        columnEdit.setApp(this);
+
+        setColumnStage(new Stage());
+
+        if (Boolean.TRUE.equals(edit)) {
+            getColumnStage().setTitle("Edit column");
+        } else {
+            getColumnStage().setTitle("Add column");
+        }
+
+        // Set the project info
+        columnEdit.setProject(selectedProject);
+        columnEdit.setColumn(selectedProjectColumn);
+
+        // Set the modal parameters
+        getColumnStage().initStyle(StageStyle.UTILITY);
+        getColumnStage().initModality(Modality.APPLICATION_MODAL);
+        getColumnStage().setScene(scene);
+        getColumnStage().show();
+    }
+
+    public void deleteProjectColumn(ProjectColumn selectedProjectColumn) throws SQLException {
+        ProjectColumnController projectColumnController = new ProjectColumnController(connectionString);
+        projectColumnController.deleteProjectColumn(selectedProjectColumn.getProjectColumnId());
+        loadProjects();
     }
 }

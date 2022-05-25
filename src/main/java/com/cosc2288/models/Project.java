@@ -9,6 +9,7 @@
  */
 package com.cosc2288.models;
 
+import java.util.List;
 import java.util.UUID;
 
 public class Project {
@@ -17,6 +18,7 @@ public class Project {
     private String name;
     private Long created;
     private UUID userId;
+    private List<ProjectColumn> projectColumns;
 
     /**
      * Constructs a project
@@ -94,6 +96,14 @@ public class Project {
      */
     public void setUserId(UUID userId) {
         this.userId = userId;
+    }
+
+    public List<ProjectColumn> getProjectColumns() {
+        return projectColumns;
+    }
+
+    public void setProjectColumns(List<ProjectColumn> projectColumns) {
+        this.projectColumns = projectColumns;
     }
 
 }

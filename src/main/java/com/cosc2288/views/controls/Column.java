@@ -1,6 +1,11 @@
 package com.cosc2288.views.controls;
 
+import java.io.IOException;
+import java.sql.SQLException;
 import java.util.LinkedList;
+
+import com.cosc2288.App;
+import com.cosc2288.models.ProjectColumn;
 
 import javafx.beans.binding.Bindings;
 import javafx.scene.control.Label;
@@ -17,7 +22,8 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 
 public class Column extends AnchorPane {
-    public Column() {
+
+    public Column(App app, ProjectColumn projectColumn) {
         // Add the column styling
         this.styleProperty().bind(Bindings.format("-fx-border-insets: 1; -fx-padding: 2; -fx-border-color: Black"));
         this.setMaxWidth(250);
@@ -33,6 +39,13 @@ public class Column extends AnchorPane {
         // Add the edit title menu item
         MenuItem editTitle = new MenuItem();
         editTitle.setText("Edit title");
+        editTitle.setOnAction(e -> {
+            try {
+                app.columnAddEdit(true, projectColumn);
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        });
         menuItems.add(editTitle);
 
         // Add the add item menu item
@@ -46,6 +59,13 @@ public class Column extends AnchorPane {
         // Add the delete column menu item
         MenuItem deleteColumn = new MenuItem();
         deleteColumn.setText("Delete Column");
+        deleteColumn.setOnAction(e -> {
+            try {
+                app.deleteProjectColumn(projectColumn);
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        });
         menuItems.add(deleteColumn);
 
         // Add the menu items
@@ -60,8 +80,7 @@ public class Column extends AnchorPane {
 
         // Create the title label
         Label title = new Label();
-        title.setText(
-                "This is some sample text, this is some sample text, this is some sample text, this is some sample text...");
+        title.setText(projectColumn.getName());
         title.setTextOverrun(OverrunStyle.ELLIPSIS);
 
         // Add the title label to the anchor
@@ -82,6 +101,7 @@ public class Column extends AnchorPane {
         AnchorPane.setRightAnchor(scrollPane, 0D);
         AnchorPane.setBottomAnchor(scrollPane, 0D);
 
+        // Add a vbox to the scroll pane
         VBox vbox = new VBox();
 
         for (int i = 0; i < 10; i++) {

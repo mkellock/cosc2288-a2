@@ -34,16 +34,34 @@ public class ProjectColumnController extends BaseController {
      */
     public boolean addProjectColumn(ProjectColumn projectColumn)
             throws SQLException {
-        // The insert script
-        String sql = "INSERT INTO project_columns " +
-                "(project_column_id, name, order, project_id) " +
-                "VALUES (?, ?, ?, ?)";
-
         // Test the object's validity
         Boolean valid = validate(projectColumn);
 
         // If we have a valid object
         if (Boolean.TRUE.equals(valid)) {
+            // Get the highest order number script
+            String sql = "SELECT MAX(\"order\") AS \"order\" " +
+                    "FROM project_columns " +
+                    "WHERE project_id = ?; ";
+
+            // Get the max column order from the DB
+            try (Connection conn = this.newConnection();
+                    PreparedStatement pstmt = conn.prepareStatement(sql)) {
+                projectColumn.setOrder(0);
+                pstmt.setString(1, projectColumn.getProjectId().toString());
+                ResultSet queryResults = pstmt.executeQuery();
+
+                while (queryResults.next()) {
+                    // Set the max order + 1 if there are other columns
+                    projectColumn.setOrder(queryResults.getInt("order") + 1);
+                }
+            }
+
+            // The insert script
+            sql = "INSERT INTO project_columns " +
+                    "(project_column_id, name, \"order\", project_id) " +
+                    "VALUES (?, ?, ?, ?)";
+
             // Run the DB insert statement
             try (Connection conn = this.newConnection();
                     PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -77,7 +95,7 @@ public class ProjectColumnController extends BaseController {
             throws SQLException {
         // The update script
         String sql = "UPDATE project_columns SET" +
-                "order = ?, " +
+                "\"order\" = ?, " +
                 "name = ?, " +
                 "project_id = ? " +
                 "WHERE project_column_id = ?";
@@ -90,8 +108,8 @@ public class ProjectColumnController extends BaseController {
             // Run the DB update statement
             try (Connection conn = this.newConnection();
                     PreparedStatement pstmt = conn.prepareStatement(sql)) {
-                pstmt.setString(1, projectColumn.getName());
-                pstmt.setInt(2, projectColumn.getOrder());
+                pstmt.setInt(1, projectColumn.getOrder());
+                pstmt.setString(2, projectColumn.getName());
                 pstmt.setString(3, projectColumn.getProjectId().toString());
                 pstmt.setString(4,
                         projectColumn.getProjectColumnId().toString());
@@ -150,8 +168,10 @@ public class ProjectColumnController extends BaseController {
         LinkedList<ProjectColumn> returnVal = new LinkedList<>();
 
         // The select query
-        String sql = "SELECT project_column_id, name, order, project_id " +
-                "FROM project_columns WHERE project_id = ?";
+        String sql = "SELECT project_column_id, name, \"order\", project_id " +
+                "FROM project_columns " +
+                "WHERE project_id = ? " +
+                "ORDER BY \"order\" ASC";
 
         // Run the DB select statement
         try (Connection conn = this.newConnection();
