@@ -380,8 +380,15 @@ public class App extends Application {
     }
 
     public void deleteProject() throws SQLException {
+        ProjectColumnController projectColumnController = new ProjectColumnController(connectionString);
+
+        for (ProjectColumn projectColumn : getSelectedProject().getProjectColumns()) {
+            projectColumnController.deleteProjectColumn(projectColumn.getProjectColumnId());
+        }
+
         ProjectController projectController = new ProjectController(connectionString);
         projectController.deleteProject(getSelectedProject().getProjectId());
+
         loadProjects();
     }
 
