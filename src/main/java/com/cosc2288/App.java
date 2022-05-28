@@ -10,10 +10,12 @@ import java.util.UUID;
 
 import com.cosc2288.controllers.ProjectColumnController;
 import com.cosc2288.controllers.ProjectController;
+import com.cosc2288.controllers.ProjectTaskController;
 import com.cosc2288.controllers.QuoteController;
 import com.cosc2288.controllers.UserController;
 import com.cosc2288.models.Project;
 import com.cosc2288.models.ProjectColumn;
+import com.cosc2288.models.ProjectTask;
 import com.cosc2288.models.User;
 import com.cosc2288.views.*;
 
@@ -36,6 +38,7 @@ public class App extends Application {
     private static Stage userStage;
     private static Stage projectStage;
     private static Stage columnStage;
+    private static Stage taskStage;
     private static Project selectedProject;
     private static List<Project> projects;
     private static List<ProjectColumn> projectColumns;
@@ -97,6 +100,14 @@ public class App extends Application {
 
     public static void setProjectStage(Stage projectStage) {
         App.projectStage = projectStage;
+    }
+
+    public static Stage getTaskStage() {
+        return taskStage;
+    }
+
+    public static void setTaskStage(Stage taskStage) {
+        App.taskStage = taskStage;
     }
 
     public static Stage getColumnStage() {
@@ -344,6 +355,24 @@ public class App extends Application {
         getProjectStage().close();
     }
 
+    public void projectTaskOk(ProjectTask projectTask) throws SQLException {
+        ProjectTaskController projectController = new ProjectTaskController(connectionString);
+
+        if (projectTask.getProjectTaskId() == null) {
+            projectTask.setProjectTaskId(UUID.randomUUID());
+            projectController.addProjectTask(projectTask);
+        } else {
+            projectController.editProjectTask(projectTask);
+        }
+
+        getTaskStage().close();
+        loadProjects();
+    }
+
+    public void projectTaskCancel() {
+        getTaskStage().close();
+    }
+
     public void projectColumnOk(ProjectColumn projectColumn) throws SQLException {
         ProjectColumnController projectColumnController = new ProjectColumnController(connectionString);
 
@@ -370,9 +399,15 @@ public class App extends Application {
             setProjects(projectController.loadProjects(getLoggedInUser().getUserId()));
 
             ProjectColumnController projectColumnController = new ProjectColumnController(connectionString);
+            ProjectTaskController projectTaskController = new ProjectTaskController(connectionString);
 
             for (Project project : getProjects()) {
                 project.setProjectColumns(projectColumnController.loadProjectColumns(project.getProjectId()));
+
+                for (ProjectColumn projectColumn : project.getProjectColumns()) {
+                    projectColumn.setProjectTasks(
+                            projectTaskController.loadProjectTasks(projectColumn.getProjectColumnId()));
+                }
             }
 
             main.loadProjects(getProjects(), selectedProject.getProjectId(), getLoggedInUser().getDefaultProjectId());
@@ -441,9 +476,56 @@ public class App extends Application {
         getColumnStage().show();
     }
 
+    public void taskAddEdit(Boolean edit, UUID projectColumnId, ProjectTask projectTask) throws IOException {
+        // Load the main scene
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("views/fxml/TaskEdit.fxml"));
+        Scene scene = new Scene(loader.load());
+
+        TaskEdit taskEdit = loader.<TaskEdit>getController();
+        taskEdit.setApp(this);
+
+        setTaskStage(new Stage());
+
+        if (Boolean.TRUE.equals(edit)) {
+            getTaskStage().setTitle("Edit task");
+        } else {
+            getTaskStage().setTitle("Add task");
+        }
+
+        // Set the project info
+        taskEdit.setColumn(projectColumnId);
+        taskEdit.setProjectTask(projectTask);
+
+        // Set the modal parameters
+        getTaskStage().initStyle(StageStyle.UTILITY);
+        getTaskStage().initModality(Modality.APPLICATION_MODAL);
+        getTaskStage().setScene(scene);
+        getTaskStage().show();
+    }
+
     public void deleteProjectColumn(ProjectColumn selectedProjectColumn) throws SQLException {
         ProjectColumnController projectColumnController = new ProjectColumnController(connectionString);
         projectColumnController.deleteProjectColumn(selectedProjectColumn.getProjectColumnId());
+        loadProjects();
+    }
+
+    public void deleteProjectTask(ProjectTask projectTask) throws SQLException {
+        ProjectTaskController projectTaskController = new ProjectTaskController(connectionString);
+        projectTaskController.deleteProjectTask(projectTask.getProjectTaskId());
+        loadProjects();
+    }
+
+    public void dragProjectTask(UUID draggedProjectTaskId, ProjectTask projectTask) throws SQLException {
+        if (draggedProjectTaskId.compareTo(projectTask.getProjectTaskId()) != 0) {
+            ProjectTaskController projectTaskController = new ProjectTaskController(connectionString);
+            projectTaskController.moveTaskToPosition(draggedProjectTaskId, projectTask);
+            loadProjects();
+        }
+    }
+
+    public void dragProjectTask(UUID draggedProjectTaskId, ProjectColumn projectColumn) throws SQLException {
+        ProjectTaskController projectTaskController = new ProjectTaskController(connectionString);
+        projectTaskController.moveTaskToColumn(draggedProjectTaskId, projectColumn);
         loadProjects();
     }
 }

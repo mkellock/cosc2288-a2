@@ -3,9 +3,11 @@ package com.cosc2288.views.controls;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.LinkedList;
+import java.util.UUID;
 
 import com.cosc2288.App;
 import com.cosc2288.models.ProjectColumn;
+import com.cosc2288.models.ProjectTask;
 
 import javafx.beans.binding.Bindings;
 import javafx.scene.control.Label;
@@ -14,11 +16,9 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.OverrunStyle;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.SeparatorMenuItem;
-import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 
 public class Column extends AnchorPane {
@@ -51,6 +51,13 @@ public class Column extends AnchorPane {
         // Add the add item menu item
         MenuItem addItem = new MenuItem();
         addItem.setText("Add item");
+        addItem.setOnAction(e -> {
+            try {
+                app.taskAddEdit(false, projectColumn.getProjectColumnId(), null);
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        });
         menuItems.add(addItem);
 
         // Add a seperator
@@ -104,59 +111,45 @@ public class Column extends AnchorPane {
         // Add a vbox to the scroll pane
         VBox vbox = new VBox();
 
-        for (int i = 0; i < 10; i++) {
-            Pane item = new Pane();
-            item.setMinHeight(150);
-
-            item.setOnDragDetected(
-                    event -> {
-                        /* drag was detected, start a drag-and-drop gesture */
-                        /* allow any transfer mode */
-                        Dragboard db = item.startDragAndDrop(TransferMode.COPY_OR_MOVE);
-
-                        /* Put a string on a dragboard */
-                        ClipboardContent content = new ClipboardContent();
-                        content.putString("Well, hello there!");
-                        db.setContent(content);
-
-                        event.consume();
-                    });
-
-            item.setOnDragOver(event -> {
-                event.acceptTransferModes(TransferMode.COPY_OR_MOVE);
-                event.consume();
-            });
-
-            item.setOnDragDropped(
-                    event -> {
-                        /* data dropped */
-                        /* if there is a string data on dragboard, read it and use it */
-                        Dragboard db = event.getDragboard();
-                        boolean success = false;
-                        if (db.hasString()) {
-                            System.out.println(db.getString());
-                            success = true;
-                        }
-                        /*
-                         * let the source know whether the string was successfully
-                         * transferred and used
-                         */
-                        event.setDropCompleted(success);
-
-                        event.consume();
-                    });
-
-            if (i % 2 == 0) {
-                item.styleProperty().bind(Bindings.format("-fx-background-color: Black"));
-            }
-
+        for (ProjectTask projectTask : projectColumn.getProjectTasks()) {
+            Task item = new Task(app, projectColumn, projectTask);
             vbox.getChildren().add(item);
         }
 
         // Add the anchor pane to the tabs contents
         scrollPane.contentProperty().set(vbox);
 
-        // Add the title label to the anchor
+        // Add the scroll pane to the anchor
         this.getChildren().add(scrollPane);
+
+        // Accept drag events
+        this.setOnDragOver(event -> {
+            event.acceptTransferModes(TransferMode.COPY_OR_MOVE);
+            event.consume();
+        });
+
+        // Trap a task drop event
+        this.setOnDragDropped(
+                event -> {
+                    /* data dropped */
+                    /* if there is a string data on dragboard, read it and use it */
+                    Dragboard db = event.getDragboard();
+                    boolean success = false;
+                    if (db.hasString()) {
+                        success = true;
+                        try {
+                            app.dragProjectTask(UUID.fromString(db.getString()), projectColumn);
+                        } catch (SQLException e1) {
+                            e1.printStackTrace();
+                        }
+                    }
+                    /*
+                     * let the source know whether the string was successfully
+                     * transferred and used
+                     */
+                    event.setDropCompleted(success);
+
+                    event.consume();
+                });
     }
 }

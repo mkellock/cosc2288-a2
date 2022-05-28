@@ -9,6 +9,7 @@
  */
 package com.cosc2288.controllers;
 
+import com.cosc2288.models.ProjectColumn;
 import com.cosc2288.models.ProjectTask;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -26,6 +27,31 @@ public class ProjectTaskController extends BaseController {
         super(connectionString);
     }
 
+    private int maxColumnOrder(UUID projectColumnId) throws SQLException {
+        // Default return val
+        int returnVal = 0;
+
+        // Get the highest order number script
+        String sql = "SELECT MAX(\"order\") AS \"order\" " +
+                "FROM project_tasks " +
+                "WHERE project_column_id = ?; ";
+
+        // Get the max column order from the DB
+        try (Connection conn = this.newConnection();
+                PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, projectColumnId.toString());
+            ResultSet queryResults = pstmt.executeQuery();
+
+            while (queryResults.next()) {
+                // Set the max order + 1 if there are other columns
+                returnVal = queryResults.getInt("order");
+            }
+        }
+
+        // Return the return val
+        return returnVal;
+    }
+
     /**
      * Adds a project task
      * 
@@ -33,9 +59,11 @@ public class ProjectTaskController extends BaseController {
      * @throws SQLException
      */
     public boolean addProjectTask(ProjectTask projectTask) throws SQLException {
+        projectTask.setOrder(maxColumnOrder(projectTask.getProjectColumnId()) + 1);
+
         // The insert script
         String sql = "INSERT INTO project_tasks " +
-                "(project_task_id, name, description, order, due_date, " +
+                "(project_task_id, name, description, \"order\", due_date, " +
                 "completed_date, project_column_id) " +
                 "VALUES (?, ?, ?, ?, ?, ?, ?)";
 
@@ -51,8 +79,19 @@ public class ProjectTaskController extends BaseController {
                 pstmt.setString(2, projectTask.getName());
                 pstmt.setString(3, projectTask.getDescription());
                 pstmt.setInt(4, projectTask.getOrder());
-                pstmt.setLong(5, projectTask.getDueDate());
-                pstmt.setLong(6, projectTask.getCompletedDate());
+
+                if (projectTask.getDueDate() != null) {
+                    pstmt.setLong(5, projectTask.getDueDate());
+                } else {
+                    pstmt.setNull(5, java.sql.Types.NULL);
+                }
+
+                if (projectTask.getCompletedDate() != null) {
+                    pstmt.setLong(6, projectTask.getCompletedDate());
+                } else {
+                    pstmt.setNull(6, java.sql.Types.NULL);
+                }
+
                 pstmt.setString(7, projectTask.getProjectColumnId().toString());
                 pstmt.executeUpdate();
             } catch (SQLException e) {
@@ -78,13 +117,13 @@ public class ProjectTaskController extends BaseController {
     public boolean editProjectTask(ProjectTask projectTask)
             throws SQLException {
         // The update script
-        String sql = "UPDATE project_tasks SET" +
+        String sql = "UPDATE project_tasks SET " +
                 "name = ?, " +
                 "description = ?, " +
-                "order = ?, " +
+                "\"order\" = ?, " +
                 "due_date = ?, " +
                 "completed_date = ?, " +
-                "project_column_id = ?, " +
+                "project_column_id = ? " +
                 "WHERE project_task_id = ?";
 
         // Test the object's validity
@@ -98,8 +137,19 @@ public class ProjectTaskController extends BaseController {
                 pstmt.setString(1, projectTask.getName());
                 pstmt.setString(2, projectTask.getDescription());
                 pstmt.setInt(3, projectTask.getOrder());
-                pstmt.setLong(4, projectTask.getDueDate());
-                pstmt.setLong(5, projectTask.getCompletedDate());
+
+                if (projectTask.getDueDate() != null) {
+                    pstmt.setLong(4, projectTask.getDueDate());
+                } else {
+                    pstmt.setNull(4, java.sql.Types.NULL);
+                }
+
+                if (projectTask.getCompletedDate() != null) {
+                    pstmt.setLong(5, projectTask.getCompletedDate());
+                } else {
+                    pstmt.setNull(5, java.sql.Types.NULL);
+                }
+
                 pstmt.setString(6, projectTask.getProjectColumnId().toString());
                 pstmt.setString(7, projectTask.getProjectTaskId().toString());
                 pstmt.executeUpdate();
@@ -158,9 +208,10 @@ public class ProjectTaskController extends BaseController {
         LinkedList<ProjectTask> returnVal = new LinkedList<>();
 
         // The select query
-        String sql = "SELECT project_task_id, name, description, order, " +
+        String sql = "SELECT project_task_id, name, description, \"order\", " +
                 "due_date, completed_date, project_column_id " +
-                "FROM action_items WHERE project_column_id = ?";
+                "FROM project_tasks WHERE project_column_id = ? " +
+                "ORDER BY \"order\"";
 
         // Run the DB select statement
         try (Connection conn = this.newConnection();
@@ -178,9 +229,9 @@ public class ProjectTaskController extends BaseController {
                         queryResults.getString("description"),
                         queryResults.getInt("order"),
                         queryResults.getLong("due_date"),
-                        queryResults.getLong("complated_date"),
+                        queryResults.getLong("completed_date"),
                         UUID.fromString(
-                                queryResults.getString("project_task_id"))));
+                                queryResults.getString("project_column_id"))));
             }
 
             // Return the result list
@@ -192,6 +243,76 @@ public class ProjectTaskController extends BaseController {
         }
     }
 
+    public boolean moveTaskToPosition(UUID draggedProjectTaskId, ProjectTask projectTask) throws SQLException {
+        // Set all tickets with a higher order to +1
+        // The update script
+        String sql = "UPDATE project_tasks SET " +
+                "\"order\" = \"order\" + 1 " +
+                "WHERE project_column_id = ? " +
+                "AND \"order\" >= ?";
+
+        // Run the DB update statement
+        try (Connection conn = this.newConnection();
+                PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, projectTask.getProjectColumnId().toString());
+            pstmt.setInt(2, projectTask.getOrder());
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            // Return that the operation failed
+            e.printStackTrace();
+            throw e;
+        }
+
+        // Set the source ticket to the destination ticket's order +1 and set the source
+        // tickets project column to the same project column as the destination ticket
+        sql = "UPDATE project_tasks SET " +
+                "\"order\" = ?, " +
+                "project_column_id = ? " +
+                "WHERE project_task_id = ?";
+
+        // Run the DB update statement
+        try (Connection conn = this.newConnection();
+                PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1, projectTask.getOrder());
+            pstmt.setString(2, projectTask.getProjectColumnId().toString());
+            pstmt.setString(3, draggedProjectTaskId.toString());
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            // Return that the operation failed
+            e.printStackTrace();
+            throw e;
+        }
+
+        // Object saved successfully
+        return true;
+    }
+
+    public boolean moveTaskToColumn(UUID draggedProjectTaskId, ProjectColumn projectColumn) throws SQLException {
+        int columnPosition = maxColumnOrder(projectColumn.getProjectColumnId()) + 1;
+
+        // The update script
+        String sql = "UPDATE project_tasks SET " +
+                "\"order\" = ?, " +
+                "project_column_id = ? " +
+                "WHERE project_task_id = ?";
+
+        // Run the DB update statement
+        try (Connection conn = this.newConnection();
+                PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1, columnPosition);
+            pstmt.setString(2, projectColumn.getProjectColumnId().toString());
+            pstmt.setString(3, draggedProjectTaskId.toString());
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            // Return that the operation failed
+            e.printStackTrace();
+            throw e;
+        }
+
+        // Object saved successfully
+        return true;
+    }
+
     /**
      * Validates a project task
      * 
@@ -201,8 +322,7 @@ public class ProjectTaskController extends BaseController {
     private static boolean validate(ProjectTask projectTask) {
         // Check the validity of the object
         return projectTask.getProjectTaskId() != null &&
-                projectTask.getName().length() != 0 &&
-                projectTask.getDescription().length() != 0;
+                projectTask.getName().length() != 0;
     }
 
 }
