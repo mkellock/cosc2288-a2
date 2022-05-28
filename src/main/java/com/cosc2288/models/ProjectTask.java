@@ -9,6 +9,7 @@
  */
 package com.cosc2288.models;
 
+import java.util.List;
 import java.util.UUID;
 
 public class ProjectTask {
@@ -20,6 +21,7 @@ public class ProjectTask {
     private Long dueDate;
     private Long completedDate;
     private UUID projectColumnId;
+    private List<ActionItem> actionItems;
 
     /**
      * Constucts a project task
@@ -38,6 +40,7 @@ public class ProjectTask {
      * @param dueDate
      * @param completedDate
      * @param projectColumnId
+     * @param actionItems
      */
     public ProjectTask(
             UUID projectTaskId,
@@ -46,7 +49,8 @@ public class ProjectTask {
             int order,
             Long dueDate,
             Long completedDate,
-            UUID projectColumnId) {
+            UUID projectColumnId,
+            List<ActionItem> actionItems) {
         this.projectTaskId = projectTaskId;
         this.name = name;
         this.description = description;
@@ -54,6 +58,7 @@ public class ProjectTask {
         this.dueDate = dueDate;
         this.completedDate = completedDate;
         this.projectColumnId = projectColumnId;
+        this.actionItems = actionItems;
     }
 
     /**
@@ -152,6 +157,14 @@ public class ProjectTask {
      */
     public void setProjectColumnId(UUID projectColumnId) {
         this.projectColumnId = projectColumnId;
+    }
+
+    public List<ActionItem> getActionItems() {
+        return actionItems;
+    }
+
+    public void setActionItems(List<ActionItem> actionItems) {
+        this.actionItems = actionItems;
     }
 
 }

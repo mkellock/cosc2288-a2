@@ -9,6 +9,7 @@
  */
 package com.cosc2288.controllers;
 
+import com.cosc2288.models.ActionItem;
 import com.cosc2288.models.ProjectColumn;
 import com.cosc2288.models.ProjectTask;
 import java.sql.Connection;
@@ -20,11 +21,16 @@ import java.util.List;
 import java.util.UUID;
 
 public class ProjectTaskController extends BaseController {
+
+    private final String connectionString;
+
     /**
      * Constructor for the class
      */
     public ProjectTaskController(String connectionString) {
         super(connectionString);
+
+        this.connectionString = connectionString;
     }
 
     private int maxColumnOrder(UUID projectColumnId) throws SQLException {
@@ -204,6 +210,9 @@ public class ProjectTaskController extends BaseController {
      */
     public List<ProjectTask> loadProjectTasks(UUID projectColumnId)
             throws SQLException {
+        // Create an Action Items controller
+        ActionItemController actionItemController = new ActionItemController(this.connectionString);
+
         // The result we'll eventually return
         LinkedList<ProjectTask> returnVal = new LinkedList<>();
 
@@ -221,6 +230,9 @@ public class ProjectTaskController extends BaseController {
 
             // Assign the DB results to the result list
             while (queryResults.next()) {
+                List<ActionItem> actionItems = actionItemController.loadActionItems(UUID.fromString(
+                        queryResults.getString("project_task_id")));
+
                 // Add a new item
                 returnVal.add(new ProjectTask(
                         UUID.fromString(
@@ -231,7 +243,8 @@ public class ProjectTaskController extends BaseController {
                         queryResults.getLong("due_date"),
                         queryResults.getLong("completed_date"),
                         UUID.fromString(
-                                queryResults.getString("project_column_id"))));
+                                queryResults.getString("project_column_id")),
+                        actionItems));
             }
 
             // Return the result list
