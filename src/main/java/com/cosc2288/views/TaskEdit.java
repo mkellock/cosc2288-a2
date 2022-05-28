@@ -101,7 +101,8 @@ public class TaskEdit {
     private ProjectTask projectTask;
 
     public void initialize() {
-        actionItems.setCellFactory(CheckBoxListCell.forListView(ActionItem::onProperty));
+        actionItems.setCellFactory(
+                CheckBoxListCell.forListView(ActionItem::onProperty));
     }
 
     public void setApp(App app) {
@@ -120,7 +121,8 @@ public class TaskEdit {
             task.setText(projectTask.getName());
 
             if (projectTask.getDueDate() > 0) {
-                dueDate.setValue(LocalDate.ofEpochDay(projectTask.getDueDate()));
+                dueDate.setValue(
+                        LocalDate.ofEpochDay(projectTask.getDueDate()));
             }
 
             onDueDateChange();
@@ -164,7 +166,8 @@ public class TaskEdit {
             if (dueDate.getValue().isBefore(LocalDate.now())) {
                 onTrack.setTextFill(Paint.valueOf("red"));
                 onTrack.setText("Overdue");
-            } else if (dueDate.getValue().minusDays(2).isBefore(LocalDate.now())) {
+            } else if (dueDate.getValue().minusDays(2)
+                    .isBefore(LocalDate.now())) {
                 onTrack.setTextFill(Paint.valueOf("darkorange"));
                 onTrack.setText("Due soon");
             } else {
@@ -183,12 +186,15 @@ public class TaskEdit {
 
     @FXML
     private void addItem() {
-        ActionItem item = new ActionItem(UUID.randomUUID(), addItemText.getText(), false);
+        ActionItem item = new ActionItem(UUID.randomUUID(),
+                addItemText.getText(), false);
 
         // observe item's on property and display message if it changes:
-        item.onProperty().addListener((obs, wasOn, isNowOn) ->
-            System.out.println(item.getId().toString() + " changed on state from " + wasOn + " to " + isNowOn)
-        );
+        item.onProperty()
+                .addListener((obs, wasOn,
+                        isNowOn) -> System.out.println(item.getId().toString()
+                                + " changed on state from " + wasOn + " to "
+                                + isNowOn));
 
         actionItems.getItems().add(item);
 

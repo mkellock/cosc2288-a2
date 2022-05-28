@@ -21,26 +21,22 @@ import org.junit.jupiter.api.Test;
 
 public class ProjectControllerTests extends BaseTests {
 
-    private UUID PROJECT_ID =
-        UUID.fromString("d1692273-c891-4950-be04-9620604c2cfe");
+    private UUID PROJECT_ID = UUID
+            .fromString("d1692273-c891-4950-be04-9620604c2cfe");
     private String NAME = "Project Name";
     private Long CREATED = Instant.now().toEpochMilli();
-    private UUID USER_ID =
-        UUID.fromString("b45542c8-f159-4b3d-a268-dcabfaa7443a");
+    private UUID USER_ID = UUID
+            .fromString("b45542c8-f159-4b3d-a268-dcabfaa7443a");
 
     @Test
     void shouldAddProject() throws SQLException {
         // Set up test variables
         final UUID projectId = UUID.randomUUID();
-        final Project project = new Project(
-                projectId,
-                NAME,
-                CREATED,
-                USER_ID);
+        final Project project = new Project(projectId, NAME, CREATED, USER_ID);
 
         // Add a project to the database
-        final ProjectController projectController =
-            new ProjectController(getTestConnString());
+        final ProjectController projectController = new ProjectController(
+                getTestConnString());
         projectController.addProject(project);
 
         // Grab the project from the list
@@ -53,26 +49,21 @@ public class ProjectControllerTests extends BaseTests {
         }
 
         // Assert that the elements are identical
-        Assertions.assertEquals(
-                new Gson().toJson(project),
+        Assertions.assertEquals(new Gson().toJson(project),
                 new Gson().toJson(projectLoaded));
     }
 
     @Test
     void shouldEditProject() throws SQLException {
         // Set up test variables
-        final Project project = new Project(
-                PROJECT_ID,
-                NAME,
-                CREATED,
-                USER_ID);
+        final Project project = new Project(PROJECT_ID, NAME, CREATED, USER_ID);
 
         // Update the project
         project.setName("Project Name New");
 
         // Save the project
-        final ProjectController projectController =
-            new ProjectController(getTestConnString());
+        final ProjectController projectController = new ProjectController(
+                getTestConnString());
         projectController.editProject(project);
 
         // Grab the project from the list
@@ -85,20 +76,19 @@ public class ProjectControllerTests extends BaseTests {
         }
 
         // Assert that the elements are identical
-        Assertions.assertEquals(
-                new Gson().toJson(project),
+        Assertions.assertEquals(new Gson().toJson(project),
                 new Gson().toJson(projectLoaded));
     }
 
     @Test
     void shouldDeleteProject() throws SQLException {
-        final UUID projectId =
-            UUID.fromString("530a76ec-25ae-4a69-ba7b-b47f307f7b85");
+        final UUID projectId = UUID
+                .fromString("530a76ec-25ae-4a69-ba7b-b47f307f7b85");
         boolean result = false;
 
         // Delete the project
-        ProjectController projectController =
-            new ProjectController(getTestConnString());
+        ProjectController projectController = new ProjectController(
+                getTestConnString());
         projectController.deleteProject(projectId);
 
         // Check that the project no longer exists
@@ -115,10 +105,10 @@ public class ProjectControllerTests extends BaseTests {
     @Test
     void shouldLoadProjects() throws SQLException {
         // Check that we have elements
-        ProjectController projectController =
-            new ProjectController(getTestConnString());
-        Assertions.assertTrue(
-            projectController.loadProjects(USER_ID).size() > 0);
+        ProjectController projectController = new ProjectController(
+                getTestConnString());
+        Assertions
+                .assertTrue(projectController.loadProjects(USER_ID).size() > 0);
     }
 
 }

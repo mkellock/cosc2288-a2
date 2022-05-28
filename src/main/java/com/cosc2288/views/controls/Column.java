@@ -25,7 +25,8 @@ public class Column extends AnchorPane {
 
     public Column(App app, ProjectColumn projectColumn) {
         // Add the column styling
-        this.styleProperty().bind(Bindings.format("-fx-border-insets: 1; -fx-padding: 2; -fx-border-color: Black"));
+        this.styleProperty().bind(Bindings.format(
+                "-fx-border-insets: 1; -fx-padding: 2; -fx-border-color: Black"));
         this.setMaxWidth(250);
         this.setMinWidth(this.getMaxWidth());
 
@@ -53,7 +54,8 @@ public class Column extends AnchorPane {
         addItem.setText("Add item");
         addItem.setOnAction(e -> {
             try {
-                app.taskAddEdit(false, projectColumn.getProjectColumnId(), null);
+                app.taskAddEdit(false, projectColumn.getProjectColumnId(),
+                        null);
             } catch (IOException ex) {
                 ex.printStackTrace();
             }
@@ -129,27 +131,27 @@ public class Column extends AnchorPane {
         });
 
         // Trap a task drop event
-        this.setOnDragDropped(
-                event -> {
-                    /* data dropped */
-                    /* if there is a string data on dragboard, read it and use it */
-                    Dragboard db = event.getDragboard();
-                    boolean success = false;
-                    if (db.hasString()) {
-                        success = true;
-                        try {
-                            app.dragProjectTask(UUID.fromString(db.getString()), projectColumn);
-                        } catch (SQLException e1) {
-                            e1.printStackTrace();
-                        }
-                    }
-                    /*
-                     * let the source know whether the string was successfully
-                     * transferred and used
-                     */
-                    event.setDropCompleted(success);
+        this.setOnDragDropped(event -> {
+            /* data dropped */
+            /* if there is a string data on dragboard, read it and use it */
+            Dragboard db = event.getDragboard();
+            boolean success = false;
+            if (db.hasString()) {
+                success = true;
+                try {
+                    app.dragProjectTask(UUID.fromString(db.getString()),
+                            projectColumn);
+                } catch (SQLException e1) {
+                    e1.printStackTrace();
+                }
+            }
+            /*
+             * let the source know whether the string was successfully
+             * transferred and used
+             */
+            event.setDropCompleted(success);
 
-                    event.consume();
-                });
+            event.consume();
+        });
     }
 }

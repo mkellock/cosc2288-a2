@@ -15,22 +15,18 @@ import org.junit.jupiter.api.Test;
 
 class ProjectColumnTests {
 
-    private static final UUID PROJECT_COLUMN_ID =
-        UUID.fromString("6b602110-ffcc-45d3-85c6-3a6fd2c32945");
+    private static final UUID PROJECT_COLUMN_ID = UUID
+            .fromString("6b602110-ffcc-45d3-85c6-3a6fd2c32945");
     private static final String NAME = "Name";
     private static final int ORDER = 1;
-    private static final UUID PROJECT_ID =
-        UUID.fromString("1f74708e-917a-4b21-b637-77f857e2f4e4");
+    private static final UUID PROJECT_ID = UUID
+            .fromString("1f74708e-917a-4b21-b637-77f857e2f4e4");
 
     @Test
     void ShouldConstructAndGetAllProperties() {
-        ProjectColumn projectColumn = new ProjectColumn(
-                PROJECT_COLUMN_ID,
-                NAME,
-                ORDER,
-                PROJECT_ID);
-        Assertions.assertEquals(
-                PROJECT_COLUMN_ID,
+        ProjectColumn projectColumn = new ProjectColumn(PROJECT_COLUMN_ID, NAME,
+                ORDER, PROJECT_ID);
+        Assertions.assertEquals(PROJECT_COLUMN_ID,
                 projectColumn.getProjectColumnId());
         Assertions.assertEquals(NAME, projectColumn.getName());
         Assertions.assertEquals(ORDER, projectColumn.getOrder());
@@ -42,8 +38,7 @@ class ProjectColumnTests {
     void shouldSetAndGetProjectColumnId() {
         ProjectColumn projectColumn = new ProjectColumn();
         projectColumn.setProjectColumnId(PROJECT_COLUMN_ID);
-        Assertions.assertEquals(
-                PROJECT_COLUMN_ID,
+        Assertions.assertEquals(PROJECT_COLUMN_ID,
                 projectColumn.getProjectColumnId());
     }
 

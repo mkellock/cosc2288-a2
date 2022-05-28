@@ -24,7 +24,8 @@ import javafx.scene.text.Font;
 
 public class Task extends AnchorPane {
     public Task(App app, ProjectColumn projectColumn, ProjectTask projectTask) {
-        this.styleProperty().bind(Bindings.format("-fx-border-insets: 1; -fx-padding: 2; -fx-border-color: Black"));
+        this.styleProperty().bind(Bindings.format(
+                "-fx-border-insets: 1; -fx-padding: 2; -fx-border-color: Black"));
         this.setMinHeight(150);
         this.setMaxHeight(this.getMinHeight());
 
@@ -51,7 +52,8 @@ public class Task extends AnchorPane {
         editButton.setText("Edit");
         editButton.setOnAction(e -> {
             try {
-                app.taskAddEdit(true, projectColumn.getProjectColumnId(), projectTask);
+                app.taskAddEdit(true, projectColumn.getProjectColumnId(),
+                        projectTask);
             } catch (IOException ex) {
                 ex.printStackTrace();
             }
@@ -88,14 +90,16 @@ public class Task extends AnchorPane {
             Label dueLabel = new Label();
             LocalDate dueDate = LocalDate.ofEpochDay(projectTask.getDueDate());
 
-            dueLabel.setText("Due: " +
-                    dueDate.format(DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM)));
+            dueLabel.setText("Due: " + dueDate.format(
+                    DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM)));
             dueLabel.setFont(smallFont);
 
             if (dueDate.isBefore(LocalDate.now())) {
-                dueLabel.styleProperty().bind(Bindings.format("-fx-background-color: red"));
+                dueLabel.styleProperty()
+                        .bind(Bindings.format("-fx-background-color: red"));
             } else if (dueDate.minusDays(2).isBefore(LocalDate.now())) {
-                dueLabel.styleProperty().bind(Bindings.format("-fx-background-color: darkorange"));
+                dueLabel.styleProperty().bind(
+                        Bindings.format("-fx-background-color: darkorange"));
             }
 
             // Add the due label to the anchor
@@ -110,7 +114,8 @@ public class Task extends AnchorPane {
         Label subTaskLabel = new Label();
         subTaskLabel.setText("Subitems: 1/10");
         subTaskLabel.setFont(smallFont);
-        subTaskLabel.styleProperty().bind(Bindings.format("-fx-background-color: lightgreen"));
+        subTaskLabel.styleProperty()
+                .bind(Bindings.format("-fx-background-color: lightgreen"));
 
         // Add the due label to the anchor
         this.getChildren().add(subTaskLabel);
@@ -119,19 +124,18 @@ public class Task extends AnchorPane {
         AnchorPane.setTopAnchor(subTaskLabel, 15D);
         AnchorPane.setLeftAnchor(subTaskLabel, 0D);
 
-        this.setOnDragDetected(
-                event -> {
-                    /* drag was detected, start a drag-and-drop gesture */
-                    /* allow any transfer mode */
-                    Dragboard db = this.startDragAndDrop(TransferMode.COPY_OR_MOVE);
+        this.setOnDragDetected(event -> {
+            /* drag was detected, start a drag-and-drop gesture */
+            /* allow any transfer mode */
+            Dragboard db = this.startDragAndDrop(TransferMode.COPY_OR_MOVE);
 
-                    /* Put a string on a dragboard */
-                    ClipboardContent content = new ClipboardContent();
-                    content.putString(projectTask.getProjectTaskId().toString());
-                    db.setContent(content);
+            /* Put a string on a dragboard */
+            ClipboardContent content = new ClipboardContent();
+            content.putString(projectTask.getProjectTaskId().toString());
+            db.setContent(content);
 
-                    event.consume();
-                });
+            event.consume();
+        });
 
         // Accept drag events
         this.setOnDragOver(event -> {
@@ -140,27 +144,27 @@ public class Task extends AnchorPane {
         });
 
         // Trap a task drop event
-        this.setOnDragDropped(
-                event -> {
-                    /* data dropped */
-                    /* if there is a string data on dragboard, read it and use it */
-                    Dragboard db = event.getDragboard();
-                    boolean success = false;
-                    if (db.hasString()) {
-                        success = true;
-                        try {
-                            app.dragProjectTask(UUID.fromString(db.getString()), projectTask);
-                        } catch (SQLException e1) {
-                            e1.printStackTrace();
-                        }
-                    }
-                    /*
-                     * let the source know whether the string was successfully
-                     * transferred and used
-                     */
-                    event.setDropCompleted(success);
+        this.setOnDragDropped(event -> {
+            /* data dropped */
+            /* if there is a string data on dragboard, read it and use it */
+            Dragboard db = event.getDragboard();
+            boolean success = false;
+            if (db.hasString()) {
+                success = true;
+                try {
+                    app.dragProjectTask(UUID.fromString(db.getString()),
+                            projectTask);
+                } catch (SQLException e1) {
+                    e1.printStackTrace();
+                }
+            }
+            /*
+             * let the source know whether the string was successfully
+             * transferred and used
+             */
+            event.setDropCompleted(success);
 
-                    event.consume();
-                });
+            event.consume();
+        });
     }
 }

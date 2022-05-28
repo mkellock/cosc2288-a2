@@ -84,8 +84,10 @@ public class Main {
             userFullName.setText(null);
             userImage.setImage(null);
         } else {
-            userFullName.setText(user.getFirstName() + " " + user.getLastName());
-            userImage.setImage(new Image(new ByteArrayInputStream(user.getImage())));
+            userFullName
+                    .setText(user.getFirstName() + " " + user.getLastName());
+            userImage.setImage(
+                    new Image(new ByteArrayInputStream(user.getImage())));
         }
     }
 
@@ -111,8 +113,9 @@ public class Main {
         // Check if we have a user set
         if (App.getLoggedInUser() != null) {
             // If we are not on a default tab, or one has not been set
-            if (App.getLoggedInUser().getDefaultProjectId() == null || App.getLoggedInUser().getDefaultProjectId()
-                    .compareTo(App.getSelectedProject().getProjectId()) != 0) {
+            if (App.getLoggedInUser().getDefaultProjectId() == null
+                    || App.getLoggedInUser().getDefaultProjectId().compareTo(
+                            App.getSelectedProject().getProjectId()) != 0) {
                 // Enable setting
                 setAsDefaultMenuItem.setDisable(false);
                 unsetAsDefaultMenuItem.setDisable(true);
@@ -124,7 +127,8 @@ public class Main {
         }
     }
 
-    public void loadProjects(List<Project> projects, UUID selectedProjectId, UUID defaultProjectId) {
+    public void loadProjects(List<Project> projects, UUID selectedProjectId,
+            UUID defaultProjectId) {
         // Clear the tabs
         workArea.getTabs().clear();
 
@@ -136,7 +140,8 @@ public class Main {
                 setProjectMenuItemsDisabled(false);
 
                 // Set the currently selected project
-                App.setSelectedProjectById(UUID.fromString(workArea.getSelectionModel().getSelectedItem().getId()));
+                App.setSelectedProjectById(UUID.fromString(workArea
+                        .getSelectionModel().getSelectedItem().getId()));
 
                 // Change the menu options
                 setDefaultMenuOptions();
@@ -158,13 +163,14 @@ public class Main {
                 workArea.getTabs().add(projectTab);
             }
 
-            // If the selected project ID isn't null, set the selected tab to the specified
-            // project
+            // If the selected project ID isn't null, set the selected tab to
+            // the specified project
             if (selectedProjectId != null) {
                 selectTabByProjectId(selectedProjectId);
             }
 
-            // If the default project ID isn't null, set the default project tab to yellow
+            // If the default project ID isn't null, set the default project tab
+            // to yellow
             if (defaultProjectId != null) {
                 colourDefaultTab(defaultProjectId);
             }
@@ -195,12 +201,15 @@ public class Main {
         // Loop through the tabs
         for (Tab projectTab : workArea.getTabs()) {
             // If the tab's Id equals the default tab
-            if (defaultProjectId != null && projectTab.getId().equals(defaultProjectId.toString())) {
+            if (defaultProjectId != null
+                    && projectTab.getId().equals(defaultProjectId.toString())) {
                 // Select the tab
-                projectTab.styleProperty().bind(Bindings.format("-fx-background-color: yellow"));
+                projectTab.styleProperty()
+                        .bind(Bindings.format("-fx-background-color: yellow"));
             } else {
                 // Remove the background styling
-                projectTab.styleProperty().bind(Bindings.format("-fx-background-color: -fx-color"));
+                projectTab.styleProperty().bind(
+                        Bindings.format("-fx-background-color: -fx-color"));
             }
         }
     }

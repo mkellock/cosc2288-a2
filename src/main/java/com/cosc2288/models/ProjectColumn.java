@@ -35,10 +35,7 @@ public class ProjectColumn {
      * @param order
      * @param projectId
      */
-    public ProjectColumn(
-            UUID projectColumnId,
-            String name,
-            int order,
+    public ProjectColumn(UUID projectColumnId, String name, int order,
             UUID projectId) {
         this.projectColumnId = projectColumnId;
         this.name = name;

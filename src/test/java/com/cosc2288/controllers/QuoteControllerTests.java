@@ -18,9 +18,9 @@ public class QuoteControllerTests extends BaseTests {
     @Test
     void ShouldLoadRandomQuote() throws SQLException {
         // Instantiate a new controller
-        QuoteController quoteController = 
-            new QuoteController(getTestConnString());
-        
+        QuoteController quoteController = new QuoteController(
+                getTestConnString());
+
         // Assert that we retrieve a quote
         Assertions.assertNotNull(quoteController.randomQuote());
     }

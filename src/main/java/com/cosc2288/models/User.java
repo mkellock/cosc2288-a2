@@ -38,14 +38,8 @@ public class User {
      * @param image
      * @param defaultProjectId
      */
-    public User(
-            UUID userId,
-            String username,
-            String password,
-            String firstName,
-            String lastName,
-            byte[] image,
-            UUID defaultProjectId) {
+    public User(UUID userId, String username, String password, String firstName,
+            String lastName, byte[] image, UUID defaultProjectId) {
         this.userId = userId;
         this.username = username;
         this.password = password;

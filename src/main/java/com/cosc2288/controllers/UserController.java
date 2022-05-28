@@ -31,10 +31,9 @@ public class UserController extends BaseController {
      */
     public boolean addUser(User user) throws SQLException {
         // The insert script
-        String sql = "INSERT INTO users " +
-                "(user_id, username, password, first_name, last_name, image, " +
-                "default_project_id) " +
-                "VALUES (?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO users "
+                + "(user_id, username, password, first_name, last_name, image, "
+                + "default_project_id) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
         // Test the object's validity
         Boolean valid = validate(user);
@@ -79,14 +78,9 @@ public class UserController extends BaseController {
      */
     public boolean editUser(User user) throws SQLException {
         // The update script
-        String sql = "UPDATE users SET " +
-                "username = ?, " +
-                "password = ?, " +
-                "first_name = ?, " +
-                "last_name = ?, " +
-                "image = ?, " +
-                "default_project_id = ? " +
-                "WHERE user_id = ?";
+        String sql = "UPDATE users SET username = ?, password = ?, "
+                + "first_name = ?, last_name = ?, image = ?, "
+                + "default_project_id = ? WHERE user_id = ?";
 
         // Test the object's validity
         Boolean valid = validate(user);
@@ -134,9 +128,9 @@ public class UserController extends BaseController {
     public User logInUser(String username, String password)
             throws SQLException {
         // The select query
-        String sql = "SELECT user_id, username, password, first_name, " +
-                "last_name, image, default_project_id FROM users " +
-                "WHERE username = ? AND password = ?";
+        String sql = "SELECT user_id, username, password, first_name, "
+                + "last_name, image, default_project_id FROM users "
+                + "WHERE username = ? AND password = ?";
 
         // Run the DB select statement
         try (Connection conn = this.newConnection();
@@ -151,16 +145,16 @@ public class UserController extends BaseController {
             if (queryResults.next()) {
                 // Assign the DB results to a user object
                 return new User(
-                        UUID.fromString(
-                                queryResults.getString("user_id")),
+                        UUID.fromString(queryResults.getString("user_id")),
                         queryResults.getString("username"),
                         queryResults.getString("password"),
                         queryResults.getString("first_name"),
                         queryResults.getString("last_name"),
                         queryResults.getBytes("image"),
-                        queryResults.getString("default_project_id") == null ? null
-                                : UUID.fromString(
-                                        queryResults.getString("default_project_id")));
+                        queryResults.getString("default_project_id") == null
+                                ? null
+                                : UUID.fromString(queryResults
+                                        .getString("default_project_id")));
             } else {
                 // If the user is invalid
                 return null;
@@ -178,12 +172,11 @@ public class UserController extends BaseController {
      * @param username the user's username
      * @return a user
      */
-    public User findUser(String username)
-            throws SQLException {
+    public User findUser(String username) throws SQLException {
         // The select query
-        String sql = "SELECT user_id, username, password, first_name, " +
-                "last_name, image, default_project_id FROM users " +
-                "WHERE username = ?";
+        String sql = "SELECT user_id, username, password, first_name, "
+                + "last_name, image, default_project_id FROM users "
+                + "WHERE username = ?";
 
         // Run the DB select statement
         try (Connection conn = this.newConnection();
@@ -197,16 +190,16 @@ public class UserController extends BaseController {
             if (queryResults.next()) {
                 // Assign the DB results to a user object
                 return new User(
-                        UUID.fromString(
-                                queryResults.getString("user_id")),
+                        UUID.fromString(queryResults.getString("user_id")),
                         queryResults.getString("username"),
                         queryResults.getString("password"),
                         queryResults.getString("first_name"),
                         queryResults.getString("last_name"),
                         queryResults.getBytes("image"),
-                        queryResults.getString("default_project_id") == null ? null
-                                : UUID.fromString(
-                                        queryResults.getString("default_project_id")));
+                        queryResults.getString("default_project_id") == null
+                                ? null
+                                : UUID.fromString(queryResults
+                                        .getString("default_project_id")));
             } else {
                 // If the user is invalid
                 return null;
@@ -227,12 +220,10 @@ public class UserController extends BaseController {
     private static boolean validate(User user) {
         boolean valid = false;
 
-        valid = user.getUserId() != null &&
-                user.getImage() != null &&
-                (user.getUsername() +
-                        user.getPassword() +
-                        user.getFirstName() +
-                        user.getLastName()).length() > 0;
+        valid = user.getUserId() != null && user.getImage() != null
+                && (user.getUsername() + user.getPassword()
+                        + user.getFirstName() + user.getLastName())
+                        .length() > 0;
 
         return valid;
     }

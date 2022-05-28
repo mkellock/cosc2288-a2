@@ -63,12 +63,14 @@ public class UserEdit {
         password.setText(user.getPassword());
         image = user.getImage();
 
-        userImage.setImage(new Image(new ByteArrayInputStream(user.getImage())));
+        userImage
+                .setImage(new Image(new ByteArrayInputStream(user.getImage())));
     }
 
     @FXML
     protected void initialize() throws IOException {
-        loadImage(getClass().getResource("/com/cosc2288/views/profile.jpg").getPath());
+        loadImage(getClass().getResource("/com/cosc2288/views/profile.jpg")
+                .getPath());
     }
 
     private void loadImage(String imagePath) throws IOException {
@@ -77,7 +79,7 @@ public class UserEdit {
         try (FileInputStream imageStream = new FileInputStream(imageFile)) {
             // Set the image into the private variable
             image = new byte[(int) imageFile.length()];
-            
+
             int count = 0;
             while (count >= 0) {
                 count = imageStream.read(image);
@@ -127,9 +129,10 @@ public class UserEdit {
     private void onImageClick() throws IOException {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Open Profile Image");
-        fileChooser.getExtensionFilters().addAll(
-                new ExtensionFilter("Image Files", "*.png", "*.jpg", "*.gif", "*.bmp"),
-                new ExtensionFilter("All Files", "*.*"));
+        fileChooser.getExtensionFilters()
+                .addAll(new ExtensionFilter("Image Files", "*.png", "*.jpg",
+                        "*.gif", "*.bmp"),
+                        new ExtensionFilter("All Files", "*.*"));
 
         File profileImageFile = fileChooser.showOpenDialog(stage);
 

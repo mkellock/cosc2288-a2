@@ -152,8 +152,8 @@ public class App extends Application {
 
     public static void main(String[] args) {
 
-        try (
-                FileInputStream settingsFile = new FileInputStream("app.properties")) {
+        try (FileInputStream settingsFile = new FileInputStream(
+                "app.properties")) {
             Properties appSettings = new Properties();
 
             // load config.properties file
@@ -172,7 +172,8 @@ public class App extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         // Load the log in scene
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("views/fxml/Main.fxml"));
+        FXMLLoader loader = new FXMLLoader(
+                getClass().getResource("views/fxml/Main.fxml"));
         Scene mainScene = new Scene(loader.load());
 
         // Set the app instance
@@ -190,7 +191,8 @@ public class App extends Application {
         primaryStage.show();
 
         // Load and show the login modal
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("views/fxml/Login.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(
+                getClass().getResource("views/fxml/Login.fxml"));
         Scene loginScene = new Scene(fxmlLoader.load());
 
         // Set the app instance
@@ -229,7 +231,8 @@ public class App extends Application {
         User user = userController.logInUser(username, password);
 
         if (user == null) {
-            addUserAlert.setContentText("Username and/or password is incorrect");
+            addUserAlert
+                    .setContentText("Username and/or password is incorrect");
             addUserAlert.show();
         } else {
             setLoggedInUser(user);
@@ -239,7 +242,8 @@ public class App extends Application {
 
     public void newEditUser(Boolean edit) throws IOException {
         // Load the main scene
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("views/fxml/UserEdit.fxml"));
+        FXMLLoader loader = new FXMLLoader(
+                getClass().getResource("views/fxml/UserEdit.fxml"));
         Scene scene = new Scene(loader.load());
 
         UserEdit userEdit = loader.<UserEdit>getController();
@@ -270,8 +274,7 @@ public class App extends Application {
         getLoginStage().showAndWait();
     }
 
-    public void newEditUserOk(User user)
-            throws SQLException {
+    public void newEditUserOk(User user) throws SQLException {
         Alert addUserAlert = new Alert(AlertType.ERROR);
         UserController userController = new UserController(connectionString);
 
@@ -281,7 +284,8 @@ public class App extends Application {
                 setLoggedInUser(user);
                 showMainScene();
             } else {
-                addUserAlert.setContentText("Username already exists, please enter another");
+                addUserAlert.setContentText(
+                        "Username already exists, please enter another");
                 addUserAlert.show();
             }
         } else {
@@ -313,7 +317,8 @@ public class App extends Application {
 
     public void projectAddEdit(Boolean edit) throws IOException {
         // Load the main scene
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("views/fxml/ProjectEdit.fxml"));
+        FXMLLoader loader = new FXMLLoader(
+                getClass().getResource("views/fxml/ProjectEdit.fxml"));
         Scene scene = new Scene(loader.load());
 
         ProjectEdit projectEdit = loader.<ProjectEdit>getController();
@@ -337,12 +342,13 @@ public class App extends Application {
     }
 
     public void projectOk(Project project) throws SQLException {
-        ProjectController projectController = new ProjectController(connectionString);
+        ProjectController projectController = new ProjectController(
+                connectionString);
 
         if (project.getProjectId() == null) {
-            projectController.addProject(
-                    new Project(UUID.randomUUID(), project.getName(), Instant.now().toEpochMilli(),
-                            getLoggedInUser().getUserId()));
+            projectController.addProject(new Project(UUID.randomUUID(),
+                    project.getName(), Instant.now().toEpochMilli(),
+                    getLoggedInUser().getUserId()));
         } else {
             projectController.editProject(project);
         }
@@ -356,7 +362,8 @@ public class App extends Application {
     }
 
     public void projectTaskOk(ProjectTask projectTask) throws SQLException {
-        ProjectTaskController projectController = new ProjectTaskController(connectionString);
+        ProjectTaskController projectController = new ProjectTaskController(
+                connectionString);
 
         if (projectTask.getProjectTaskId() == null) {
             projectTask.setProjectTaskId(UUID.randomUUID());
@@ -373,12 +380,15 @@ public class App extends Application {
         getTaskStage().close();
     }
 
-    public void projectColumnOk(ProjectColumn projectColumn) throws SQLException {
-        ProjectColumnController projectColumnController = new ProjectColumnController(connectionString);
+    public void projectColumnOk(ProjectColumn projectColumn)
+            throws SQLException {
+        ProjectColumnController projectColumnController = new ProjectColumnController(
+                connectionString);
 
         if (projectColumn.getProjectColumnId() == null) {
-            projectColumnController.addProjectColumn(
-                    new ProjectColumn(UUID.randomUUID(), projectColumn.getName(), 0, projectColumn.getProjectId()));
+            projectColumnController.addProjectColumn(new ProjectColumn(
+                    UUID.randomUUID(), projectColumn.getName(), 0,
+                    projectColumn.getProjectId()));
         } else {
             projectColumnController.editProjectColumn(projectColumn);
         }
@@ -395,33 +405,45 @@ public class App extends Application {
         if (getLoggedInUser() == null) {
             main.loadProjects(null, null, null);
         } else {
-            ProjectController projectController = new ProjectController(connectionString);
-            setProjects(projectController.loadProjects(getLoggedInUser().getUserId()));
+            ProjectController projectController = new ProjectController(
+                    connectionString);
+            setProjects(projectController
+                    .loadProjects(getLoggedInUser().getUserId()));
 
-            ProjectColumnController projectColumnController = new ProjectColumnController(connectionString);
-            ProjectTaskController projectTaskController = new ProjectTaskController(connectionString);
+            ProjectColumnController projectColumnController = new ProjectColumnController(
+                    connectionString);
+            ProjectTaskController projectTaskController = new ProjectTaskController(
+                    connectionString);
 
             for (Project project : getProjects()) {
-                project.setProjectColumns(projectColumnController.loadProjectColumns(project.getProjectId()));
+                project.setProjectColumns(projectColumnController
+                        .loadProjectColumns(project.getProjectId()));
 
-                for (ProjectColumn projectColumn : project.getProjectColumns()) {
+                for (ProjectColumn projectColumn : project
+                        .getProjectColumns()) {
                     projectColumn.setProjectTasks(
-                            projectTaskController.loadProjectTasks(projectColumn.getProjectColumnId()));
+                            projectTaskController.loadProjectTasks(
+                                    projectColumn.getProjectColumnId()));
                 }
             }
 
-            main.loadProjects(getProjects(), selectedProject.getProjectId(), getLoggedInUser().getDefaultProjectId());
+            main.loadProjects(getProjects(), selectedProject.getProjectId(),
+                    getLoggedInUser().getDefaultProjectId());
         }
     }
 
     public void deleteProject() throws SQLException {
-        ProjectColumnController projectColumnController = new ProjectColumnController(connectionString);
+        ProjectColumnController projectColumnController = new ProjectColumnController(
+                connectionString);
 
-        for (ProjectColumn projectColumn : getSelectedProject().getProjectColumns()) {
-            projectColumnController.deleteProjectColumn(projectColumn.getProjectColumnId());
+        for (ProjectColumn projectColumn : getSelectedProject()
+                .getProjectColumns()) {
+            projectColumnController
+                    .deleteProjectColumn(projectColumn.getProjectColumnId());
         }
 
-        ProjectController projectController = new ProjectController(connectionString);
+        ProjectController projectController = new ProjectController(
+                connectionString);
         projectController.deleteProject(getSelectedProject().getProjectId());
 
         loadProjects();
@@ -429,7 +451,8 @@ public class App extends Application {
 
     public void setDefaultProject() throws SQLException {
         // Set the default project
-        getLoggedInUser().setDefaultProjectId(getSelectedProject().getProjectId());
+        getLoggedInUser()
+                .setDefaultProjectId(getSelectedProject().getProjectId());
 
         // Save the user
         saveUser();
@@ -449,9 +472,11 @@ public class App extends Application {
         userController.editUser(getLoggedInUser());
     }
 
-    public void columnAddEdit(Boolean edit, ProjectColumn selectedProjectColumn) throws IOException {
+    public void columnAddEdit(Boolean edit, ProjectColumn selectedProjectColumn)
+            throws IOException {
         // Load the main scene
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("views/fxml/ColumnEdit.fxml"));
+        FXMLLoader loader = new FXMLLoader(
+                getClass().getResource("views/fxml/ColumnEdit.fxml"));
         Scene scene = new Scene(loader.load());
 
         ColumnEdit columnEdit = loader.<ColumnEdit>getController();
@@ -476,9 +501,11 @@ public class App extends Application {
         getColumnStage().show();
     }
 
-    public void taskAddEdit(Boolean edit, UUID projectColumnId, ProjectTask projectTask) throws IOException {
+    public void taskAddEdit(Boolean edit, UUID projectColumnId,
+            ProjectTask projectTask) throws IOException {
         // Load the main scene
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("views/fxml/TaskEdit.fxml"));
+        FXMLLoader loader = new FXMLLoader(
+                getClass().getResource("views/fxml/TaskEdit.fxml"));
         Scene scene = new Scene(loader.load());
 
         TaskEdit taskEdit = loader.<TaskEdit>getController();
@@ -503,29 +530,40 @@ public class App extends Application {
         getTaskStage().show();
     }
 
-    public void deleteProjectColumn(ProjectColumn selectedProjectColumn) throws SQLException {
-        ProjectColumnController projectColumnController = new ProjectColumnController(connectionString);
-        projectColumnController.deleteProjectColumn(selectedProjectColumn.getProjectColumnId());
+    public void deleteProjectColumn(ProjectColumn selectedProjectColumn)
+            throws SQLException {
+        ProjectColumnController projectColumnController = new ProjectColumnController(
+                connectionString);
+        projectColumnController.deleteProjectColumn(
+                selectedProjectColumn.getProjectColumnId());
         loadProjects();
     }
 
     public void deleteProjectTask(ProjectTask projectTask) throws SQLException {
-        ProjectTaskController projectTaskController = new ProjectTaskController(connectionString);
+        ProjectTaskController projectTaskController = new ProjectTaskController(
+                connectionString);
         projectTaskController.deleteProjectTask(projectTask.getProjectTaskId());
         loadProjects();
     }
 
-    public void dragProjectTask(UUID draggedProjectTaskId, ProjectTask projectTask) throws SQLException {
-        if (draggedProjectTaskId.compareTo(projectTask.getProjectTaskId()) != 0) {
-            ProjectTaskController projectTaskController = new ProjectTaskController(connectionString);
-            projectTaskController.moveTaskToPosition(draggedProjectTaskId, projectTask);
+    public void dragProjectTask(UUID draggedProjectTaskId,
+            ProjectTask projectTask) throws SQLException {
+        if (draggedProjectTaskId
+                .compareTo(projectTask.getProjectTaskId()) != 0) {
+            ProjectTaskController projectTaskController = new ProjectTaskController(
+                    connectionString);
+            projectTaskController.moveTaskToPosition(draggedProjectTaskId,
+                    projectTask);
             loadProjects();
         }
     }
 
-    public void dragProjectTask(UUID draggedProjectTaskId, ProjectColumn projectColumn) throws SQLException {
-        ProjectTaskController projectTaskController = new ProjectTaskController(connectionString);
-        projectTaskController.moveTaskToColumn(draggedProjectTaskId, projectColumn);
+    public void dragProjectTask(UUID draggedProjectTaskId,
+            ProjectColumn projectColumn) throws SQLException {
+        ProjectTaskController projectTaskController = new ProjectTaskController(
+                connectionString);
+        projectTaskController.moveTaskToColumn(draggedProjectTaskId,
+                projectColumn);
         loadProjects();
     }
 }

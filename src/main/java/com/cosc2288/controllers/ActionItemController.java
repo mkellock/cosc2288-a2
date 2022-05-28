@@ -34,9 +34,9 @@ public class ActionItemController extends BaseController {
      */
     public boolean addActionItem(ActionItem actionItem) throws SQLException {
         // The insert script
-        String sql = "INSERT INTO action_items " +
-                "(action_item_id, description, complete) " +
-                "VALUES (?, ?, ?)";
+        String sql = "INSERT INTO action_items "
+                + "(action_item_id, description, complete) "
+                + "VALUES (?, ?, ?)";
 
         // Test the object's validity
         Boolean valid = validate(actionItem);
@@ -72,10 +72,8 @@ public class ActionItemController extends BaseController {
      */
     public boolean editActionItem(ActionItem actionItem) throws SQLException {
         // The update script
-        String sql = "UPDATE action_items SET" +
-                "description = ?, " +
-                "complete = ? " +
-                "WHERE action_item_id = ?";
+        String sql = "UPDATE action_items SET description = ?, "
+                + "complete = ? WHERE action_item_id = ?";
 
         // Test the object's validity
         Boolean valid = validate(actionItem);
@@ -141,8 +139,8 @@ public class ActionItemController extends BaseController {
         LinkedList<ActionItem> returnVal = new LinkedList<>();
 
         // The select query
-        String sql = "SELECT action_item_id, description, complete " +
-                "FROM action_items WHERE project_task_id = ?";
+        String sql = "SELECT action_item_id, description, complete "
+                + "FROM action_items WHERE project_task_id = ?";
 
         // Run the DB select statement
         try (Connection conn = this.newConnection();
@@ -177,7 +175,7 @@ public class ActionItemController extends BaseController {
      */
     private static boolean validate(ActionItem actionItem) {
         // Check the validity of the object
-        return actionItem.getActionItemId() != null &&
-                actionItem.getDescription().length() != 0;
+        return actionItem.getActionItemId() != null
+                && actionItem.getDescription().length() != 0;
     }
 }

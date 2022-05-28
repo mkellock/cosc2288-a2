@@ -42,14 +42,8 @@ public class ProjectTask {
      * @param projectColumnId
      * @param actionItems
      */
-    public ProjectTask(
-            UUID projectTaskId,
-            String name,
-            String description,
-            int order,
-            Long dueDate,
-            Long completedDate,
-            UUID projectColumnId,
+    public ProjectTask(UUID projectTaskId, String name, String description,
+            int order, Long dueDate, Long completedDate, UUID projectColumnId,
             List<ActionItem> actionItems) {
         this.projectTaskId = projectTaskId;
         this.name = name;

@@ -35,9 +35,9 @@ public class ProjectController extends BaseController {
      */
     public boolean addProject(Project project) throws SQLException {
         // The insert script
-        String sql = "INSERT INTO projects " +
-                "(project_id, name, created, user_id) " +
-                "VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO projects "
+                + "(project_id, name, created, user_id) "
+                + "VALUES (?, ?, ?, ?)";
 
         // Test the object's validity
         Boolean valid = validate(project);
@@ -74,11 +74,8 @@ public class ProjectController extends BaseController {
      */
     public boolean editProject(Project project) throws SQLException {
         // The update script
-        String sql = "UPDATE projects SET " +
-                "name = ?, " +
-                "created = ?, " +
-                "user_id = ? " +
-                "WHERE project_id = ?";
+        String sql = "UPDATE projects SET name = ?, created = ?, "
+                + "user_id = ? WHERE project_id = ?";
 
         // Test the object's validity
         Boolean valid = validate(project);
@@ -144,8 +141,8 @@ public class ProjectController extends BaseController {
         LinkedList<Project> returnVal = new LinkedList<>();
 
         // The select query
-        String sql = "SELECT project_id, name, created, user_id " +
-                "FROM projects WHERE user_id = ?";
+        String sql = "SELECT project_id, name, created, user_id "
+                + "FROM projects WHERE user_id = ?";
 
         // Run the DB select statement
         try (Connection conn = this.newConnection();
@@ -157,12 +154,10 @@ public class ProjectController extends BaseController {
             while (queryResults.next()) {
                 // Add a new item
                 returnVal.add(new Project(
-                        UUID.fromString(
-                                queryResults.getString("project_id")),
+                        UUID.fromString(queryResults.getString("project_id")),
                         queryResults.getString("name"),
                         queryResults.getLong("created"),
-                        UUID.fromString(
-                                queryResults.getString("user_id"))));
+                        UUID.fromString(queryResults.getString("user_id"))));
             }
 
             // Return the result list
@@ -182,9 +177,8 @@ public class ProjectController extends BaseController {
      */
     private static boolean validate(Project project) {
         // Check the validity of the object
-        return project.getProjectId() != null &&
-                project.getName().length() != 0 &&
-                project.getUserId() != null;
+        return project.getProjectId() != null && project.getName().length() != 0
+                && project.getUserId() != null;
     }
 
 }
