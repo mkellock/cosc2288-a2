@@ -1,5 +1,5 @@
 /**
- * ActionItem
+ * Main
  *
  * v1.0
  *
@@ -10,16 +10,12 @@
 package com.cosc2288.views;
 
 import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.sql.SQLException;
 import java.util.List;
 import java.util.UUID;
-
 import com.cosc2288.App;
 import com.cosc2288.models.Project;
 import com.cosc2288.models.User;
 import com.cosc2288.views.controls.ProjectTab;
-
 import javafx.beans.binding.Bindings;
 import javafx.event.Event;
 import javafx.event.EventHandler;
@@ -71,14 +67,29 @@ public class Main {
 
     private App app;
 
+    
+    /** 
+     * Sets the app instance
+     * @param app
+     */
     public void setApp(App app) {
         this.app = app;
     }
 
+    
+    /** 
+     * Sets the quote message
+     * @param quoteMessage
+     */
     public void setQuote(String quoteMessage) {
         quote.setText(quoteMessage);
     }
 
+    
+    /** 
+     * Sets the user instance
+     * @param user
+     */
     public void setUser(User user) {
         if (user == null) {
             userFullName.setText(null);
@@ -91,24 +102,39 @@ public class Main {
         }
     }
 
+    
+    /** 
+     * Handles the Profile button event
+     */
     @FXML
-    private void profile() throws IOException {
+    private void profile() {
         // Show the profile dialog
         app.profile();
     }
 
+    
+    /** 
+     * Handles the Log Out button event
+     */
     @FXML
-    private void logOut() throws SQLException {
+    private void logOut() {
         // Log out the user
         app.logOut();
     }
 
+    
+    /** 
+     * Handles the New Project menu item
+     */
     @FXML
-    private void newProject() throws IOException {
+    private void newProject() {
         // Open the project edit dialog in add mode
         app.projectAddEdit(false);
     }
 
+    /**
+     * Handles enabling/disabling the default project menu items
+     */
     private void setDefaultMenuOptions() {
         // Check if we have a user set
         if (App.getLoggedInUser() != null) {
@@ -127,6 +153,13 @@ public class Main {
         }
     }
 
+    
+    /**
+     * Loads the projects into the view
+     * @param projects
+     * @param selectedProjectId
+     * @param defaultProjectId
+     */
     public void loadProjects(List<Project> projects, UUID selectedProjectId,
             UUID defaultProjectId) {
         // Clear the tabs
@@ -183,6 +216,11 @@ public class Main {
         }
     }
 
+    
+    /** 
+     * Selects a project by the project ID
+     * @param selectedProjectId
+     */
     private void selectTabByProjectId(UUID selectedProjectId) {
         // Loop through the tabs
         for (Tab projectTab : workArea.getTabs()) {
@@ -197,6 +235,11 @@ public class Main {
         }
     }
 
+    
+    /** 
+     * Colours the default project tab
+     * @param defaultProjectId
+     */
     private void colourDefaultTab(UUID defaultProjectId) {
         // Loop through the tabs
         for (Tab projectTab : workArea.getTabs()) {
@@ -214,8 +257,12 @@ public class Main {
         }
     }
 
+    
+    /** 
+     * Handles the project delete menu item
+     */
     @FXML
-    private void delete() throws SQLException {
+    private void delete() {
         // Delete the selected project
         app.deleteProject();
 
@@ -226,6 +273,11 @@ public class Main {
         }
     }
 
+    
+    /** 
+     * Sets the project menu item state
+     * @param state
+     */
     private void setProjectMenuItemsDisabled(boolean state) {
         addColumnMenuItem.setDisable(state);
         renameMenuItem.setDisable(state);
@@ -234,8 +286,12 @@ public class Main {
         deleteMenuItem.setDisable(state);
     }
 
+    
+    /** 
+     * Hanbles the Set Default menu item
+     */
     @FXML
-    private void setDefault() throws SQLException {
+    private void setDefault() {
         // Set the default tab colour
         colourDefaultTab(App.getSelectedProject().getProjectId());
 
@@ -246,8 +302,12 @@ public class Main {
         setDefaultMenuOptions();
     }
 
+    
+    /** 
+     * Handles the Unset Default menu item
+     */
     @FXML
-    private void unsetDefault() throws SQLException {
+    private void unsetDefault() {
         // Unset the default tab colour
         colourDefaultTab(null);
 
@@ -258,14 +318,22 @@ public class Main {
         setDefaultMenuOptions();
     }
 
+    
+    /** 
+     * Handles the Rename menu item
+     */
     @FXML
-    private void rename() throws IOException {
+    private void rename() {
         // Open the project edit dialog in edit mode
         app.projectAddEdit(true);
     }
 
+    
+    /** 
+     * Handles the Add Column menu item
+     */
     @FXML
-    private void addColumn() throws IOException {
+    private void addColumn() {
         // Open the column edit dialog in add mode
         app.columnAddEdit(false, null);
     }

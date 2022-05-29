@@ -1,12 +1,13 @@
+/**
+ * App
+ *
+ * v1.0
+ *
+ * 2022-04-12
+ *
+ * © 2022 Matthew Kellock
+ */
 package com.cosc2288;
-
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.sql.SQLException;
-import java.time.Instant;
-import java.util.List;
-import java.util.Properties;
-import java.util.UUID;
 
 import com.cosc2288.controllers.ProjectColumnController;
 import com.cosc2288.controllers.ProjectController;
@@ -19,7 +20,13 @@ import com.cosc2288.models.ProjectColumn;
 import com.cosc2288.models.ProjectTask;
 import com.cosc2288.models.User;
 import com.cosc2288.views.*;
-
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.sql.SQLException;
+import java.time.Instant;
+import java.util.List;
+import java.util.Properties;
+import java.util.UUID;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -44,10 +51,20 @@ public class App extends Application {
     private static List<Project> projects;
     private static List<ProjectColumn> projectColumns;
 
+    
+    /** 
+     * Gets the currently logged in user
+     * @return User
+     */
     public static User getLoggedInUser() {
         return loggedInUser;
     }
 
+    
+    /** 
+     * Sets the currently loged in user
+     * @param user
+     */
     public static void setLoggedInUser(User user) {
         // Set the user object
         loggedInUser = user;
@@ -63,62 +80,137 @@ public class App extends Application {
         getMainView().setUser(user);
     }
 
+    
+    /** 
+     * Returns the Main view controller
+     * @return Main
+     */
     public static Main getMain() {
         return main;
     }
 
+    
+    /** 
+     * Sets the main view controller
+     * @param main
+     */
     public static void setMain(Main main) {
         App.main = main;
     }
 
+    
+    /** 
+     * 
+     * @return Main view
+     */
     public static Main getMainView() {
         return mainView;
     }
 
+    
+    /** 
+     * Sets the main view
+     * @param main
+     */
     public static void setMainView(Main main) {
         mainView = main;
     }
 
+    
+    /** 
+     * Returns the login stage
+     * @return Stage
+     */
     public static Stage getLoginStage() {
         return loginStage;
     }
 
+    
+    /** 
+     * Sets the login stage
+     * @param loginStage
+     */
     public static void setLoginStage(Stage loginStage) {
         App.loginStage = loginStage;
     }
 
+    
+    /** 
+     * Gets the user stage
+     * @return Stage
+     */
     public static Stage getUserStage() {
         return userStage;
     }
 
+    
+    /** 
+     * Sets the user stage
+     * @param userStage
+     */
     public static void setUserStage(Stage userStage) {
         App.userStage = userStage;
     }
 
+    
+    /** 
+     * Gets the project stage
+     * @return Stage
+     */
     public static Stage getProjectStage() {
         return projectStage;
     }
 
+    
+    /** 
+     * Sets the project stage
+     * @param projectStage
+     */
     public static void setProjectStage(Stage projectStage) {
         App.projectStage = projectStage;
     }
 
+    
+    /** 
+     * Gets the task stage
+     * @return Stage
+     */
     public static Stage getTaskStage() {
         return taskStage;
     }
 
+    
+    /** 
+     * Sets the task stage
+     * @param taskStage
+     */
     public static void setTaskStage(Stage taskStage) {
         App.taskStage = taskStage;
     }
 
+    
+    /** 
+     * Gets the column stage
+     * @return Stage
+     */
     public static Stage getColumnStage() {
         return columnStage;
     }
 
+    
+    /** 
+     * Sets the column stage
+     * @param columnStage
+     */
     public static void setColumnStage(Stage columnStage) {
         App.columnStage = columnStage;
     }
 
+    
+    /** 
+     * Sets the selected project by ID
+     * @param projectId
+     */
     public static void setSelectedProjectById(UUID projectId) {
         for (Project project : getProjects()) {
             if (projectId.compareTo(project.getProjectId()) == 0) {
@@ -127,30 +219,65 @@ public class App extends Application {
         }
     }
 
+    
+    /** 
+     * Sets the selected project by project object
+     * @param project
+     */
     public static void setSelectedProject(Project project) {
         App.selectedProject = project;
     }
 
+    
+    /** 
+     * Gets the selected project
+     * @return Project
+     */
     public static Project getSelectedProject() {
         return selectedProject;
     }
 
+    
+    /** 
+     * Sets the list of the user's projects
+     * @param projects
+     */
     public static void setProjects(List<Project> projects) {
         App.projects = projects;
     }
 
+    
+    /** 
+     * Returns a list of the user's projects
+     * @return List<Project>
+     */
     public static List<Project> getProjects() {
         return projects;
     }
 
+    
+    /** 
+     * Sets the active project columns
+     * @param projectColumns
+     */
     public static void setProjectColumns(List<ProjectColumn> projectColumns) {
         App.projectColumns = projectColumns;
     }
 
+    
+    /** 
+     * Returns the active projects columns
+     * @return List<ProjectColumn>
+     */
     public static List<ProjectColumn> getProjectColumns() {
         return projectColumns;
     }
 
+    
+    /** 
+     * Main method that runs the application
+     * @param args
+     */
     public static void main(String[] args) {
 
         try (FileInputStream settingsFile = new FileInputStream(
@@ -170,6 +297,12 @@ public class App extends Application {
         launch(args);
     }
 
+    
+    /** 
+     * JavaFX start method to run the UI
+     * @param primaryStage
+     * @throws Exception
+     */
     @Override
     public void start(Stage primaryStage) throws Exception {
         try {
@@ -211,7 +344,7 @@ public class App extends Application {
             showLogin();
         } catch (Exception e) {
             // Pass the application exception to the handler
-            handleException(e);
+            handleException();
         }
     }
 
@@ -229,10 +362,12 @@ public class App extends Application {
         loadProjects();
     }
 
-    /**
-     * Log in methods
+    
+    /** 
+     * Logs in the user
+     * @param username
+     * @param password
      */
-
     public void loginOk(String username, String password) {
         try {
             UserController userController = new UserController(
@@ -251,10 +386,15 @@ public class App extends Application {
             }
         } catch (SQLException e) {
             // Pass the application exception to the handler
-            handleException(e);
+            handleException();
         }
     }
 
+    
+    /** 
+     * Shows the new/edit user dialog
+     * @param edit
+     */
     public void newEditUser(Boolean edit) {
         try {
             // Load the main scene
@@ -281,11 +421,12 @@ public class App extends Application {
             getUserStage().show();
         } catch (IOException e) {
             // Pass the application exception to the handler
-            handleException(e);
+            handleException();
         }
     }
 
     /**
+     * Cancels the new user dialog
      * New user methods
      */
 
@@ -294,6 +435,11 @@ public class App extends Application {
         getLoginStage().showAndWait();
     }
 
+    
+    /** 
+     * Commits a new/edited user to the database and closes the dialog
+     * @param user
+     */
     public void newEditUserOk(User user) {
         try {
             Alert addUserAlert = new Alert(AlertType.ERROR);
@@ -317,14 +463,12 @@ public class App extends Application {
             }
         } catch (SQLException e) {
             // Pass the application exception to the handler
-            handleException(e);
+            handleException();
         }
     }
 
     /**
-     * User management methods
-     * 
-     * @throws SQLException
+     * Logs out the current user
      */
     public void logOut() {
         setLoggedInUser(null);
@@ -333,14 +477,19 @@ public class App extends Application {
         getLoginStage().showAndWait();
     }
 
+    /**
+     * Edits the current user's profile
+     */
     public void profile() {
         newEditUser(true);
     }
 
-    /**
-     * Project management methods
-     */
 
+    
+    /** 
+     * Shows the new/edit project dialog
+     * @param edit
+     */
     public void projectAddEdit(Boolean edit) {
         try {
             // Load the main scene
@@ -368,10 +517,15 @@ public class App extends Application {
             getProjectStage().show();
         } catch (IOException e) {
             // Pass the application exception to the handler
-            handleException(e);
+            handleException();
         }
     }
 
+    
+    /** 
+     * Commits a new/edited project to the database and closes the dialog
+     * @param project
+     */
     public void projectOk(Project project) {
         try {
             ProjectController projectController = new ProjectController(
@@ -389,14 +543,22 @@ public class App extends Application {
             loadProjects();
         } catch (SQLException e) {
             // Pass the application exception to the handler
-            handleException(e);
+            handleException();
         }
     }
 
+    /**
+     * Cancels the project dialog
+     */
     public void projectCancel() {
         getProjectStage().close();
     }
 
+    
+    /** 
+     * Commits a new/edited project task to the datbase and closes the dialog
+     * @param projectTask
+     */
     public void projectTaskOk(ProjectTask projectTask) {
         try {
             ProjectTaskController projectController = new ProjectTaskController(
@@ -418,14 +580,22 @@ public class App extends Application {
             loadProjects();
         } catch (SQLException e) {
             // Pass the application exception to the handler
-            handleException(e);
+            handleException();
         }
     }
 
+    /**
+     * Cancels the project task dialog
+     */
     public void projectTaskCancel() {
         getTaskStage().close();
     }
 
+    
+    /** 
+     * Commits the project column to the database and closes the dialog
+     * @param projectColumn
+     */
     public void projectColumnOk(ProjectColumn projectColumn) {
         try {
             ProjectColumnController projectColumnController =
@@ -443,14 +613,20 @@ public class App extends Application {
             loadProjects();
         } catch (SQLException e) {
             // Pass the application exception to the handler
-            handleException(e);
+            handleException();
         }
     }
 
+    /**
+     * Closes the project column dialog
+     */
     public void projectColumnCancel() {
         getColumnStage().close();
     }
 
+    /**
+     * Loads the user's projects
+     */
     public void loadProjects() {
         try {
             if (getLoggedInUser() == null) {
@@ -496,10 +672,13 @@ public class App extends Application {
             }
         } catch (SQLException e) {
             // Pass the application exception to the handler
-            handleException(e);
+            handleException();
         }
     }
 
+    /**
+     * Deletes the active project
+     */
     public void deleteProject() {
         try {
             ProjectColumnController projectColumnController =
@@ -520,37 +699,36 @@ public class App extends Application {
             loadProjects();
         } catch (SQLException e) {
             // Pass the application exception to the handler
-            handleException(e);
+            handleException();
         }
     }
 
+    /**
+     * Sets the active project as default
+     */
     public void setDefaultProject() {
-        try {
-            // Set the default project
-            getLoggedInUser()
-                    .setDefaultProjectId(getSelectedProject().getProjectId());
+        // Set the default project
+        getLoggedInUser()
+                .setDefaultProjectId(getSelectedProject().getProjectId());
 
-            // Save the user
-            saveUser();
-        } catch (SQLException e) {
-            // Pass the application exception to the handler
-            handleException(e);
-        }
+        // Save the user
+        saveUser();
     }
 
+    /**
+     * Unsets the default project
+     */
     public void unsetDefaultProject() {
-        try {
-            // Set the default project to null
-            getLoggedInUser().setDefaultProjectId(null);
+        // Set the default project to null
+        getLoggedInUser().setDefaultProjectId(null);
 
-            // Save the user
-            saveUser();
-        } catch (SQLException e) {
-            // Pass the application exception to the handler
-            handleException(e);
-        }
+        // Save the user
+        saveUser();
     }
 
+    /**
+     * Saves the current user
+     */
     private void saveUser() {
         try {
             // Save the current user
@@ -559,10 +737,16 @@ public class App extends Application {
             userController.editUser(getLoggedInUser());
         } catch (SQLException e) {
             // Pass the application exception to the handler
-            handleException(e);
+            handleException();
         }
     }
 
+    
+    /** 
+     * Shows the new/edit column dialog
+     * @param edit
+     * @param selectedProjectColumn
+     */
     public void columnAddEdit(Boolean edit,
             ProjectColumn selectedProjectColumn) {
         try {
@@ -593,10 +777,17 @@ public class App extends Application {
             getColumnStage().show();
         } catch (IOException e) {
             // Pass the application exception to the handler
-            handleException(e);
+            handleException();
         }
     }
 
+    
+    /** 
+     * Shows the task add/edit dialog
+     * @param edit
+     * @param projectColumnId
+     * @param projectTask
+     */
     public void taskAddEdit(Boolean edit, UUID projectColumnId,
             ProjectTask projectTask) {
         try {
@@ -627,10 +818,15 @@ public class App extends Application {
             getTaskStage().show();
         } catch (IOException e) {
             // Pass the application exception to the handler
-            handleException(e);
+            handleException();
         }
     }
 
+    
+    /** 
+     * Deletes a project column
+     * @param selectedProjectColumn
+     */
     public void deleteProjectColumn(ProjectColumn selectedProjectColumn) {
         try {
             ProjectColumnController projectColumnController =
@@ -640,10 +836,15 @@ public class App extends Application {
             loadProjects();
         } catch (SQLException e) {
             // Pass the application exception to the handler
-            handleException(e);
+            handleException();
         }
     }
 
+    
+    /** 
+     * Deletes a project task
+     * @param projectTask
+     */
     public void deleteProjectTask(ProjectTask projectTask) {
         try {
             ProjectTaskController projectTaskController =
@@ -653,10 +854,16 @@ public class App extends Application {
             loadProjects();
         } catch (SQLException e) {
             // Pass the application exception to the handler
-            handleException(e);
+            handleException();
         }
     }
 
+    
+    /** 
+     * Handles a drag event of a project task to another project task
+     * @param draggedProjectTaskId
+     * @param projectTask
+     */
     public void dragProjectTask(UUID draggedProjectTaskId,
             ProjectTask projectTask) {
         try {
@@ -670,10 +877,16 @@ public class App extends Application {
             }
         } catch (SQLException e) {
             // Pass the application exception to the handler
-            handleException(e);
+            handleException();
         }
     }
 
+    
+    /** 
+     * Handles a drag event of a project task to another column
+     * @param draggedProjectTaskId
+     * @param projectColumn
+     */
     public void dragProjectTask(UUID draggedProjectTaskId,
             ProjectColumn projectColumn) {
         try {
@@ -684,11 +897,16 @@ public class App extends Application {
             loadProjects();
         } catch (SQLException e) {
             // Pass the application exception to the handler
-            handleException(e);
+            handleException();
         }
     }
 
-    private void handleException(Exception ex) {
+    
+    /** 
+     * Handles exceptions
+     * @param ex
+     */
+    private void handleException() {
         System.out.println("---------");
         System.out.println("There was an exception in the application, " +
                 "it is safer for the app to close than continue!");

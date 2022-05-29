@@ -31,6 +31,7 @@ public class ActionItem {
      * @param actionItemId
      * @param description
      * @param complete
+     * @param projectTaskID
      */
     public ActionItem(UUID actionItemId, String description, boolean complete,
             UUID projectTaskID) {
@@ -41,56 +42,66 @@ public class ActionItem {
     }
 
     /**
-     * @return the actionItemId
+     * Returns the action item ID
+     * @return UUID
      */
     public UUID getActionItemId() {
         return actionItemId;
     }
 
     /**
-     * @param actionItemId the actionItemId to set
+     * Sets the action item ID
+     * 
+     * @param actionItemId
      */
     public void setActionItemId(UUID actionItemId) {
         this.actionItemId = actionItemId;
     }
 
     /**
-     * @return the description
+     * Returns the description
+     * 
+     * @return String
      */
     public String getDescription() {
         return description;
     }
 
     /**
-     * @param description the description to set
+     * Sets the description
+     * @param description
      */
     public void setDescription(String description) {
         this.description = description;
     }
 
     /**
-     * @return the complete
+     * Returns id the action item is complete
+     * @return boolean
      */
     public boolean isComplete() {
         return complete;
     }
 
     /**
-     * @param complete the complete to set
+     * Sets the complete status of the action item
+     * @param complete
      */
     public void setComplete(boolean complete) {
         this.complete = complete;
     }
 
     /**
-     * @return the projectTaskID
+     * Returns the project task ID
+     * @return UUID
      */
     public UUID getProjectTaskId() {
         return projectTaskID;
     }
 
     /**
-     * @param projectTaskID the actionItemId to set
+     * Sets the project task ID
+     * @param projectTaskID
      */
     public void setProjectTaskId(UUID projectTaskID) {
         this.projectTaskID = projectTaskID;

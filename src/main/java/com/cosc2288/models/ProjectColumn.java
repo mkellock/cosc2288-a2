@@ -44,65 +44,83 @@ public class ProjectColumn {
     }
 
     /**
-     * @return the projectColumnId
+     * Returns the project column ID
+     * @return UUID
      */
     public UUID getProjectColumnId() {
         return projectColumnId;
     }
 
     /**
-     * @param projectColumnId the projectColumnId to set
+     * Sets the project column ID
+     * @param projectColumnId
      */
     public void setProjectColumnId(UUID projectColumnId) {
         this.projectColumnId = projectColumnId;
     }
 
     /**
-     * @return the name
+     * Returns the name
+     * @return String
      */
     public String getName() {
         return name;
     }
 
     /**
-     * @param name the name to set
+     * Sets the name
+     * @param name
      */
     public void setName(String name) {
         this.name = name;
     }
 
     /**
-     * @return the order
+     * Returns the order no.
+     * @return int
      */
     public int getOrder() {
         return order;
     }
 
     /**
-     * @param order the order to set
+     * Sets the order no.
+     * @param order
      */
     public void setOrder(int order) {
         this.order = order;
     }
 
     /**
-     * @return the projectId
+     * Returns the project ID
+     * @return UUID
      */
     public UUID getProjectId() {
         return projectId;
     }
 
     /**
-     * @param projectId the projectId to set
+     * Sets the project ID
+     * @param projectId
      */
     public void setProjectId(UUID projectId) {
         this.projectId = projectId;
     }
 
+    
+    /** 
+     * Returns the project tasks
+     * @return List<ProjectTask>
+     */
     public List<ProjectTask> getProjectTasks() {
         return projectTasks;
     }
 
+    
+    /** 
+     * Sets the project tasks
+     * @param projectTasks
+     */
     public void setProjectTasks(List<ProjectTask> projectTasks) {
         this.projectTasks = projectTasks;
     }

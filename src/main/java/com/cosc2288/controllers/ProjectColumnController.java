@@ -128,7 +128,6 @@ public class ProjectColumnController extends BaseController {
      * Deletes a project column
      * 
      * @param projectColumnId the project column id to be deleted
-     * @param sessionFactory  the ORM session factory
      * @throws SQLException
      */
     public boolean deleteProjectColumn(UUID projectColumnId)

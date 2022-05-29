@@ -33,6 +33,12 @@ public class ProjectTaskController extends BaseController {
         this.connectionString = connectionString;
     }
 
+    
+    /** 
+     * @param projectColumnId
+     * @return int
+     * @throws SQLException
+     */
     private int maxColumnOrder(UUID projectColumnId) throws SQLException {
         // Default return val
         int returnVal = 0;
@@ -231,7 +237,6 @@ public class ProjectTaskController extends BaseController {
      * 
      * @param projectColumnId the project column id attached to the project
      *                        tasks
-     * @param sessionFactory  the ORM session factory
      * @return a list of project tasks
      * @throws SQLException
      */
@@ -286,6 +291,13 @@ public class ProjectTaskController extends BaseController {
         }
     }
 
+    
+    /** 
+     * @param draggedProjectTaskId
+     * @param projectTask
+     * @return boolean
+     * @throws SQLException
+     */
     public boolean moveTaskToPosition(UUID draggedProjectTaskId,
             ProjectTask projectTask) throws SQLException {
         // Update script to set all tickets with a higher order to +1
@@ -327,6 +339,13 @@ public class ProjectTaskController extends BaseController {
         return true;
     }
 
+    
+    /** 
+     * @param draggedProjectTaskId
+     * @param projectColumn
+     * @return boolean
+     * @throws SQLException
+     */
     public boolean moveTaskToColumn(UUID draggedProjectTaskId,
             ProjectColumn projectColumn) throws SQLException {
         int columnPosition = maxColumnOrder(projectColumn.getProjectColumnId())

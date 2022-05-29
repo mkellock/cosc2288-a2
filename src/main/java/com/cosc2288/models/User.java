@@ -50,98 +50,112 @@ public class User {
     }
 
     /**
-     * @return the userId
+     * Gets the user ID
+     * @return UUID
      */
     public UUID getUserId() {
         return userId;
     }
 
     /**
-     * @param userId the userId to set
+     * Sets the user ID
+     * @param userId
      */
     public void setUserId(UUID userId) {
         this.userId = userId;
     }
 
     /**
-     * @return the username
+     * Gets the username
+     * @return String
      */
     public String getUsername() {
         return username;
     }
 
     /**
-     * @param username the username to set
+     * Sets the username
+     * @param username
      */
     public void setUsername(String username) {
         this.username = username;
     }
 
     /**
-     * @return the password
+     * Gets the password
+     * @return String
      */
     public String getPassword() {
         return password;
     }
 
     /**
-     * @param password the password to set
+     * Sets the password
+     * @param password
      */
     public void setPassword(String password) {
         this.password = password;
     }
 
     /**
-     * @return the firstName
+     * Returns the first name
+     * @return String
      */
     public String getFirstName() {
         return firstName;
     }
 
     /**
-     * @param firstName the firstName to set
+     * Sets the first name
+     * @param firstName
      */
     public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
 
     /**
-     * @return the lastName
+     * Returns the last name
+     * @return String
      */
     public String getLastName() {
         return lastName;
     }
 
     /**
-     * @param lastName the lastName to set
+     * Sets the last name
+     * @param lastName
      */
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
 
     /**
-     * @return the image
+     * Returns the profile image
+     * @return byte[]
      */
     public byte[] getImage() {
         return image;
     }
 
     /**
-     * @param image the image to set
+     * Sets the profile image
+     * @param image
      */
     public void setImage(byte[] image) {
         this.image = image;
     }
 
     /**
-     * @return the defaultProjectId
+     * Gets the default project ID
+     * @return UUID
      */
     public UUID getDefaultProjectId() {
         return defaultProjectId;
     }
 
     /**
-     * @param defaultProjectId the defaultProjectId to set
+     * Sets the default project ID
+     * @param defaultProjectId
      */
     public void setDefaultProjectId(UUID defaultProjectId) {
         this.defaultProjectId = defaultProjectId;

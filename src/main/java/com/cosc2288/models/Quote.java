@@ -30,14 +30,16 @@ public class Quote {
     }
 
     /**
-     * @return the quote
+     * Gets the quote message
+     * @return String
      */
     public String getMessage() {
         return message;
     }
 
     /**
-     * @param message the message to set
+     * Sets the quote message
+     * @param message
      */
     public void setMessage(String message) {
         this.message = message;

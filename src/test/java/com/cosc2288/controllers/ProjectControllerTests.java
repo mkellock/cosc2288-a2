@@ -28,6 +28,10 @@ public class ProjectControllerTests extends BaseTests {
     private UUID USER_ID = UUID
             .fromString("b45542c8-f159-4b3d-a268-dcabfaa7443a");
 
+    
+    /** 
+     * @throws SQLException
+     */
     @Test
     void shouldAddProject() throws SQLException {
         // Set up test variables
@@ -53,6 +57,10 @@ public class ProjectControllerTests extends BaseTests {
                 new Gson().toJson(projectLoaded));
     }
 
+    
+    /** 
+     * @throws SQLException
+     */
     @Test
     void shouldEditProject() throws SQLException {
         // Set up test variables
@@ -80,6 +88,10 @@ public class ProjectControllerTests extends BaseTests {
                 new Gson().toJson(projectLoaded));
     }
 
+    
+    /** 
+     * @throws SQLException
+     */
     @Test
     void shouldDeleteProject() throws SQLException {
         final UUID projectId = UUID
@@ -102,6 +114,10 @@ public class ProjectControllerTests extends BaseTests {
         Assertions.assertFalse(result);
     }
 
+    
+    /** 
+     * @throws SQLException
+     */
     @Test
     void shouldLoadProjects() throws SQLException {
         // Check that we have elements

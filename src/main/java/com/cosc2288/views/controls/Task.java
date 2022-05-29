@@ -1,15 +1,22 @@
+/**
+ * Task
+ *
+ * v1.0
+ *
+ * 2022-05-29
+ *
+ * © 2022 Matthew Kellock
+ */
 package com.cosc2288.views.controls;
-
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.time.format.FormatStyle;
-import java.util.UUID;
 
 import com.cosc2288.App;
 import com.cosc2288.models.ActionItem;
 import com.cosc2288.models.ProjectColumn;
 import com.cosc2288.models.ProjectTask;
-
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
+import java.util.UUID;
 import javafx.beans.binding.Bindings;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -22,6 +29,13 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Font;
 
 public class Task extends AnchorPane {
+
+    /**
+     * Initializes a project task
+     * @param app
+     * @param projectColumn
+     * @param projectTask
+     */
     public Task(App app, ProjectColumn projectColumn, ProjectTask projectTask) {
         this.styleProperty().bind(Bindings.format(
                 "-fx-border-insets: 1;" +

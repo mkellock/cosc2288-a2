@@ -28,6 +28,10 @@ public class UserControllerTests extends BaseTests {
     private static final byte[] IMAGE = { 0x00, 0x01, 0x02 };
     private static final UUID DEFAULT_PROJECT_ID = UUID.randomUUID();
 
+    
+    /** 
+     * @throws SQLException
+     */
     @Test
     void ShouldAddUser() throws SQLException {
         // Set up test variables
@@ -46,6 +50,10 @@ public class UserControllerTests extends BaseTests {
                 .toJson(userController.logInUser(username, password)));
     }
 
+    
+    /** 
+     * @throws SQLException
+     */
     @Test
     void ShouldEditUser() throws SQLException {
         // Set the user
@@ -64,6 +72,10 @@ public class UserControllerTests extends BaseTests {
         Assertions.assertEquals(user.getFirstName(), userLoad.getFirstName());
     }
 
+    
+    /** 
+     * @throws SQLException
+     */
     @Test
     void ShouldLogInUser() throws SQLException {
         // Load the user
@@ -74,6 +86,10 @@ public class UserControllerTests extends BaseTests {
         Assertions.assertEquals(USER_ID, user.getUserId());
     }
 
+    
+    /** 
+     * @throws SQLException
+     */
     @Test
     void ShouldFindUser() throws SQLException {
         // Load the user

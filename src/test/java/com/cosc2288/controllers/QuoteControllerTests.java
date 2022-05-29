@@ -15,6 +15,10 @@ import org.junit.jupiter.api.Test;
 
 public class QuoteControllerTests extends BaseTests {
 
+    
+    /** 
+     * @throws SQLException
+     */
     @Test
     void ShouldLoadRandomQuote() throws SQLException {
         // Instantiate a new controller

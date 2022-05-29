@@ -1,9 +1,17 @@
+/**
+ * ProjectTab
+ *
+ * v1.0
+ *
+ * 2022-05-29
+ *
+ * © 2022 Matthew Kellock
+ */
 package com.cosc2288.views.controls;
 
 import com.cosc2288.App;
 import com.cosc2288.models.Project;
 import com.cosc2288.models.ProjectColumn;
-
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Tab;
 import javafx.scene.layout.AnchorPane;
@@ -12,6 +20,11 @@ import javafx.scene.layout.HBox;
 public class ProjectTab extends Tab {
     private HBox hbox;
 
+    /**
+     * Initializes a project tab
+     * @param app
+     * @param project
+     */
     public ProjectTab(App app, Project project) {
         // Create a new anchor pane
         AnchorPane anchorPane = new AnchorPane();

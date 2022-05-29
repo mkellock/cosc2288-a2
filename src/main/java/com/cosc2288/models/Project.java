@@ -43,41 +43,47 @@ public class Project {
     }
 
     /**
-     * @return the projectId
+     * Returns the project ID
+     * @return UUID
      */
     public UUID getProjectId() {
         return projectId;
     }
 
     /**
-     * @param projectId the projectId to set
+     * Sets the project ID
+     * @param projectId
      */
     public void setProjectId(UUID projectId) {
         this.projectId = projectId;
     }
 
     /**
-     * @return the name
-     */
+    * Gets the project name
+    * @return String
+    */
     public String getName() {
         return name;
     }
 
     /**
-     * @param name the name to set
+     * Sets the project name
+     * @param name
      */
     public void setName(String name) {
         this.name = name;
     }
 
     /**
-     * @return the created
+     * Returns the created date (as a long)
+     * @return Long
      */
     public Long getCreated() {
         return created;
     }
 
     /**
+     * Sets the created date (as a long)
      * @param created the created to set
      */
     public void setCreated(Long created) {
@@ -85,23 +91,35 @@ public class Project {
     }
 
     /**
-     * @return the userId
+     * Returns the user ID pf the project
+     * @return UUID
      */
     public UUID getUserId() {
         return userId;
     }
 
     /**
+     * Sets the user ID of the project
      * @param userId the userId to set
      */
     public void setUserId(UUID userId) {
         this.userId = userId;
     }
 
+    
+    /** 
+     * Returns the project's columns
+     * @return List<ProjectColumn>
+     */
     public List<ProjectColumn> getProjectColumns() {
         return projectColumns;
     }
 
+    
+    /** 
+     * Sets the project's columns
+     * @param projectColumns
+     */
     public void setProjectColumns(List<ProjectColumn> projectColumns) {
         this.projectColumns = projectColumns;
     }

@@ -1,14 +1,20 @@
+/**
+ * TaskEdit
+ *
+ * v1.0
+ *
+ * 2022-05-29
+ *
+ * © 2022 Matthew Kellock
+ */
 package com.cosc2288.views;
 
-import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.LinkedList;
 import java.util.UUID;
-
 import com.cosc2288.App;
 import com.cosc2288.models.ActionItem;
 import com.cosc2288.models.ProjectTask;
-
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -32,45 +38,85 @@ import javafx.scene.paint.Paint;
 
 public class TaskEdit {
 
+    /**
+     * Class to represent a check list action item for the list
+     */
     public static class CheckListActionItem {
         private final UUID actionItemId;
         private final StringProperty name = new SimpleStringProperty();
         private final BooleanProperty on = new SimpleBooleanProperty();
 
+        /**
+         * Constructor for the check list action item
+         * @param id
+         * @param name
+         * @param on
+         */
         public CheckListActionItem(UUID id, String name, boolean on) {
             this.actionItemId = id;
             setName(name);
             setOn(on);
         }
 
+        /**
+         * Returns the name property of the list item
+         * @return StringProperty
+         */
         public final StringProperty nameProperty() {
             return this.name;
         }
 
+        /**
+         * Gets the name of the list item
+         * @return String
+         */
         public final String getName() {
             return this.nameProperty().get();
         }
 
+        /**
+         * Sets the name of the list item
+         * @param name
+         */
         public final void setName(final String name) {
             this.nameProperty().set(name);
         }
 
+        /**
+         * Returns the checkstate of the list item
+         * @return BooleanProperty
+         */
         public final BooleanProperty onProperty() {
             return this.on;
         }
 
+        /**
+         * Returns if the current state of the list item is checked
+         * @return
+         */
         public final boolean isOn() {
             return this.onProperty().get();
         }
 
+        /**
+         * Sets the checked state of the list item
+         * @param on
+         */
         public final void setOn(final boolean on) {
             this.onProperty().set(on);
         }
 
+        /**
+         * Gets the ID of the list item
+         * @return
+         */
         public final UUID getId() {
             return actionItemId;
         }
 
+        /**
+         * Returns the name of the list item when calling toString
+         */
         @Override
         public String toString() {
             return getName();
@@ -103,10 +149,16 @@ public class TaskEdit {
     private UUID projectColumnId;
     private ProjectTask projectTask = new ProjectTask();
 
+    /**
+     * Constructor of the task edit view
+     */
     public TaskEdit() {
         projectTask.setActionItems(new LinkedList<>());
     }
 
+    /**
+     * Initialise the view
+     */
     public void initialize() {
         actionItems.setCellFactory(
                 CheckBoxListCell.forListView(CheckListActionItem::onProperty));
@@ -114,15 +166,30 @@ public class TaskEdit {
         onDueDateChange();
     }
 
+    
+    /** 
+     * Sets the App instance
+     * @param app
+     */
     public void setApp(App app) {
         this.app = app;
     }
 
+    
+    /** 
+     * Sets the project column id
+     * @param projectColumnId
+     */
     public void setColumn(UUID projectColumnId) {
         // Set the project column object
         this.projectColumnId = projectColumnId;
     }
 
+    
+    /** 
+     * Sets the project task
+     * @param projectTask
+     */
     public void setProjectTask(ProjectTask projectTask) {
         if (projectTask != null) {
             this.projectTask = projectTask;
@@ -145,8 +212,12 @@ public class TaskEdit {
         }
     }
 
+    
+    /** 
+     * Handles the Ok button event
+     */
     @FXML
-    private void ok() throws SQLException {
+    private void ok() {
         Alert loginAlert = new Alert(AlertType.ERROR);
 
         // Validate we have a project name
@@ -177,7 +248,7 @@ public class TaskEdit {
     }
 
     /**
-     * Handler for due date changes
+     * Handles due date field changes
      */
     @FXML
     private void onDueDateChange() {
@@ -235,6 +306,13 @@ public class TaskEdit {
         }
     }
 
+    
+    /** 
+     * Adds an action item to the list
+     * @param id
+     * @param description
+     * @param checked
+     */
     private void addActionItemToList(UUID id, String description,
             Boolean checked) {
         // Create a new CheckListActionItem for the list
@@ -270,6 +348,9 @@ public class TaskEdit {
         updateCompletion();
     }
 
+    /**
+     * Updates the completion bar
+     */
     private void updateCompletion() {
         // Set the completed item count to 0
         int completedItemCount = 0;

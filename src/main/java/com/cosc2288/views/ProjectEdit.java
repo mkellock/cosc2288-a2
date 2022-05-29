@@ -1,10 +1,16 @@
+/**
+ * ProjectEdit
+ *
+ * v1.0
+ *
+ * 2022-05-29
+ *
+ * © 2022 Matthew Kellock
+ */
 package com.cosc2288.views;
-
-import java.sql.SQLException;
 
 import com.cosc2288.App;
 import com.cosc2288.models.Project;
-
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -24,10 +30,20 @@ public class ProjectEdit {
     private App app;
     private Project proj = new Project();
 
+    
+    /** 
+     * Sets the App instance
+     * @param app
+     */
     public void setApp(App app) {
         this.app = app;
     }
 
+    
+    /** 
+     * Sets the project
+     * @param project
+     */
     public void setProject(Project project) {
         // Set the project object
         this.proj = project;
@@ -38,8 +54,12 @@ public class ProjectEdit {
         }
     }
 
+    
+    /** 
+     * Handles the Ok button event
+     */
     @FXML
-    private void ok() throws SQLException {
+    private void ok() {
         Alert loginAlert = new Alert(AlertType.ERROR);
 
         // Validate we have a project name
@@ -60,6 +80,9 @@ public class ProjectEdit {
         }
     }
 
+    /**
+     * Handles the Cancel button event
+     */
     @FXML
     private void cancel() {
         app.projectCancel();

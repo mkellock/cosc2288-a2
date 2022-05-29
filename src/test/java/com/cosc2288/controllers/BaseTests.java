@@ -13,10 +13,18 @@ abstract class BaseTests {
 
     private final static String JDBC_CONN_PREXIX = "jdbc:sqlite:";
 
+    
+    /** 
+     * @return String
+     */
     protected static String getTestConnString() {
         return testConnString;
     }
 
+    
+    /** 
+     * @throws IOException
+     */
     @BeforeAll
     protected static void ProvisionDB() throws IOException {
         // Generate a unique DB name
@@ -31,6 +39,10 @@ abstract class BaseTests {
         testConnString = JDBC_CONN_PREXIX + testConnString;
     }
 
+    
+    /** 
+     * @throws IOException
+     */
     @AfterAll
     protected static void DeprovisionDB() throws IOException {
         File dest = new File(testConnString.replace(JDBC_CONN_PREXIX, ""));

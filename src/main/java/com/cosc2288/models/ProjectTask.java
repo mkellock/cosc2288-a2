@@ -56,107 +56,131 @@ public class ProjectTask {
     }
 
     /**
-     * @return the projectTaskId
+     * Gets the project task ID
+     * @return UUID
      */
     public UUID getProjectTaskId() {
         return projectTaskId;
     }
 
     /**
-     * @param projectTaskId the projectTaskId to set
+     * Sets the project task ID
+     * @param projectTaskId
      */
     public void setProjectTaskId(UUID projectTaskId) {
         this.projectTaskId = projectTaskId;
     }
 
     /**
-     * @return the name
+     * Gets the project task name
+     * @return String
      */
     public String getName() {
         return name;
     }
 
     /**
-     * @param name the name to set
+     * Sets the project task name
+     * @param name
      */
     public void setName(String name) {
         this.name = name;
     }
 
     /**
-     * @return the description
+     * Gets the description
+     * @return String
      */
     public String getDescription() {
         return description;
     }
 
     /**
-     * @param description the description to set
+     * Sets the description
+     * @param description
      */
     public void setDescription(String description) {
         this.description = description;
     }
 
     /**
-     * @return the order
+     * Returns the project task order
+     * @return int
      */
     public int getOrder() {
         return order;
     }
 
     /**
-     * @param order the order to set
+     * Sets the project task order
+     * @param order
      */
     public void setOrder(int order) {
         this.order = order;
     }
 
     /**
-     * @return the dueDate
+     * Gets the due date
+     * @return Long
      */
     public Long getDueDate() {
         return dueDate;
     }
 
     /**
-     * @param dueDate the dueDate to set
+     * Sets the due date
+     * @param dueDate
      */
     public void setDueDate(Long dueDate) {
         this.dueDate = dueDate;
     }
 
     /**
-     * @return the completedDate
+     * Gets the completed date
+     * @return Long
      */
     public Long getCompletedDate() {
         return completedDate;
     }
 
     /**
-     * @param completedDate the completedDate to set
+     * Sets the completed date
+     * @param completedDate
      */
     public void setCompletedDate(Long completedDate) {
         this.completedDate = completedDate;
     }
 
     /**
-     * @return the projectColumnId
+     * Returns the project column ID
+     * @return UUID
      */
     public UUID getProjectColumnId() {
         return projectColumnId;
     }
 
     /**
-     * @param projectColumnId the projectColumnId to set
+     * Sets the project column ID
+     * @param projectColumnId
      */
     public void setProjectColumnId(UUID projectColumnId) {
         this.projectColumnId = projectColumnId;
     }
 
+    
+    /** 
+     * Returns the action items
+     * @return List<ActionItem>
+     */
     public List<ActionItem> getActionItems() {
         return actionItems;
     }
 
+    
+    /** 
+     * Sets the action items
+     * @param actionItems
+     */
     public void setActionItems(List<ActionItem> actionItems) {
         this.actionItems = actionItems;
     }

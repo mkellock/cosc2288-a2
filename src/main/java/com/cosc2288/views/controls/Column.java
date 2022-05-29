@@ -1,13 +1,20 @@
+/**
+ * Column
+ *
+ * v1.0
+ *
+ * 2022-05-29
+ *
+ * © 2022 Matthew Kellock
+ */
 package com.cosc2288.views.controls;
-
-import java.util.LinkedList;
-import java.util.UUID;
 
 import com.cosc2288.App;
 import com.cosc2288.models.ProjectColumn;
 import com.cosc2288.models.ProjectTask;
-
 import javafx.beans.binding.Bindings;
+import java.util.LinkedList;
+import java.util.UUID;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
@@ -21,6 +28,11 @@ import javafx.scene.layout.VBox;
 
 public class Column extends AnchorPane {
 
+    /**
+     * Initilizes the project column 
+     * @param app
+     * @param projectColumn
+     */
     public Column(App app, ProjectColumn projectColumn) {
         // Add the column styling
         this.styleProperty().bind(Bindings.format(

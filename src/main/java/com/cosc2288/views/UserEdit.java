@@ -1,3 +1,12 @@
+/**
+ * UserEdit
+ *
+ * v1.0
+ *
+ * 2022-05-29
+ *
+ * © 2022 Matthew Kellock
+ */
 package com.cosc2288.views;
 
 import com.cosc2288.App;
@@ -6,7 +15,6 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.sql.SQLException;
 import java.util.UUID;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -44,14 +52,19 @@ public class UserEdit {
         user.setUserId(UUID.randomUUID());
     }
 
+    
+    /** 
+     * Sets the App instance
+     * @param app
+     */
     public void setApp(App app) {
         this.app = app;
     }
 
-    public void setStage(Stage stage) {
-        this.stage = stage;
-    }
-
+    /** 
+     * Sets the current user
+     * @param user
+     */
     public void setUser(User user) {
         this.user = user;
 
@@ -67,12 +80,23 @@ public class UserEdit {
                 .setImage(new Image(new ByteArrayInputStream(user.getImage())));
     }
 
+    
+    /** 
+     * Gets the default user image
+     * @throws IOException
+     */
     @FXML
     protected void initialize() throws IOException {
         loadImage(getClass().getResource("/com/cosc2288/views/profile.jpg")
                 .getPath());
     }
 
+    
+    /** 
+     * Loads an image and applies it to the user profile
+     * @param imagePath
+     * @throws IOException
+     */
     private void loadImage(String imagePath) throws IOException {
         // Load the image
         File imageFile = new File(imagePath);
@@ -93,13 +117,20 @@ public class UserEdit {
         }
     }
 
+    /**
+     * Handles the Cancel button event
+     */
     @FXML
     private void cancel() {
         app.newUserCancel();
     }
 
+    
+    /** 
+     * Handles the Ok button event
+     */
     @FXML
-    private void ok() throws SQLException {
+    private void ok() {
         Alert addUserAlert = new Alert(AlertType.ERROR);
 
         if (username.getLength() == 0) {
@@ -125,6 +156,11 @@ public class UserEdit {
         }
     }
 
+    
+    /** 
+     * Handles the image click event, opening a file dialog and loading the
+     * specified image
+     */
     @FXML
     private void onImageClick() throws IOException {
         FileChooser fileChooser = new FileChooser();
