@@ -55,7 +55,9 @@ D: This is best seen in the controllers, where connection strings are passed in 
 
 ### What other design patterns does your code follow? Why did you choose these design patterns?
 
-In the early days of the application design, I experimented with the Hibernate ORM and using the factory pattern to inject database connections. Although the factory pattern worked fine, I could not get the ORM to behave with SQLite, thus replaced it with JDBC queries. The View -> App -> Controller relationship uses the Chain of Responsibility pattern, where each layer makes decisions on its own to pass on to the next.
+In the early days of the applications design, I experimented with the Hibernate ORM and the factory pattern to inject database connections. Although the factory pattern worked fine, I could not get the ORM to behave with SQLite, thus replaced it with JDBC queries and opted for DB connection strings to be passed via DI as the factory pattern seemed convoluted for what I was trying to achieve.
+
+The View -> App -> Controller relationship uses the Chain of Responsibility pattern, where each layer makes decisions on its own to pass on to the next, I opted for this pattern with the different layers to segregate responsibilities in the code, keeping UI logic in the view, object data manipulation in the controller, and using the App class to glue them both together. Each layer has its own logic and validation that would not make sense in other layers.
 
 ## Contributing
 
