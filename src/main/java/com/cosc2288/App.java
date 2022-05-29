@@ -172,47 +172,54 @@ public class App extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        // Load the log in scene
-        FXMLLoader loader = new FXMLLoader(
-                getClass().getResource("views/fxml/Main.fxml"));
-        Scene mainScene = new Scene(loader.load());
+        try {
+            // Load the log in scene
+            FXMLLoader loader = new FXMLLoader(
+                    getClass().getResource("views/fxml/Main.fxml"));
+            Scene mainScene = new Scene(loader.load());
 
-        // Set the app instance
-        setMain(loader.<Main>getController());
-        getMain().setApp(this);
+            // Set the app instance
+            setMain(loader.<Main>getController());
+            getMain().setApp(this);
 
-        // Load the quote
-        App.setMainView(loader.<Main>getController());
-        QuoteController quoteController = new QuoteController(connectionString);
-        App.getMainView().setQuote(quoteController.randomQuote().getMessage());
+            // Load the quote
+            App.setMainView(loader.<Main>getController());
+            QuoteController quoteController = new QuoteController(
+                    connectionString);
+            App.getMainView()
+                    .setQuote(quoteController.randomQuote().getMessage());
 
-        // Show the main scene
-        primaryStage.setTitle("SmartBoard");
-        primaryStage.setScene(mainScene);
-        primaryStage.show();
+            // Show the main scene
+            primaryStage.setTitle("SmartBoard");
+            primaryStage.setScene(mainScene);
+            primaryStage.show();
 
-        // Load and show the login modal
-        FXMLLoader fxmlLoader = new FXMLLoader(
-                getClass().getResource("views/fxml/Login.fxml"));
-        Scene loginScene = new Scene(fxmlLoader.load());
+            // Load and show the login modal
+            FXMLLoader fxmlLoader = new FXMLLoader(
+                    getClass().getResource("views/fxml/Login.fxml"));
+            Scene loginScene = new Scene(fxmlLoader.load());
 
-        // Set the app instance
-        Login login = fxmlLoader.<Login>getController();
-        login.setApp(this);
+            // Set the app instance
+            Login login = fxmlLoader.<Login>getController();
+            login.setApp(this);
 
-        setLoginStage(new Stage());
-        getLoginStage().initStyle(StageStyle.UNDECORATED);
-        getLoginStage().initModality(Modality.APPLICATION_MODAL);
-        getLoginStage().setScene(loginScene);
+            setLoginStage(new Stage());
+            getLoginStage().initStyle(StageStyle.UNDECORATED);
+            getLoginStage().initModality(Modality.APPLICATION_MODAL);
+            getLoginStage().setScene(loginScene);
 
-        showLogin();
+            showLogin();
+        } catch (Exception e) {
+            // Pass the application exception to the handler
+            handleException(e);
+        }
     }
 
     private void showLogin() {
         getLoginStage().showAndWait();
     }
 
-    private void showMainScene() throws SQLException {
+    private void showMainScene() {
         getLoginStage().close();
 
         if (getUserStage() != null) {
@@ -226,44 +233,56 @@ public class App extends Application {
      * Log in methods
      */
 
-    public void loginOk(String username, String password) throws SQLException {
-        UserController userController = new UserController(connectionString);
-        Alert addUserAlert = new Alert(AlertType.ERROR);
-        User user = userController.logInUser(username, password);
+    public void loginOk(String username, String password) {
+        try {
+            UserController userController = new UserController(
+                    connectionString);
+            Alert addUserAlert = new Alert(AlertType.ERROR);
+            User user = userController.logInUser(username, password);
 
-        if (user == null) {
-            addUserAlert
-                    .setContentText("Username and/or password is incorrect");
-            addUserAlert.show();
-        } else {
-            setLoggedInUser(user);
-            showMainScene();
+            if (user == null) {
+                addUserAlert
+                        .setContentText(
+                                "Username and/or password is incorrect");
+                addUserAlert.show();
+            } else {
+                setLoggedInUser(user);
+                showMainScene();
+            }
+        } catch (SQLException e) {
+            // Pass the application exception to the handler
+            handleException(e);
         }
     }
 
-    public void newEditUser(Boolean edit) throws IOException {
-        // Load the main scene
-        FXMLLoader loader = new FXMLLoader(
-                getClass().getResource("views/fxml/UserEdit.fxml"));
-        Scene scene = new Scene(loader.load());
+    public void newEditUser(Boolean edit) {
+        try {
+            // Load the main scene
+            FXMLLoader loader = new FXMLLoader(
+                    getClass().getResource("views/fxml/UserEdit.fxml"));
+            Scene scene = new Scene(loader.load());
 
-        UserEdit userEdit = loader.<UserEdit>getController();
-        userEdit.setApp(this);
+            UserEdit userEdit = loader.<UserEdit>getController();
+            userEdit.setApp(this);
 
-        setUserStage(new Stage());
+            setUserStage(new Stage());
 
-        if (Boolean.TRUE.equals(edit)) {
-            getUserStage().setTitle("Edit profile");
-            userEdit.setUser(loggedInUser);
-        } else {
-            getLoginStage().close();
-            getUserStage().setTitle("Create a new user");
+            if (Boolean.TRUE.equals(edit)) {
+                getUserStage().setTitle("Edit profile");
+                userEdit.setUser(loggedInUser);
+            } else {
+                getLoginStage().close();
+                getUserStage().setTitle("Create a new user");
+            }
+
+            getUserStage().initStyle(StageStyle.UTILITY);
+            getUserStage().initModality(Modality.APPLICATION_MODAL);
+            getUserStage().setScene(scene);
+            getUserStage().show();
+        } catch (IOException e) {
+            // Pass the application exception to the handler
+            handleException(e);
         }
-
-        getUserStage().initStyle(StageStyle.UTILITY);
-        getUserStage().initModality(Modality.APPLICATION_MODAL);
-        getUserStage().setScene(scene);
-        getUserStage().show();
     }
 
     /**
@@ -275,24 +294,30 @@ public class App extends Application {
         getLoginStage().showAndWait();
     }
 
-    public void newEditUserOk(User user) throws SQLException {
-        Alert addUserAlert = new Alert(AlertType.ERROR);
-        UserController userController = new UserController(connectionString);
+    public void newEditUserOk(User user) {
+        try {
+            Alert addUserAlert = new Alert(AlertType.ERROR);
+            UserController userController = new UserController(
+                    connectionString);
 
-        if (App.getLoggedInUser() == null) {
-            if (userController.findUser(user.getUsername()) == null) {
-                userController.addUser(user);
+            if (App.getLoggedInUser() == null) {
+                if (userController.findUser(user.getUsername()) == null) {
+                    userController.addUser(user);
+                    setLoggedInUser(user);
+                    showMainScene();
+                } else {
+                    addUserAlert.setContentText(
+                            "Username already exists, please enter another");
+                    addUserAlert.show();
+                }
+            } else {
+                userController.editUser(App.getLoggedInUser());
                 setLoggedInUser(user);
                 showMainScene();
-            } else {
-                addUserAlert.setContentText(
-                        "Username already exists, please enter another");
-                addUserAlert.show();
             }
-        } else {
-            userController.editUser(App.getLoggedInUser());
-            setLoggedInUser(user);
-            showMainScene();
+        } catch (SQLException e) {
+            // Pass the application exception to the handler
+            handleException(e);
         }
     }
 
@@ -301,14 +326,14 @@ public class App extends Application {
      * 
      * @throws SQLException
      */
-    public void logOut() throws SQLException {
+    public void logOut() {
         setLoggedInUser(null);
         setSelectedProject(null);
         loadProjects();
         getLoginStage().showAndWait();
     }
 
-    public void profile() throws IOException {
+    public void profile() {
         newEditUser(true);
     }
 
@@ -316,273 +341,360 @@ public class App extends Application {
      * Project management methods
      */
 
-    public void projectAddEdit(Boolean edit) throws IOException {
-        // Load the main scene
-        FXMLLoader loader = new FXMLLoader(
-                getClass().getResource("views/fxml/ProjectEdit.fxml"));
-        Scene scene = new Scene(loader.load());
+    public void projectAddEdit(Boolean edit) {
+        try {
+            // Load the main scene
+            FXMLLoader loader = new FXMLLoader(
+                    getClass().getResource("views/fxml/ProjectEdit.fxml"));
+            Scene scene = new Scene(loader.load());
 
-        ProjectEdit projectEdit = loader.<ProjectEdit>getController();
-        projectEdit.setApp(this);
+            ProjectEdit projectEdit = loader.<ProjectEdit>getController();
+            projectEdit.setApp(this);
 
-        setProjectStage(new Stage());
+            setProjectStage(new Stage());
 
-        if (Boolean.TRUE.equals(edit)) {
-            getProjectStage().setTitle("Edit project");
-            projectEdit.setProject(selectedProject);
-        } else {
-            getProjectStage().setTitle("Create a project");
-            projectEdit.setProject(null);
+            if (Boolean.TRUE.equals(edit)) {
+                getProjectStage().setTitle("Edit project");
+                projectEdit.setProject(selectedProject);
+            } else {
+                getProjectStage().setTitle("Create a project");
+                projectEdit.setProject(null);
+            }
+
+            // Set the modal parameters
+            getProjectStage().initStyle(StageStyle.UTILITY);
+            getProjectStage().initModality(Modality.APPLICATION_MODAL);
+            getProjectStage().setScene(scene);
+            getProjectStage().show();
+        } catch (IOException e) {
+            // Pass the application exception to the handler
+            handleException(e);
         }
-
-        // Set the modal parameters
-        getProjectStage().initStyle(StageStyle.UTILITY);
-        getProjectStage().initModality(Modality.APPLICATION_MODAL);
-        getProjectStage().setScene(scene);
-        getProjectStage().show();
     }
 
-    public void projectOk(Project project) throws SQLException {
-        ProjectController projectController = new ProjectController(
-                connectionString);
+    public void projectOk(Project project) {
+        try {
+            ProjectController projectController = new ProjectController(
+                    connectionString);
 
-        if (project.getProjectId() == null) {
-            projectController.addProject(new Project(UUID.randomUUID(),
-                    project.getName(), Instant.now().toEpochMilli(),
-                    getLoggedInUser().getUserId()));
-        } else {
-            projectController.editProject(project);
+            if (project.getProjectId() == null) {
+                projectController.addProject(new Project(UUID.randomUUID(),
+                        project.getName(), Instant.now().toEpochMilli(),
+                        getLoggedInUser().getUserId()));
+            } else {
+                projectController.editProject(project);
+            }
+
+            getProjectStage().close();
+            loadProjects();
+        } catch (SQLException e) {
+            // Pass the application exception to the handler
+            handleException(e);
         }
-
-        getProjectStage().close();
-        loadProjects();
     }
 
     public void projectCancel() {
         getProjectStage().close();
     }
 
-    public void projectTaskOk(ProjectTask projectTask) throws SQLException {
-        ProjectTaskController projectController = new ProjectTaskController(
-                connectionString);
+    public void projectTaskOk(ProjectTask projectTask) {
+        try {
+            ProjectTaskController projectController = new ProjectTaskController(
+                    connectionString);
 
-        if (projectTask.getProjectTaskId() == null) {
-            projectTask.setProjectTaskId(UUID.randomUUID());
+            if (projectTask.getProjectTaskId() == null) {
+                projectTask.setProjectTaskId(UUID.randomUUID());
 
-            for (ActionItem actionItem : projectTask.getActionItems()) {
-                actionItem.setProjectTaskId(projectTask.getProjectTaskId());
+                for (ActionItem actionItem : projectTask.getActionItems()) {
+                    actionItem.setProjectTaskId(projectTask.getProjectTaskId());
+                }
+
+                projectController.addProjectTask(projectTask);
+            } else {
+                projectController.editProjectTask(projectTask);
             }
 
-            projectController.addProjectTask(projectTask);
-        } else {
-            projectController.editProjectTask(projectTask);
+            getTaskStage().close();
+            loadProjects();
+        } catch (SQLException e) {
+            // Pass the application exception to the handler
+            handleException(e);
         }
-
-        getTaskStage().close();
-        loadProjects();
     }
 
     public void projectTaskCancel() {
         getTaskStage().close();
     }
 
-    public void projectColumnOk(ProjectColumn projectColumn)
-            throws SQLException {
-        ProjectColumnController projectColumnController = 
-            new ProjectColumnController(connectionString);
+    public void projectColumnOk(ProjectColumn projectColumn) {
+        try {
+            ProjectColumnController projectColumnController = 
+                    new ProjectColumnController(connectionString);
 
-        if (projectColumn.getProjectColumnId() == null) {
-            projectColumnController.addProjectColumn(new ProjectColumn(
-                    UUID.randomUUID(), projectColumn.getName(), 0,
-                    projectColumn.getProjectId()));
-        } else {
-            projectColumnController.editProjectColumn(projectColumn);
+            if (projectColumn.getProjectColumnId() == null) {
+                projectColumnController.addProjectColumn(new ProjectColumn(
+                        UUID.randomUUID(), projectColumn.getName(), 0,
+                        projectColumn.getProjectId()));
+            } else {
+                projectColumnController.editProjectColumn(projectColumn);
+            }
+
+            getColumnStage().close();
+            loadProjects();
+        } catch (SQLException e) {
+            // Pass the application exception to the handler
+            handleException(e);
         }
-
-        getColumnStage().close();
-        loadProjects();
     }
 
     public void projectColumnCancel() {
         getColumnStage().close();
     }
 
-    public void loadProjects() throws SQLException {
-        if (getLoggedInUser() == null) {
-            main.loadProjects(null, null, null);
-        } else {
+    public void loadProjects() {
+        try {
+            if (getLoggedInUser() == null) {
+                main.loadProjects(null, null, null);
+            } else {
+                ProjectController projectController = new ProjectController(
+                        connectionString);
+                setProjects(projectController
+                        .loadProjects(getLoggedInUser().getUserId()));
+
+                ProjectColumnController projectColumnController =
+                        new ProjectColumnController(connectionString);
+                ProjectTaskController projectTaskController =
+                        new ProjectTaskController(connectionString);
+
+                for (Project project : getProjects()) {
+                    project.setProjectColumns(projectColumnController
+                            .loadProjectColumns(project.getProjectId()));
+
+                    if (getSelectedProject() == null
+                            && getLoggedInUser().getDefaultProjectId() != null
+                            && getLoggedInUser().getDefaultProjectId()
+                                    .compareTo(project.getProjectId()) == 0) {
+                        setSelectedProject(project);
+                    }
+
+                    for (ProjectColumn projectColumn : project
+                            .getProjectColumns()) {
+                        projectColumn.setProjectTasks(
+                                projectTaskController.loadProjectTasks(
+                                        projectColumn.getProjectColumnId()));
+                    }
+                }
+
+                if (getSelectedProject() == null && !getProjects().isEmpty()) {
+                    setSelectedProject(getProjects().get(0));
+                }
+
+                main.loadProjects(getProjects(),
+                        selectedProject != null ? selectedProject.getProjectId()
+                                : null,
+                        getLoggedInUser().getDefaultProjectId());
+            }
+        } catch (SQLException e) {
+            // Pass the application exception to the handler
+            handleException(e);
+        }
+    }
+
+    public void deleteProject() {
+        try {
+            ProjectColumnController projectColumnController =
+                    new ProjectColumnController(connectionString);
+
+            for (ProjectColumn projectColumn : getSelectedProject()
+                    .getProjectColumns()) {
+                projectColumnController
+                        .deleteProjectColumn(
+                                projectColumn.getProjectColumnId());
+            }
+
             ProjectController projectController = new ProjectController(
                     connectionString);
-            setProjects(projectController
-                    .loadProjects(getLoggedInUser().getUserId()));
+            projectController
+                    .deleteProject(getSelectedProject().getProjectId());
 
-            ProjectColumnController projectColumnController = 
-                new ProjectColumnController(connectionString);
-            ProjectTaskController projectTaskController = 
-                new ProjectTaskController(connectionString);
+            loadProjects();
+        } catch (SQLException e) {
+            // Pass the application exception to the handler
+            handleException(e);
+        }
+    }
 
-            for (Project project : getProjects()) {
-                project.setProjectColumns(projectColumnController
-                        .loadProjectColumns(project.getProjectId()));
+    public void setDefaultProject() {
+        try {
+            // Set the default project
+            getLoggedInUser()
+                    .setDefaultProjectId(getSelectedProject().getProjectId());
 
-                if (getSelectedProject() == null
-                        && getLoggedInUser().getDefaultProjectId() != null
-                        && getLoggedInUser().getDefaultProjectId()
-                                .compareTo(project.getProjectId()) == 0) {
-                    setSelectedProject(project);
-                }
+            // Save the user
+            saveUser();
+        } catch (SQLException e) {
+            // Pass the application exception to the handler
+            handleException(e);
+        }
+    }
 
-                for (ProjectColumn projectColumn : project
-                        .getProjectColumns()) {
-                    projectColumn.setProjectTasks(
-                            projectTaskController.loadProjectTasks(
-                                    projectColumn.getProjectColumnId()));
-                }
+    public void unsetDefaultProject() {
+        try {
+            // Set the default project to null
+            getLoggedInUser().setDefaultProjectId(null);
+
+            // Save the user
+            saveUser();
+        } catch (SQLException e) {
+            // Pass the application exception to the handler
+            handleException(e);
+        }
+    }
+
+    private void saveUser() {
+        try {
+            // Save the current user
+            UserController userController = new UserController(
+                    connectionString);
+            userController.editUser(getLoggedInUser());
+        } catch (SQLException e) {
+            // Pass the application exception to the handler
+            handleException(e);
+        }
+    }
+
+    public void columnAddEdit(Boolean edit,
+            ProjectColumn selectedProjectColumn) {
+        try {
+            // Load the main scene
+            FXMLLoader loader = new FXMLLoader(
+                    getClass().getResource("views/fxml/ColumnEdit.fxml"));
+            Scene scene = new Scene(loader.load());
+
+            ColumnEdit columnEdit = loader.<ColumnEdit>getController();
+            columnEdit.setApp(this);
+
+            setColumnStage(new Stage());
+
+            if (Boolean.TRUE.equals(edit)) {
+                getColumnStage().setTitle("Edit column");
+            } else {
+                getColumnStage().setTitle("Add column");
             }
 
-            if (getSelectedProject() == null && !getProjects().isEmpty()) {
-                setSelectedProject(getProjects().get(0));
-            }
+            // Set the project info
+            columnEdit.setProject(selectedProject);
+            columnEdit.setColumn(selectedProjectColumn);
 
-            main.loadProjects(getProjects(),
-                    selectedProject != null ? selectedProject.getProjectId()
-                            : null,
-                    getLoggedInUser().getDefaultProjectId());
+            // Set the modal parameters
+            getColumnStage().initStyle(StageStyle.UTILITY);
+            getColumnStage().initModality(Modality.APPLICATION_MODAL);
+            getColumnStage().setScene(scene);
+            getColumnStage().show();
+        } catch (IOException e) {
+            // Pass the application exception to the handler
+            handleException(e);
         }
-    }
-
-    public void deleteProject() throws SQLException {
-        ProjectColumnController projectColumnController = 
-            new ProjectColumnController(connectionString);
-
-        for (ProjectColumn projectColumn : getSelectedProject()
-                .getProjectColumns()) {
-            projectColumnController
-                    .deleteProjectColumn(projectColumn.getProjectColumnId());
-        }
-
-        ProjectController projectController = new ProjectController(
-                connectionString);
-        projectController.deleteProject(getSelectedProject().getProjectId());
-
-        loadProjects();
-    }
-
-    public void setDefaultProject() throws SQLException {
-        // Set the default project
-        getLoggedInUser()
-                .setDefaultProjectId(getSelectedProject().getProjectId());
-
-        // Save the user
-        saveUser();
-    }
-
-    public void unsetDefaultProject() throws SQLException {
-        // Set the default project to null
-        getLoggedInUser().setDefaultProjectId(null);
-
-        // Save the user
-        saveUser();
-    }
-
-    private void saveUser() throws SQLException {
-        // Save the current user
-        UserController userController = new UserController(connectionString);
-        userController.editUser(getLoggedInUser());
-    }
-
-    public void columnAddEdit(Boolean edit, ProjectColumn selectedProjectColumn)
-            throws IOException {
-        // Load the main scene
-        FXMLLoader loader = new FXMLLoader(
-                getClass().getResource("views/fxml/ColumnEdit.fxml"));
-        Scene scene = new Scene(loader.load());
-
-        ColumnEdit columnEdit = loader.<ColumnEdit>getController();
-        columnEdit.setApp(this);
-
-        setColumnStage(new Stage());
-
-        if (Boolean.TRUE.equals(edit)) {
-            getColumnStage().setTitle("Edit column");
-        } else {
-            getColumnStage().setTitle("Add column");
-        }
-
-        // Set the project info
-        columnEdit.setProject(selectedProject);
-        columnEdit.setColumn(selectedProjectColumn);
-
-        // Set the modal parameters
-        getColumnStage().initStyle(StageStyle.UTILITY);
-        getColumnStage().initModality(Modality.APPLICATION_MODAL);
-        getColumnStage().setScene(scene);
-        getColumnStage().show();
     }
 
     public void taskAddEdit(Boolean edit, UUID projectColumnId,
-            ProjectTask projectTask) throws IOException {
-        // Load the main scene
-        FXMLLoader loader = new FXMLLoader(
-                getClass().getResource("views/fxml/TaskEdit.fxml"));
-        Scene scene = new Scene(loader.load());
+            ProjectTask projectTask) {
+        try {
+            // Load the main scene
+            FXMLLoader loader = new FXMLLoader(
+                    getClass().getResource("views/fxml/TaskEdit.fxml"));
+            Scene scene = new Scene(loader.load());
 
-        TaskEdit taskEdit = loader.<TaskEdit>getController();
-        taskEdit.setApp(this);
+            TaskEdit taskEdit = loader.<TaskEdit>getController();
+            taskEdit.setApp(this);
 
-        setTaskStage(new Stage());
+            setTaskStage(new Stage());
 
-        if (Boolean.TRUE.equals(edit)) {
-            getTaskStage().setTitle("Edit task");
-        } else {
-            getTaskStage().setTitle("Add task");
+            if (Boolean.TRUE.equals(edit)) {
+                getTaskStage().setTitle("Edit task");
+            } else {
+                getTaskStage().setTitle("Add task");
+            }
+
+            // Set the project info
+            taskEdit.setColumn(projectColumnId);
+            taskEdit.setProjectTask(projectTask);
+
+            // Set the modal parameters
+            getTaskStage().initStyle(StageStyle.UTILITY);
+            getTaskStage().initModality(Modality.APPLICATION_MODAL);
+            getTaskStage().setScene(scene);
+            getTaskStage().show();
+        } catch (IOException e) {
+            // Pass the application exception to the handler
+            handleException(e);
         }
-
-        // Set the project info
-        taskEdit.setColumn(projectColumnId);
-        taskEdit.setProjectTask(projectTask);
-
-        // Set the modal parameters
-        getTaskStage().initStyle(StageStyle.UTILITY);
-        getTaskStage().initModality(Modality.APPLICATION_MODAL);
-        getTaskStage().setScene(scene);
-        getTaskStage().show();
     }
 
-    public void deleteProjectColumn(ProjectColumn selectedProjectColumn)
-            throws SQLException {
-        ProjectColumnController projectColumnController = 
-            new ProjectColumnController(connectionString);
-        projectColumnController.deleteProjectColumn(
-                selectedProjectColumn.getProjectColumnId());
-        loadProjects();
-    }
-
-    public void deleteProjectTask(ProjectTask projectTask) throws SQLException {
-        ProjectTaskController projectTaskController = new ProjectTaskController(
-                connectionString);
-        projectTaskController.deleteProjectTask(projectTask.getProjectTaskId());
-        loadProjects();
-    }
-
-    public void dragProjectTask(UUID draggedProjectTaskId,
-            ProjectTask projectTask) throws SQLException {
-        if (draggedProjectTaskId
-                .compareTo(projectTask.getProjectTaskId()) != 0) {
-            ProjectTaskController projectTaskController = 
-                new ProjectTaskController(connectionString);
-            projectTaskController.moveTaskToPosition(draggedProjectTaskId,
-                    projectTask);
+    public void deleteProjectColumn(ProjectColumn selectedProjectColumn) {
+        try {
+            ProjectColumnController projectColumnController =
+                    new ProjectColumnController(connectionString);
+            projectColumnController.deleteProjectColumn(
+                    selectedProjectColumn.getProjectColumnId());
             loadProjects();
+        } catch (SQLException e) {
+            // Pass the application exception to the handler
+            handleException(e);
+        }
+    }
+
+    public void deleteProjectTask(ProjectTask projectTask) {
+        try {
+            ProjectTaskController projectTaskController =
+                    new ProjectTaskController(connectionString);
+            projectTaskController
+                    .deleteProjectTask(projectTask.getProjectTaskId());
+            loadProjects();
+        } catch (SQLException e) {
+            // Pass the application exception to the handler
+            handleException(e);
         }
     }
 
     public void dragProjectTask(UUID draggedProjectTaskId,
-            ProjectColumn projectColumn) throws SQLException {
-        ProjectTaskController projectTaskController = new ProjectTaskController(
-                connectionString);
-        projectTaskController.moveTaskToColumn(draggedProjectTaskId,
-                projectColumn);
-        loadProjects();
+            ProjectTask projectTask) {
+        try {
+            if (draggedProjectTaskId
+                    .compareTo(projectTask.getProjectTaskId()) != 0) {
+                ProjectTaskController projectTaskController =
+                        new ProjectTaskController(connectionString);
+                projectTaskController.moveTaskToPosition(draggedProjectTaskId,
+                        projectTask);
+                loadProjects();
+            }
+        } catch (SQLException e) {
+            // Pass the application exception to the handler
+            handleException(e);
+        }
+    }
+
+    public void dragProjectTask(UUID draggedProjectTaskId,
+            ProjectColumn projectColumn) {
+        try {
+            ProjectTaskController projectTaskController =
+                    new ProjectTaskController(connectionString);
+            projectTaskController.moveTaskToColumn(draggedProjectTaskId,
+                    projectColumn);
+            loadProjects();
+        } catch (SQLException e) {
+            // Pass the application exception to the handler
+            handleException(e);
+        }
+    }
+
+    private void handleException(Exception ex) {
+        Alert alert = new Alert(AlertType.ERROR);
+        alert.setContentText(
+                "An application error has occured, shutting down!");
+        ex.printStackTrace();
+        alert.show();
+
+        System.exit(-1);
     }
 }

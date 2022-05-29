@@ -1,7 +1,5 @@
 package com.cosc2288.views.controls;
 
-import java.io.IOException;
-import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
@@ -27,21 +25,15 @@ public class Task extends AnchorPane {
     public Task(App app, ProjectColumn projectColumn, ProjectTask projectTask) {
         this.styleProperty().bind(Bindings.format(
                 "-fx-border-insets: 1;" +
-                "-fx-padding: 2; " +
-                "-fx-border-color: Black"));
+                        "-fx-padding: 2; " +
+                        "-fx-border-color: Black"));
         this.setMinHeight(150);
         this.setMaxHeight(this.getMinHeight());
 
         // Create a delete menu button
         Button deleteButton = new Button();
         deleteButton.setText("Delete");
-        deleteButton.setOnAction(e -> {
-            try {
-                app.deleteProjectTask(projectTask);
-            } catch (SQLException ex) {
-                ex.printStackTrace();
-            }
-        });
+        deleteButton.setOnAction(e -> app.deleteProjectTask(projectTask));
 
         // Add the menu item to the anchor
         this.getChildren().add(deleteButton);
@@ -53,14 +45,8 @@ public class Task extends AnchorPane {
         // Create an edit menu button
         Button editButton = new Button();
         editButton.setText("Edit");
-        editButton.setOnAction(e -> {
-            try {
-                app.taskAddEdit(true, projectColumn.getProjectColumnId(),
-                        projectTask);
-            } catch (IOException ex) {
-                ex.printStackTrace();
-            }
-        });
+        editButton.setOnAction(e -> app.taskAddEdit(true,
+                projectColumn.getProjectColumnId(), projectTask));
 
         // Add the menu item to the anchor
         this.getChildren().add(editButton);
@@ -175,12 +161,8 @@ public class Task extends AnchorPane {
             boolean success = false;
             if (db.hasString()) {
                 success = true;
-                try {
-                    app.dragProjectTask(UUID.fromString(db.getString()),
-                            projectTask);
-                } catch (SQLException e1) {
-                    e1.printStackTrace();
-                }
+                app.dragProjectTask(UUID.fromString(db.getString()),
+                        projectTask);
             }
             /*
              * let the source know whether the string was successfully
