@@ -43,11 +43,19 @@ I prefer developing my applications from their models up rather than their views
 
 ### How does your code adhere to SOLID design principles?
 
+S: Each class in my application has a single responsibility, models represent one object, controllers control one model and views represent one editable element, or control the base application where elements are loaded into.
 
+O: Each of the models, controllers and app classes have an interfaces to enable complete rewrites of existing class logic, additionally, each class can be overridden to alter partial logic.
+
+L: There is not any derived classes in this application, however, some exist in the view layer. Derivations of underlying JavaFX UI controls are unchanged, extending their behaviour without altering it.
+
+I: Each model and controller implements a purposeful interface, taking the interface segregation principal to its extreme, I could have built out interfaces where methods are similar (e.g. name getters and setters) and inherit from multiple interfaces, however, the intent behind each method may be different even if the name of the method is the same, thus it was a design choice to duplicate interface code.
+
+D: This is best seen in the controllers, where connection strings are passed in from the App class. This is especially useful in testing where the connection object is different from the main application.
 
 ### What other design patterns does your code follow? Why did you choose these design patterns?
 
-
+In the early days of the application design, I experimented with the Hibernate ORM and using the factory pattern to inject database connections. Although the factory pattern worked fine, I could not get the ORM to behave with SQLite, thus replaced it with JDBC queries. The View -> App -> Controller relationship uses the Chain of Responsibility pattern, where each layer makes decisions on its own to pass on to the next.
 
 ## Contributing
 
