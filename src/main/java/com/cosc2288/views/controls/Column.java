@@ -26,7 +26,9 @@ public class Column extends AnchorPane {
     public Column(App app, ProjectColumn projectColumn) {
         // Add the column styling
         this.styleProperty().bind(Bindings.format(
-                "-fx-border-insets: 1; -fx-padding: 2; -fx-border-color: Black"));
+                "-fx-border-insets: 1;" +
+                "-fx-padding: 2; " +
+                "-fx-border-color: Black"));
         this.setMaxWidth(250);
         this.setMinWidth(this.getMaxWidth());
 

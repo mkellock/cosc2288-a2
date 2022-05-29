@@ -26,7 +26,9 @@ import javafx.scene.text.Font;
 public class Task extends AnchorPane {
     public Task(App app, ProjectColumn projectColumn, ProjectTask projectTask) {
         this.styleProperty().bind(Bindings.format(
-                "-fx-border-insets: 1; -fx-padding: 2; -fx-border-color: Black"));
+                "-fx-border-insets: 1;" +
+                "-fx-padding: 2; " +
+                "-fx-border-color: Black"));
         this.setMinHeight(150);
         this.setMaxHeight(this.getMinHeight());
 

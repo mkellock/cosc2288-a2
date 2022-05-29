@@ -5,8 +5,6 @@ import java.time.LocalDate;
 import java.util.LinkedList;
 import java.util.UUID;
 
-import javax.swing.Action;
-
 import com.cosc2288.App;
 import com.cosc2288.models.ActionItem;
 import com.cosc2288.models.ProjectTask;
@@ -28,7 +26,8 @@ import javafx.scene.control.cell.CheckBoxListCell;
 import javafx.scene.paint.Paint;
 
 /*
- * Checklist functionality from https://stackoverflow.com/questions/28843858/javafx-8-listview-with-checkboxes
+ * Checklist functionality from 
+ * stackoverflow.com/questions/28843858/javafx-8-listview-with-checkboxes
 */
 
 public class TaskEdit {

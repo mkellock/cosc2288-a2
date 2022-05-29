@@ -5,4 +5,7 @@
     <module name="LineLength">
         <property name="max" value="80"/>
     </module>
+    <module name="SuppressionFilter">
+        <property name="file" value="supressions.xml" />
+    </module>
 </module>

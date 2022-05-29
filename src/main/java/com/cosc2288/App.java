@@ -388,8 +388,8 @@ public class App extends Application {
 
     public void projectColumnOk(ProjectColumn projectColumn)
             throws SQLException {
-        ProjectColumnController projectColumnController = new ProjectColumnController(
-                connectionString);
+        ProjectColumnController projectColumnController = 
+            new ProjectColumnController(connectionString);
 
         if (projectColumn.getProjectColumnId() == null) {
             projectColumnController.addProjectColumn(new ProjectColumn(
@@ -416,10 +416,10 @@ public class App extends Application {
             setProjects(projectController
                     .loadProjects(getLoggedInUser().getUserId()));
 
-            ProjectColumnController projectColumnController = new ProjectColumnController(
-                    connectionString);
-            ProjectTaskController projectTaskController = new ProjectTaskController(
-                    connectionString);
+            ProjectColumnController projectColumnController = 
+                new ProjectColumnController(connectionString);
+            ProjectTaskController projectTaskController = 
+                new ProjectTaskController(connectionString);
 
             for (Project project : getProjects()) {
                 project.setProjectColumns(projectColumnController
@@ -452,8 +452,8 @@ public class App extends Application {
     }
 
     public void deleteProject() throws SQLException {
-        ProjectColumnController projectColumnController = new ProjectColumnController(
-                connectionString);
+        ProjectColumnController projectColumnController = 
+            new ProjectColumnController(connectionString);
 
         for (ProjectColumn projectColumn : getSelectedProject()
                 .getProjectColumns()) {
@@ -551,8 +551,8 @@ public class App extends Application {
 
     public void deleteProjectColumn(ProjectColumn selectedProjectColumn)
             throws SQLException {
-        ProjectColumnController projectColumnController = new ProjectColumnController(
-                connectionString);
+        ProjectColumnController projectColumnController = 
+            new ProjectColumnController(connectionString);
         projectColumnController.deleteProjectColumn(
                 selectedProjectColumn.getProjectColumnId());
         loadProjects();
@@ -569,8 +569,8 @@ public class App extends Application {
             ProjectTask projectTask) throws SQLException {
         if (draggedProjectTaskId
                 .compareTo(projectTask.getProjectTaskId()) != 0) {
-            ProjectTaskController projectTaskController = new ProjectTaskController(
-                    connectionString);
+            ProjectTaskController projectTaskController = 
+                new ProjectTaskController(connectionString);
             projectTaskController.moveTaskToPosition(draggedProjectTaskId,
                     projectTask);
             loadProjects();

@@ -29,7 +29,8 @@ class ProjectTaskTests {
             .parse("2022-04-13T00:00:00.00Z").toEpochMilli();
     private static final UUID PROJECT_COLUMN_ID = UUID
             .fromString("174a11d4-8d95-4acd-a914-c296428a0053");
-    private static final List<ActionItem> ACTION_ITEMS = new ArrayList<ActionItem>();
+    private static final List<ActionItem> ACTION_ITEMS = 
+            new ArrayList<ActionItem>();
 
     @Test
     void ShouldConstructAndGetAllProperties() {
