@@ -7,7 +7,7 @@ It is built in Java utilising Maven as the build tool.
 
 Please ensure you have the following installed prior to execution:
 
-- Java 1.8
+- Java 17
 - Maven
 
 ## Test
@@ -30,12 +30,21 @@ mvn compile
 
 ## Execution
 
+Run the following to execute the application (ensure you have compiled first)
+
 ```bash
 # Execute the application
 mvn exec:java -Dexec.mainClass=com.cosc2288.App
 ```
 
-## Information
+## Login
+
+There is a sample user in the database, use the following credentials:
+
+- Username: `username`
+- Password: `password`
+
+## Report
 
 ### How did you apply MVC design pattern to build this application?
 
