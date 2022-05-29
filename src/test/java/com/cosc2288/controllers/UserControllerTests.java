@@ -9,6 +9,7 @@
  */
 package com.cosc2288.controllers;
 
+import com.cosc2288.models.IUser;
 import com.cosc2288.models.User;
 import com.google.gson.Gson;
 
@@ -38,11 +39,11 @@ public class UserControllerTests extends BaseTests {
         UUID userId = UUID.randomUUID();
         String username = "Username1234";
         String password = "Passw0rd!";
-        User user = new User(userId, username, password, FIRST_NAME, LAST_NAME,
+        IUser user = new User(userId, username, password, FIRST_NAME, LAST_NAME,
                 IMAGE, DEFAULT_PROJECT_ID);
 
         // Add a user to the database
-        UserController userController = new UserController(getTestConnString());
+        IUserController userController = new UserController(getTestConnString());
         userController.addUser(user);
 
         // Check that the user exists in the database (compare vals and not obj)
@@ -57,18 +58,18 @@ public class UserControllerTests extends BaseTests {
     @Test
     void ShouldEditUser() throws SQLException {
         // Set the user
-        User user = new User(USER_ID, USERNAME, PASSWORD, FIRST_NAME, LAST_NAME,
+        IUser user = new User(USER_ID, USERNAME, PASSWORD, FIRST_NAME, LAST_NAME,
                 IMAGE, DEFAULT_PROJECT_ID);
 
         // Update the user
         user.setFirstName("NewFirst");
 
         // Save the user
-        UserController userController = new UserController(getTestConnString());
+        IUserController userController = new UserController(getTestConnString());
         userController.editUser(user);
 
         // Check that the details are correct
-        User userLoad = userController.logInUser(USERNAME, PASSWORD);
+        IUser userLoad = userController.logInUser(USERNAME, PASSWORD);
         Assertions.assertEquals(user.getFirstName(), userLoad.getFirstName());
     }
 
@@ -79,8 +80,8 @@ public class UserControllerTests extends BaseTests {
     @Test
     void ShouldLogInUser() throws SQLException {
         // Load the user
-        UserController userController = new UserController(getTestConnString());
-        User user = userController.logInUser(USERNAME, PASSWORD);
+        IUserController userController = new UserController(getTestConnString());
+        IUser user = userController.logInUser(USERNAME, PASSWORD);
 
         // Assert that the User ID is corrrect
         Assertions.assertEquals(USER_ID, user.getUserId());
@@ -93,8 +94,8 @@ public class UserControllerTests extends BaseTests {
     @Test
     void ShouldFindUser() throws SQLException {
         // Load the user
-        UserController userController = new UserController(getTestConnString());
-        User user = userController.findUser(USERNAME);
+        IUserController userController = new UserController(getTestConnString());
+        IUser user = userController.findUser(USERNAME);
 
         // Assert that the User ID is corrrect
         Assertions.assertEquals(USER_ID, user.getUserId());

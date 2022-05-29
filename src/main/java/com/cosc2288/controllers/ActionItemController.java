@@ -10,6 +10,8 @@
 package com.cosc2288.controllers;
 
 import com.cosc2288.models.ActionItem;
+import com.cosc2288.models.IActionItem;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -18,7 +20,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
 
-public class ActionItemController extends BaseController {
+public class ActionItemController extends BaseController
+        implements IActionItemController {
     /**
      * Constructor for the class
      */
@@ -32,7 +35,8 @@ public class ActionItemController extends BaseController {
      * @param actionItem the action item to be added
      * @throws SQLException
      */
-    public boolean addActionItem(ActionItem actionItem) throws SQLException {
+    @Override
+    public boolean addActionItem(IActionItem actionItem) throws SQLException {
         // The insert script
         String sql = "INSERT INTO action_items "
                 + "(action_item_id, description, complete, project_task_id) "
@@ -71,7 +75,8 @@ public class ActionItemController extends BaseController {
      * @param actionItem the action item to be saved
      * @throws SQLException
      */
-    public boolean editActionItem(ActionItem actionItem) throws SQLException {
+    @Override
+    public boolean editActionItem(IActionItem actionItem) throws SQLException {
         // The update script
         String sql = "UPDATE action_items SET description = ?, "
                 + "complete = ? WHERE action_item_id = ?";
@@ -108,6 +113,7 @@ public class ActionItemController extends BaseController {
      * @param projectTaskId the project task id to be deleted
      * @throws SQLException
      */
+    @Override
     public boolean deleteActionItems(UUID projectTaskId) throws SQLException {
         // The delete script
         String sql = "DELETE FROM action_items WHERE project_task_id = ?";
@@ -134,6 +140,7 @@ public class ActionItemController extends BaseController {
      * @return a list of action items
      * @throws SQLException
      */
+    @Override
     public List<ActionItem> loadActionItems(UUID projectTaskId)
             throws SQLException {
         // The result we'll eventually return
@@ -177,10 +184,11 @@ public class ActionItemController extends BaseController {
      * @return a list of action items
      * @throws SQLException
      */
-    public ActionItem loadActionItem(UUID actionItemId)
+    @Override
+    public IActionItem loadActionItem(UUID actionItemId)
             throws SQLException {
         // The result we'll eventually return
-        ActionItem returnVal = null;
+        IActionItem returnVal = null;
 
         // The select query
         String sql = "SELECT action_item_id, description, complete,  "
@@ -219,7 +227,7 @@ public class ActionItemController extends BaseController {
      * @param actionItem the action item to be validates
      * @return if the action item is valid
      */
-    private static boolean validate(ActionItem actionItem) {
+    private static boolean validate(IActionItem actionItem) {
         // Check the validity of the object
         return actionItem.getActionItemId() != null
                 && actionItem.getDescription().length() != 0

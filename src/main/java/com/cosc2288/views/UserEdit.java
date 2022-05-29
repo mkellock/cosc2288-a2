@@ -9,7 +9,8 @@
  */
 package com.cosc2288.views;
 
-import com.cosc2288.App;
+import com.cosc2288.IApp;
+import com.cosc2288.models.IUser;
 import com.cosc2288.models.User;
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -42,30 +43,31 @@ public class UserEdit {
     @FXML
     private ImageView userImage;
 
-    private App app;
+    private IApp app;
     private Stage stage;
     private byte[] image;
-    private User user;
+    private IUser user;
 
     public UserEdit() {
         user = new User();
         user.setUserId(UUID.randomUUID());
     }
 
-    
-    /** 
+    /**
      * Sets the App instance
+     * 
      * @param app
      */
-    public void setApp(App app) {
+    public void setApp(IApp app) {
         this.app = app;
     }
 
-    /** 
+    /**
      * Sets the current user
+     * 
      * @param user
      */
-    public void setUser(User user) {
+    public void setUser(IUser user) {
         this.user = user;
 
         username.setText(user.getUsername());
@@ -80,9 +82,9 @@ public class UserEdit {
                 .setImage(new Image(new ByteArrayInputStream(user.getImage())));
     }
 
-    
-    /** 
+    /**
      * Gets the default user image
+     * 
      * @throws IOException
      */
     @FXML
@@ -91,9 +93,9 @@ public class UserEdit {
                 .getPath());
     }
 
-    
-    /** 
+    /**
      * Loads an image and applies it to the user profile
+     * 
      * @param imagePath
      * @throws IOException
      */
@@ -125,8 +127,7 @@ public class UserEdit {
         app.newUserCancel();
     }
 
-    
-    /** 
+    /**
      * Handles the Ok button event
      */
     @FXML
@@ -156,8 +157,7 @@ public class UserEdit {
         }
     }
 
-    
-    /** 
+    /**
      * Handles the image click event, opening a file dialog and loading the
      * specified image
      */

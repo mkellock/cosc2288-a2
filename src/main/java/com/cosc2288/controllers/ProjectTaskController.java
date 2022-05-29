@@ -10,7 +10,9 @@
 package com.cosc2288.controllers;
 
 import com.cosc2288.models.ActionItem;
-import com.cosc2288.models.ProjectColumn;
+import com.cosc2288.models.IActionItem;
+import com.cosc2288.models.IProjectColumn;
+import com.cosc2288.models.IProjectTask;
 import com.cosc2288.models.ProjectTask;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -33,8 +35,7 @@ public class ProjectTaskController extends BaseController {
         this.connectionString = connectionString;
     }
 
-    
-    /** 
+    /**
      * @param projectColumnId
      * @return int
      * @throws SQLException
@@ -69,9 +70,10 @@ public class ProjectTaskController extends BaseController {
      * @param projectTask the project task to be added
      * @throws SQLException
      */
-    public boolean addProjectTask(ProjectTask projectTask) throws SQLException {
+    public boolean addProjectTask(IProjectTask projectTask)
+            throws SQLException {
         // Create an Action Items controller
-        ActionItemController actionItemController = new ActionItemController(
+        IActionItemController actionItemController = new ActionItemController(
                 this.connectionString);
 
         // Set the order of the project task
@@ -113,7 +115,7 @@ public class ProjectTaskController extends BaseController {
                 pstmt.executeUpdate();
 
                 // Insert the action items
-                for (ActionItem actionItem : projectTask.getActionItems()) {
+                for (IActionItem actionItem : projectTask.getActionItems()) {
                     actionItemController.addActionItem(actionItem);
                 }
             } catch (SQLException e) {
@@ -136,10 +138,10 @@ public class ProjectTaskController extends BaseController {
      * @param projectTask the project task to be saved
      * @throws SQLException
      */
-    public boolean editProjectTask(ProjectTask projectTask)
+    public boolean editProjectTask(IProjectTask projectTask)
             throws SQLException {
         // Create an Action Items controller
-        ActionItemController actionItemController = new ActionItemController(
+        IActionItemController actionItemController = new ActionItemController(
                 this.connectionString);
 
         // The update script
@@ -177,7 +179,7 @@ public class ProjectTaskController extends BaseController {
                 pstmt.executeUpdate();
 
                 // Insert/update the action items
-                for (ActionItem actionItem : projectTask.getActionItems()) {
+                for (IActionItem actionItem : projectTask.getActionItems()) {
                     if (actionItemController.loadActionItem(
                             actionItem.getActionItemId()) == null) {
                         actionItemController.addActionItem(actionItem);
@@ -208,7 +210,7 @@ public class ProjectTaskController extends BaseController {
      */
     public boolean deleteProjectTask(UUID projectTaskId) throws SQLException {
         // Create an Action Items controller
-        ActionItemController actionItemController = new ActionItemController(
+        IActionItemController actionItemController = new ActionItemController(
                 this.connectionString);
 
         // The delete script
@@ -243,7 +245,7 @@ public class ProjectTaskController extends BaseController {
     public List<ProjectTask> loadProjectTasks(UUID projectColumnId)
             throws SQLException {
         // Create an Action Items controller
-        ActionItemController actionItemController = new ActionItemController(
+        IActionItemController actionItemController = new ActionItemController(
                 this.connectionString);
 
         // The result we'll eventually return
@@ -291,15 +293,14 @@ public class ProjectTaskController extends BaseController {
         }
     }
 
-    
-    /** 
+    /**
      * @param draggedProjectTaskId
      * @param projectTask
      * @return boolean
      * @throws SQLException
      */
     public boolean moveTaskToPosition(UUID draggedProjectTaskId,
-            ProjectTask projectTask) throws SQLException {
+            IProjectTask projectTask) throws SQLException {
         // Update script to set all tickets with a higher order to +1
         String sql = "UPDATE project_tasks SET \"order\" = \"order\" + 1 "
                 + "WHERE project_column_id = ? AND \"order\" >= ?";
@@ -339,15 +340,14 @@ public class ProjectTaskController extends BaseController {
         return true;
     }
 
-    
-    /** 
+    /**
      * @param draggedProjectTaskId
      * @param projectColumn
      * @return boolean
      * @throws SQLException
      */
     public boolean moveTaskToColumn(UUID draggedProjectTaskId,
-            ProjectColumn projectColumn) throws SQLException {
+            IProjectColumn projectColumn) throws SQLException {
         int columnPosition = maxColumnOrder(projectColumn.getProjectColumnId())
                 + 1;
 
@@ -378,7 +378,7 @@ public class ProjectTaskController extends BaseController {
      * @param projectTask the project task to be validated
      * @return is the project task is valid
      */
-    private static boolean validate(ProjectTask projectTask) {
+    private static boolean validate(IProjectTask projectTask) {
         // Check the validity of the object
         return projectTask.getProjectTaskId() != null
                 && projectTask.getName().length() != 0;

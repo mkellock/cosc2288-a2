@@ -9,8 +9,9 @@
  */
 package com.cosc2288.views;
 
-import com.cosc2288.App;
-import com.cosc2288.models.Project;
+import com.cosc2288.IApp;
+import com.cosc2288.models.IProject;
+import com.cosc2288.models.IProjectColumn;
 import com.cosc2288.models.ProjectColumn;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -22,35 +23,35 @@ public class ColumnEdit {
     @FXML
     private TextField column;
 
-    private App app;
-    private Project project;
-    private ProjectColumn projectColumn;
+    private IApp app;
+    private IProject project;
+    private IProjectColumn projectColumn;
 
-    
-    /** 
+    /**
      * Sets the app instance
+     * 
      * @param app
      */
-    public void setApp(App app) {
+    public void setApp(IApp app) {
         this.app = app;
     }
 
-    
-    /** 
+    /**
      * Sets the project item
+     * 
      * @param project
      */
-    public void setProject(Project project) {
+    public void setProject(IProject project) {
         // Set the project object
         this.project = project;
     }
 
-    
-    /** 
+    /**
      * Sets the project column
+     * 
      * @param projectColumn
      */
-    public void setColumn(ProjectColumn projectColumn) {
+    public void setColumn(IProjectColumn projectColumn) {
         // Set the project column object
         this.projectColumn = projectColumn;
 
@@ -60,8 +61,7 @@ public class ColumnEdit {
         }
     }
 
-    
-    /** 
+    /**
      * Handles the OK button event
      */
     @FXML

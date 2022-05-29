@@ -9,6 +9,7 @@
  */
 package com.cosc2288.controllers;
 
+import com.cosc2288.models.IUser;
 import com.cosc2288.models.User;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -16,7 +17,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.UUID;
 
-public class UserController extends BaseController {
+public class UserController extends BaseController implements IUserController {
     /**
      * Constructor for the class
      */
@@ -29,7 +30,8 @@ public class UserController extends BaseController {
      * 
      * @param user the user to add
      */
-    public boolean addUser(User user) throws SQLException {
+    @Override
+    public boolean addUser(IUser user) throws SQLException {
         // The insert script
         String sql = "INSERT INTO users "
                 + "(user_id, username, password, first_name, last_name, image, "
@@ -76,7 +78,8 @@ public class UserController extends BaseController {
      * 
      * @param user the user to save
      */
-    public boolean editUser(User user) throws SQLException {
+    @Override
+    public boolean editUser(IUser user) throws SQLException {
         // The update script
         String sql = "UPDATE users SET username = ?, password = ?, "
                 + "first_name = ?, last_name = ?, image = ?, "
@@ -125,7 +128,8 @@ public class UserController extends BaseController {
      * @param password the user's password
      * @return a user
      */
-    public User logInUser(String username, String password)
+    @Override
+    public IUser logInUser(String username, String password)
             throws SQLException {
         // The select query
         String sql = "SELECT user_id, username, password, first_name, "
@@ -172,7 +176,8 @@ public class UserController extends BaseController {
      * @param username the user's username
      * @return a user
      */
-    public User findUser(String username) throws SQLException {
+    @Override
+    public IUser findUser(String username) throws SQLException {
         // The select query
         String sql = "SELECT user_id, username, password, first_name, "
                 + "last_name, image, default_project_id FROM users "
@@ -217,7 +222,7 @@ public class UserController extends BaseController {
      * @param user the user to be validated
      * @return if the user is valid
      */
-    private static boolean validate(User user) {
+    private static boolean validate(IUser user) {
         boolean valid = false;
 
         valid = user.getUserId() != null && user.getImage() != null

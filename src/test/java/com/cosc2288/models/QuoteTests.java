@@ -18,13 +18,13 @@ class QuoteTests {
 
     @Test
     void ShouldConstructAndGetAllProperties() {
-        Quote quote = new Quote(MESSAGE);
+        IQuote quote = new Quote(MESSAGE);
         Assertions.assertEquals(MESSAGE, quote.getMessage());
     }
 
     @Test
     void shouldSetAndGetQuote() {
-        Quote quote = new Quote();
+        IQuote quote = new Quote();
         quote.setMessage(MESSAGE);
         Assertions.assertEquals(MESSAGE, quote.getMessage());
     }

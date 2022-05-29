@@ -9,13 +9,15 @@
  */
 package com.cosc2288.controllers;
 
+import com.cosc2288.models.IQuote;
 import com.cosc2288.models.Quote;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class QuoteController extends BaseController {
+public class QuoteController extends BaseController
+        implements IQuoteController {
     /**
      * Constructor for the class
      */
@@ -29,7 +31,8 @@ public class QuoteController extends BaseController {
      * @return a quote
      * @throws SQLException
      */
-    public Quote randomQuote() throws SQLException {
+    @Override
+    public IQuote randomQuote() throws SQLException {
         // The select query
         String sql = "SELECT message FROM quotes ORDER BY RANDOM() LIMIT 1";
 

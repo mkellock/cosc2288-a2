@@ -17,9 +17,11 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
 
+import com.cosc2288.models.IProject;
 import com.cosc2288.models.Project;
 
-public class ProjectController extends BaseController {
+public class ProjectController extends BaseController
+        implements IProjectController {
     /**
      * Constructor for the class
      */
@@ -33,7 +35,8 @@ public class ProjectController extends BaseController {
      * @param project the project to be added
      * @throws SQLException
      */
-    public boolean addProject(Project project) throws SQLException {
+    @Override
+    public boolean addProject(IProject project) throws SQLException {
         // The insert script
         String sql = "INSERT INTO projects "
                 + "(project_id, name, created, user_id) "
@@ -72,7 +75,8 @@ public class ProjectController extends BaseController {
      * @param project the project to be saved
      * @throws SQLException
      */
-    public boolean editProject(Project project) throws SQLException {
+    @Override
+    public boolean editProject(IProject project) throws SQLException {
         // The update script
         String sql = "UPDATE projects SET name = ?, created = ?, "
                 + "user_id = ? WHERE project_id = ?";
@@ -110,6 +114,7 @@ public class ProjectController extends BaseController {
      * @param projectId the project id for the project to be deleted
      * @throws SQLException
      */
+    @Override
     public boolean deleteProject(UUID projectId) throws SQLException {
         // The delete script
         String sql = "DELETE FROM projects WHERE project_id = ?";
@@ -136,6 +141,7 @@ public class ProjectController extends BaseController {
      * @return a list of projects
      * @throws SQLException
      */
+    @Override
     public List<Project> loadProjects(UUID userId) throws SQLException {
         // The result we'll eventually return
         LinkedList<Project> returnVal = new LinkedList<>();
@@ -175,7 +181,7 @@ public class ProjectController extends BaseController {
      * @param project the project to be validate
      * @return is the project is valid
      */
-    private static boolean validate(Project project) {
+    private static boolean validate(IProject project) {
         // Check the validity of the object
         return project.getProjectId() != null && project.getName().length() != 0
                 && project.getUserId() != null;

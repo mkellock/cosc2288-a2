@@ -34,7 +34,7 @@ class ProjectTaskTests {
 
     @Test
     void ShouldConstructAndGetAllProperties() {
-        ProjectTask projectTask = new ProjectTask(PROJECT_TASK_ID, NAME,
+        IProjectTask projectTask = new ProjectTask(PROJECT_TASK_ID, NAME,
                 DESCRIPTION, ORDER, DUE_DATE, COMPLETED_DATE, PROJECT_COLUMN_ID,
                 ACTION_ITEMS);
         Assertions.assertEquals(PROJECT_TASK_ID,
@@ -50,7 +50,7 @@ class ProjectTaskTests {
 
     @Test
     void shouldSetAndGetProjectTaskId() {
-        ProjectTask projectTask = new ProjectTask();
+        IProjectTask projectTask = new ProjectTask();
         projectTask.setProjectTaskId(PROJECT_TASK_ID);
         Assertions.assertEquals(PROJECT_TASK_ID,
                 projectTask.getProjectTaskId());
@@ -58,42 +58,42 @@ class ProjectTaskTests {
 
     @Test
     void shouldSetAndGetName() {
-        ProjectTask projectTask = new ProjectTask();
+        IProjectTask projectTask = new ProjectTask();
         projectTask.setName(NAME);
         Assertions.assertEquals(NAME, projectTask.getName());
     }
 
     @Test
     void shouldSetAndGetDescription() {
-        ProjectTask projectTask = new ProjectTask();
+        IProjectTask projectTask = new ProjectTask();
         projectTask.setDescription(DESCRIPTION);
         Assertions.assertEquals(DESCRIPTION, projectTask.getDescription());
     }
 
     @Test
     void shouldSetAndGetOrder() {
-        ProjectTask projectTask = new ProjectTask();
+        IProjectTask projectTask = new ProjectTask();
         projectTask.setOrder(ORDER);
         Assertions.assertEquals(ORDER, projectTask.getOrder());
     }
 
     @Test
     void shouldSetAndGetDueDate() {
-        ProjectTask projectTask = new ProjectTask();
+        IProjectTask projectTask = new ProjectTask();
         projectTask.setDueDate(DUE_DATE);
         Assertions.assertEquals(DUE_DATE, projectTask.getDueDate());
     }
 
     @Test
     void shouldSetAndGetCompletedDate() {
-        ProjectTask projectTask = new ProjectTask();
+        IProjectTask projectTask = new ProjectTask();
         projectTask.setCompletedDate(COMPLETED_DATE);
         Assertions.assertEquals(COMPLETED_DATE, projectTask.getCompletedDate());
     }
 
     @Test
     void shouldSetAndGetProjectColumnId() {
-        ProjectTask projectTask = new ProjectTask();
+        IProjectTask projectTask = new ProjectTask();
         projectTask.setProjectColumnId(PROJECT_COLUMN_ID);
         Assertions.assertEquals(PROJECT_COLUMN_ID,
                 projectTask.getProjectColumnId());

@@ -12,8 +12,11 @@ package com.cosc2288.views;
 import java.time.LocalDate;
 import java.util.LinkedList;
 import java.util.UUID;
-import com.cosc2288.App;
+
+import com.cosc2288.IApp;
 import com.cosc2288.models.ActionItem;
+import com.cosc2288.models.IActionItem;
+import com.cosc2288.models.IProjectTask;
 import com.cosc2288.models.ProjectTask;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -48,6 +51,7 @@ public class TaskEdit {
 
         /**
          * Constructor for the check list action item
+         * 
          * @param id
          * @param name
          * @param on
@@ -60,6 +64,7 @@ public class TaskEdit {
 
         /**
          * Returns the name property of the list item
+         * 
          * @return StringProperty
          */
         public final StringProperty nameProperty() {
@@ -68,6 +73,7 @@ public class TaskEdit {
 
         /**
          * Gets the name of the list item
+         * 
          * @return String
          */
         public final String getName() {
@@ -76,6 +82,7 @@ public class TaskEdit {
 
         /**
          * Sets the name of the list item
+         * 
          * @param name
          */
         public final void setName(final String name) {
@@ -84,6 +91,7 @@ public class TaskEdit {
 
         /**
          * Returns the checkstate of the list item
+         * 
          * @return BooleanProperty
          */
         public final BooleanProperty onProperty() {
@@ -92,6 +100,7 @@ public class TaskEdit {
 
         /**
          * Returns if the current state of the list item is checked
+         * 
          * @return
          */
         public final boolean isOn() {
@@ -100,6 +109,7 @@ public class TaskEdit {
 
         /**
          * Sets the checked state of the list item
+         * 
          * @param on
          */
         public final void setOn(final boolean on) {
@@ -108,6 +118,7 @@ public class TaskEdit {
 
         /**
          * Gets the ID of the list item
+         * 
          * @return
          */
         public final UUID getId() {
@@ -145,9 +156,9 @@ public class TaskEdit {
     @FXML
     private Label onTrack;
 
-    private App app;
+    private IApp app;
     private UUID projectColumnId;
-    private ProjectTask projectTask = new ProjectTask();
+    private IProjectTask projectTask = new ProjectTask();
 
     /**
      * Constructor of the task edit view
@@ -166,18 +177,18 @@ public class TaskEdit {
         onDueDateChange();
     }
 
-    
-    /** 
+    /**
      * Sets the App instance
+     * 
      * @param app
      */
-    public void setApp(App app) {
+    public void setApp(IApp app) {
         this.app = app;
     }
 
-    
-    /** 
+    /**
      * Sets the project column id
+     * 
      * @param projectColumnId
      */
     public void setColumn(UUID projectColumnId) {
@@ -185,12 +196,12 @@ public class TaskEdit {
         this.projectColumnId = projectColumnId;
     }
 
-    
-    /** 
+    /**
      * Sets the project task
+     * 
      * @param projectTask
      */
-    public void setProjectTask(ProjectTask projectTask) {
+    public void setProjectTask(IProjectTask projectTask) {
         if (projectTask != null) {
             this.projectTask = projectTask;
 
@@ -205,15 +216,14 @@ public class TaskEdit {
 
             description.setText(projectTask.getDescription());
 
-            for (ActionItem actionItem : projectTask.getActionItems()) {
+            for (IActionItem actionItem : projectTask.getActionItems()) {
                 addActionItemToList(actionItem.getActionItemId(),
                         actionItem.getDescription(), actionItem.isComplete());
             }
         }
     }
 
-    
-    /** 
+    /**
      * Handles the Ok button event
      */
     @FXML
@@ -306,9 +316,9 @@ public class TaskEdit {
         }
     }
 
-    
-    /** 
+    /**
      * Adds an action item to the list
+     * 
      * @param id
      * @param description
      * @param checked
@@ -358,7 +368,7 @@ public class TaskEdit {
         // If we have action items
         if (!projectTask.getActionItems().isEmpty()) {
             // Loop through the action items
-            for (ActionItem actionItem : projectTask.getActionItems()) {
+            for (IActionItem actionItem : projectTask.getActionItems()) {
                 // If the action item is complete
                 if (actionItem.isComplete()) {
                     // Add a count to the action item

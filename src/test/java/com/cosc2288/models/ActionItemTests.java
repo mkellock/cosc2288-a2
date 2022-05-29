@@ -24,7 +24,7 @@ class ActionItemTests {
 
     @Test
     void ShouldConstructAndGetAllProperties() {
-        ActionItem actionItem = new ActionItem(ACTION_ITEM_ID, DESCRIPTION,
+        IActionItem actionItem = new ActionItem(ACTION_ITEM_ID, DESCRIPTION,
                 COMPLETE, PROJECT_TASK_ID);
         Assertions.assertEquals(ACTION_ITEM_ID, actionItem.getActionItemId());
         Assertions.assertEquals(DESCRIPTION, actionItem.getDescription());
@@ -33,21 +33,21 @@ class ActionItemTests {
 
     @Test
     void shouldSetAndGetActionItemId() {
-        ActionItem actionItem = new ActionItem();
+        IActionItem actionItem = new ActionItem();
         actionItem.setActionItemId(ACTION_ITEM_ID);
         Assertions.assertEquals(ACTION_ITEM_ID, actionItem.getActionItemId());
     }
 
     @Test
     void shouldSetAndGetDescription() {
-        ActionItem actionItem = new ActionItem();
+        IActionItem actionItem = new ActionItem();
         actionItem.setDescription(DESCRIPTION);
         Assertions.assertEquals(DESCRIPTION, actionItem.getDescription());
     }
 
     @Test
     void shouldSetAndGetComplete() {
-        ActionItem actionItem = new ActionItem();
+        IActionItem actionItem = new ActionItem();
         actionItem.setComplete(COMPLETE);
         Assertions.assertEquals(COMPLETE, actionItem.isComplete());
     }

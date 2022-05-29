@@ -24,7 +24,7 @@ class ProjectColumnTests {
 
     @Test
     void ShouldConstructAndGetAllProperties() {
-        ProjectColumn projectColumn = new ProjectColumn(PROJECT_COLUMN_ID, NAME,
+        IProjectColumn projectColumn = new ProjectColumn(PROJECT_COLUMN_ID, NAME,
                 ORDER, PROJECT_ID);
         Assertions.assertEquals(PROJECT_COLUMN_ID,
                 projectColumn.getProjectColumnId());
@@ -36,7 +36,7 @@ class ProjectColumnTests {
 
     @Test
     void shouldSetAndGetProjectColumnId() {
-        ProjectColumn projectColumn = new ProjectColumn();
+        IProjectColumn projectColumn = new ProjectColumn();
         projectColumn.setProjectColumnId(PROJECT_COLUMN_ID);
         Assertions.assertEquals(PROJECT_COLUMN_ID,
                 projectColumn.getProjectColumnId());
@@ -44,21 +44,21 @@ class ProjectColumnTests {
 
     @Test
     void shouldSetAndGetName() {
-        ProjectColumn projectColumn = new ProjectColumn();
+        IProjectColumn projectColumn = new ProjectColumn();
         projectColumn.setName(NAME);
         Assertions.assertEquals(NAME, projectColumn.getName());
     }
 
     @Test
     void shouldSetAndGetOrder() {
-        ProjectColumn projectColumn = new ProjectColumn();
+        IProjectColumn projectColumn = new ProjectColumn();
         projectColumn.setOrder(ORDER);
         Assertions.assertEquals(ORDER, projectColumn.getOrder());
     }
 
     @Test
     void shouldSetAndGetProjectId() {
-        ProjectColumn projectColumn = new ProjectColumn();
+        IProjectColumn projectColumn = new ProjectColumn();
         projectColumn.setProjectId(PROJECT_ID);
         Assertions.assertEquals(PROJECT_ID, projectColumn.getProjectId());
     }

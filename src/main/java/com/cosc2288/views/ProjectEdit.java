@@ -9,7 +9,8 @@
  */
 package com.cosc2288.views;
 
-import com.cosc2288.App;
+import com.cosc2288.IApp;
+import com.cosc2288.models.IProject;
 import com.cosc2288.models.Project;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -27,24 +28,24 @@ public class ProjectEdit {
     @FXML
     private Button cancelButton;
 
-    private App app;
-    private Project proj = new Project();
+    private IApp app;
+    private IProject proj = new Project();
 
-    
-    /** 
+    /**
      * Sets the App instance
+     * 
      * @param app
      */
-    public void setApp(App app) {
+    public void setApp(IApp app) {
         this.app = app;
     }
 
-    
-    /** 
+    /**
      * Sets the project
+     * 
      * @param project
      */
-    public void setProject(Project project) {
+    public void setProject(IProject project) {
         // Set the project object
         this.proj = project;
 
@@ -54,8 +55,7 @@ public class ProjectEdit {
         }
     }
 
-    
-    /** 
+    /**
      * Handles the Ok button event
      */
     @FXML

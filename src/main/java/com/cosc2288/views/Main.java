@@ -13,8 +13,10 @@ import java.io.ByteArrayInputStream;
 import java.util.List;
 import java.util.UUID;
 import com.cosc2288.App;
+import com.cosc2288.IApp;
+import com.cosc2288.models.IProject;
+import com.cosc2288.models.IUser;
 import com.cosc2288.models.Project;
-import com.cosc2288.models.User;
 import com.cosc2288.views.controls.ProjectTab;
 import javafx.beans.binding.Bindings;
 import javafx.event.Event;
@@ -65,32 +67,32 @@ public class Main {
     @FXML
     private TabPane workArea;
 
-    private App app;
+    private IApp app;
 
-    
-    /** 
+    /**
      * Sets the app instance
+     * 
      * @param app
      */
-    public void setApp(App app) {
+    public void setApp(IApp app) {
         this.app = app;
     }
 
-    
-    /** 
+    /**
      * Sets the quote message
+     * 
      * @param quoteMessage
      */
     public void setQuote(String quoteMessage) {
         quote.setText(quoteMessage);
     }
 
-    
-    /** 
+    /**
      * Sets the user instance
+     * 
      * @param user
      */
-    public void setUser(User user) {
+    public void setUser(IUser user) {
         if (user == null) {
             userFullName.setText(null);
             userImage.setImage(null);
@@ -102,8 +104,7 @@ public class Main {
         }
     }
 
-    
-    /** 
+    /**
      * Handles the Profile button event
      */
     @FXML
@@ -112,8 +113,7 @@ public class Main {
         app.profile();
     }
 
-    
-    /** 
+    /**
      * Handles the Log Out button event
      */
     @FXML
@@ -122,8 +122,7 @@ public class Main {
         app.logOut();
     }
 
-    
-    /** 
+    /**
      * Handles the New Project menu item
      */
     @FXML
@@ -153,9 +152,9 @@ public class Main {
         }
     }
 
-    
     /**
      * Loads the projects into the view
+     * 
      * @param projects
      * @param selectedProjectId
      * @param defaultProjectId
@@ -181,7 +180,7 @@ public class Main {
             };
 
             // Loop through the projects
-            for (Project project : projects) {
+            for (IProject project : projects) {
                 // Create a new tab instance
                 ProjectTab projectTab = new ProjectTab(this.app, project);
 
@@ -216,9 +215,9 @@ public class Main {
         }
     }
 
-    
-    /** 
+    /**
      * Selects a project by the project ID
+     * 
      * @param selectedProjectId
      */
     private void selectTabByProjectId(UUID selectedProjectId) {
@@ -235,9 +234,9 @@ public class Main {
         }
     }
 
-    
-    /** 
+    /**
      * Colours the default project tab
+     * 
      * @param defaultProjectId
      */
     private void colourDefaultTab(UUID defaultProjectId) {
@@ -257,8 +256,7 @@ public class Main {
         }
     }
 
-    
-    /** 
+    /**
      * Handles the project delete menu item
      */
     @FXML
@@ -273,9 +271,9 @@ public class Main {
         }
     }
 
-    
-    /** 
+    /**
      * Sets the project menu item state
+     * 
      * @param state
      */
     private void setProjectMenuItemsDisabled(boolean state) {
@@ -286,8 +284,7 @@ public class Main {
         deleteMenuItem.setDisable(state);
     }
 
-    
-    /** 
+    /**
      * Hanbles the Set Default menu item
      */
     @FXML
@@ -302,8 +299,7 @@ public class Main {
         setDefaultMenuOptions();
     }
 
-    
-    /** 
+    /**
      * Handles the Unset Default menu item
      */
     @FXML
@@ -318,8 +314,7 @@ public class Main {
         setDefaultMenuOptions();
     }
 
-    
-    /** 
+    /**
      * Handles the Rename menu item
      */
     @FXML
@@ -328,8 +323,7 @@ public class Main {
         app.projectAddEdit(true);
     }
 
-    
-    /** 
+    /**
      * Handles the Add Column menu item
      */
     @FXML

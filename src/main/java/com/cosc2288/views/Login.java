@@ -9,7 +9,8 @@
  */
 package com.cosc2288.views;
 
-import com.cosc2288.App;
+import com.cosc2288.IApp;
+
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
@@ -22,19 +23,18 @@ public class Login {
     @FXML
     private TextField password;
 
-    private App app;
+    private IApp app;
 
-    
-    /** 
+    /**
      * Sets the app instance
+     * 
      * @param app
      */
-    public void setApp(App app) {
+    public void setApp(IApp app) {
         this.app = app;
     }
 
-    
-    /** 
+    /**
      * Handles the New User button event
      */
     @FXML
@@ -47,8 +47,7 @@ public class Login {
         app.newEditUser(false);
     }
 
-    
-    /** 
+    /**
      * Handles the Ok button event
      */
     @FXML

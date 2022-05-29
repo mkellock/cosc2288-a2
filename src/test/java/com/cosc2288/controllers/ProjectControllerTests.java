@@ -13,6 +13,7 @@ import java.sql.SQLException;
 import java.time.Instant;
 import java.util.UUID;
 
+import com.cosc2288.models.IProject;
 import com.cosc2288.models.Project;
 import com.google.gson.Gson;
 
@@ -36,17 +37,17 @@ public class ProjectControllerTests extends BaseTests {
     void shouldAddProject() throws SQLException {
         // Set up test variables
         final UUID projectId = UUID.randomUUID();
-        final Project project = new Project(projectId, NAME, CREATED, USER_ID);
+        final IProject project = new Project(projectId, NAME, CREATED, USER_ID);
 
         // Add a project to the database
-        final ProjectController projectController = new ProjectController(
+        final IProjectController projectController = new ProjectController(
                 getTestConnString());
         projectController.addProject(project);
 
         // Grab the project from the list
-        Project projectLoaded = null;
+        IProject projectLoaded = null;
 
-        for (Project tempProject : projectController.loadProjects(USER_ID)) {
+        for (IProject tempProject : projectController.loadProjects(USER_ID)) {
             if (tempProject.getProjectId().equals(projectId)) {
                 projectLoaded = tempProject;
             }
@@ -64,20 +65,20 @@ public class ProjectControllerTests extends BaseTests {
     @Test
     void shouldEditProject() throws SQLException {
         // Set up test variables
-        final Project project = new Project(PROJECT_ID, NAME, CREATED, USER_ID);
+        final IProject project = new Project(PROJECT_ID, NAME, CREATED, USER_ID);
 
         // Update the project
         project.setName("Project Name New");
 
         // Save the project
-        final ProjectController projectController = new ProjectController(
+        final IProjectController projectController = new ProjectController(
                 getTestConnString());
         projectController.editProject(project);
 
         // Grab the project from the list
-        Project projectLoaded = null;
+        IProject projectLoaded = null;
 
-        for (Project tempProject : projectController.loadProjects(USER_ID)) {
+        for (IProject tempProject : projectController.loadProjects(USER_ID)) {
             if (tempProject.getProjectId().equals(PROJECT_ID)) {
                 projectLoaded = tempProject;
             }
@@ -99,12 +100,12 @@ public class ProjectControllerTests extends BaseTests {
         boolean result = false;
 
         // Delete the project
-        ProjectController projectController = new ProjectController(
+        IProjectController projectController = new ProjectController(
                 getTestConnString());
         projectController.deleteProject(projectId);
 
         // Check that the project no longer exists
-        for (Project tempProject : projectController.loadProjects(USER_ID)) {
+        for (IProject tempProject : projectController.loadProjects(USER_ID)) {
             if (tempProject.getProjectId().equals(projectId)) {
                 result = true;
             }
@@ -121,7 +122,7 @@ public class ProjectControllerTests extends BaseTests {
     @Test
     void shouldLoadProjects() throws SQLException {
         // Check that we have elements
-        ProjectController projectController = new ProjectController(
+        IProjectController projectController = new ProjectController(
                 getTestConnString());
         Assertions
                 .assertTrue(projectController.loadProjects(USER_ID).size() > 0);

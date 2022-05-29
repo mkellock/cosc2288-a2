@@ -27,7 +27,7 @@ class UserTests {
 
     @Test
     void ShouldConstructAndGetAllProperties() {
-        User user = new User(USER_ID, USERNAME, PASSWORD, FIRST_NAME, LAST_NAME,
+        IUser user = new User(USER_ID, USERNAME, PASSWORD, FIRST_NAME, LAST_NAME,
                 IMAGE, DEFAULT_PROJECT_ID);
         Assertions.assertEquals(USER_ID, user.getUserId());
         Assertions.assertEquals(USERNAME, user.getUsername());
@@ -40,49 +40,49 @@ class UserTests {
 
     @Test
     void shouldSetAndGetUserId() {
-        User user = new User();
+        IUser user = new User();
         user.setUserId(USER_ID);
         Assertions.assertEquals(USER_ID, user.getUserId());
     }
 
     @Test
     void shouldSetAndGetUsername() {
-        User user = new User();
+        IUser user = new User();
         user.setUsername(USERNAME);
         Assertions.assertEquals(USERNAME, user.getUsername());
     }
 
     @Test
     void shouldSetAndGetPassword() {
-        User user = new User();
+        IUser user = new User();
         user.setPassword(PASSWORD);
         Assertions.assertEquals(PASSWORD, user.getPassword());
     }
 
     @Test
     void shouldSetAndGetFirstName() {
-        User user = new User();
+        IUser user = new User();
         user.setFirstName(FIRST_NAME);
         Assertions.assertEquals(FIRST_NAME, user.getFirstName());
     }
 
     @Test
     void shouldSetAndGetLastName() {
-        User user = new User();
+        IUser user = new User();
         user.setLastName(LAST_NAME);
         Assertions.assertEquals(LAST_NAME, user.getLastName());
     }
 
     @Test
     void shouldSetAndGetImage() {
-        User user = new User();
+        IUser user = new User();
         user.setImage(IMAGE);
         Assertions.assertEquals(IMAGE, user.getImage());
     }
 
     @Test
     void shouldSetAndGetDefaultProjectId() {
-        User user = new User();
+        IUser user = new User();
         user.setDefaultProjectId(DEFAULT_PROJECT_ID);
         Assertions.assertEquals(DEFAULT_PROJECT_ID, user.getDefaultProjectId());
     }

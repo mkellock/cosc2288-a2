@@ -9,10 +9,11 @@
  */
 package com.cosc2288.views.controls;
 
-import com.cosc2288.App;
-import com.cosc2288.models.ActionItem;
-import com.cosc2288.models.ProjectColumn;
-import com.cosc2288.models.ProjectTask;
+import com.cosc2288.IApp;
+import com.cosc2288.models.IActionItem;
+import com.cosc2288.models.IProjectColumn;
+import com.cosc2288.models.IProjectTask;
+
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
@@ -32,11 +33,13 @@ public class Task extends AnchorPane {
 
     /**
      * Initializes a project task
+     * 
      * @param app
      * @param projectColumn
      * @param projectTask
      */
-    public Task(App app, ProjectColumn projectColumn, ProjectTask projectTask) {
+    public Task(IApp app, IProjectColumn projectColumn,
+            IProjectTask projectTask) {
         this.styleProperty().bind(Bindings.format(
                 "-fx-border-insets: 1;" +
                         "-fx-padding: 2; " +
@@ -122,7 +125,7 @@ public class Task extends AnchorPane {
             int completedItemCount = 0;
 
             // Loop through the action items
-            for (ActionItem actionItem : projectTask.getActionItems()) {
+            for (IActionItem actionItem : projectTask.getActionItems()) {
                 // If the action item is complete
                 if (actionItem.isComplete()) {
                     // Add a count to the action item

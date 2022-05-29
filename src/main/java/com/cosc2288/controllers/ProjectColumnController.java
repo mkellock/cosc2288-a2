@@ -9,6 +9,7 @@
  */
 package com.cosc2288.controllers;
 
+import com.cosc2288.models.IProjectColumn;
 import com.cosc2288.models.ProjectColumn;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -18,7 +19,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
 
-public class ProjectColumnController extends BaseController {
+public class ProjectColumnController extends BaseController
+        implements IProjectColumnController {
     /**
      * Constructor for the class
      */
@@ -32,7 +34,8 @@ public class ProjectColumnController extends BaseController {
      * @param projectColumn the project column to be added
      * @throws SQLException
      */
-    public boolean addProjectColumn(ProjectColumn projectColumn)
+    @Override
+    public boolean addProjectColumn(IProjectColumn projectColumn)
             throws SQLException {
         // Test the object's validity
         Boolean valid = validate(projectColumn);
@@ -90,7 +93,8 @@ public class ProjectColumnController extends BaseController {
      * @param projectColumn the project column to be saved
      * @throws SQLException
      */
-    public boolean editProjectColumn(ProjectColumn projectColumn)
+    @Override
+    public boolean editProjectColumn(IProjectColumn projectColumn)
             throws SQLException {
         // The update script
         String sql = "UPDATE project_columns SET \"order\" = ?, name = ?, "
@@ -130,6 +134,7 @@ public class ProjectColumnController extends BaseController {
      * @param projectColumnId the project column id to be deleted
      * @throws SQLException
      */
+    @Override
     public boolean deleteProjectColumn(UUID projectColumnId)
             throws SQLException {
         // The delete script
@@ -157,6 +162,7 @@ public class ProjectColumnController extends BaseController {
      * @return a list of project columns
      * @throws SQLException
      */
+    @Override
     public List<ProjectColumn> loadProjectColumns(UUID projectId)
             throws SQLException {
         // The result we'll eventually return
@@ -199,7 +205,7 @@ public class ProjectColumnController extends BaseController {
      * @param projectColumn the project column to be validated
      * @return if the project column is valid
      */
-    private static boolean validate(ProjectColumn projectColumn) {
+    private static boolean validate(IProjectColumn projectColumn) {
         // Check the validity of the object
         return projectColumn.getProjectColumnId() != null
                 && projectColumn.getName().length() != 0

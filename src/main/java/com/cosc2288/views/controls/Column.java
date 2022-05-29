@@ -9,9 +9,10 @@
  */
 package com.cosc2288.views.controls;
 
-import com.cosc2288.App;
-import com.cosc2288.models.ProjectColumn;
-import com.cosc2288.models.ProjectTask;
+import com.cosc2288.IApp;
+import com.cosc2288.models.IProjectColumn;
+import com.cosc2288.models.IProjectTask;
+
 import javafx.beans.binding.Bindings;
 import java.util.LinkedList;
 import java.util.UUID;
@@ -29,11 +30,12 @@ import javafx.scene.layout.VBox;
 public class Column extends AnchorPane {
 
     /**
-     * Initilizes the project column 
+     * Initilizes the project column
+     * 
      * @param app
      * @param projectColumn
      */
-    public Column(App app, ProjectColumn projectColumn) {
+    public Column(IApp app, IProjectColumn projectColumn) {
         // Add the column styling
         this.styleProperty().bind(Bindings.format(
                 "-fx-border-insets: 1;" +
@@ -107,7 +109,7 @@ public class Column extends AnchorPane {
         // Add a vbox to the scroll pane
         VBox vbox = new VBox();
 
-        for (ProjectTask projectTask : projectColumn.getProjectTasks()) {
+        for (IProjectTask projectTask : projectColumn.getProjectTasks()) {
             Task item = new Task(app, projectColumn, projectTask);
             vbox.getChildren().add(item);
         }

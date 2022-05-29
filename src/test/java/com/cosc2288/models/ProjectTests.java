@@ -26,7 +26,7 @@ class ProjectTests {
 
     @Test
     void ShouldConstructAndGetAllProperties() {
-        Project project = new Project(PROJECT_ID, NAME, CREATED, USER_ID);
+        IProject project = new Project(PROJECT_ID, NAME, CREATED, USER_ID);
         Assertions.assertEquals(PROJECT_ID, project.getProjectId());
         Assertions.assertEquals(NAME, project.getName());
         Assertions.assertEquals(CREATED, project.getCreated());
@@ -35,28 +35,28 @@ class ProjectTests {
 
     @Test
     void shouldSetAndGetProjectId() {
-        Project project = new Project();
+        IProject project = new Project();
         project.setProjectId(PROJECT_ID);
         Assertions.assertEquals(PROJECT_ID, project.getProjectId());
     }
 
     @Test
     void shouldSetAndGetName() {
-        Project project = new Project();
+        IProject project = new Project();
         project.setName(NAME);
         Assertions.assertEquals(NAME, project.getName());
     }
 
     @Test
     void shouldSetAndGetCreated() {
-        Project project = new Project();
+        IProject project = new Project();
         project.setCreated(CREATED);
         Assertions.assertEquals(CREATED, project.getCreated());
     }
 
     @Test
     void shouldSetAndGetUserId() {
-        Project project = new Project();
+        IProject project = new Project();
         project.setUserId(USER_ID);
         Assertions.assertEquals(USER_ID, project.getUserId());
     }

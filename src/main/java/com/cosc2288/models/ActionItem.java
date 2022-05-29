@@ -11,7 +11,7 @@ package com.cosc2288.models;
 
 import java.util.UUID;
 
-public class ActionItem {
+public class ActionItem implements IActionItem {
 
     private UUID actionItemId;
     private String description;
@@ -43,8 +43,10 @@ public class ActionItem {
 
     /**
      * Returns the action item ID
+     * 
      * @return UUID
      */
+    @Override
     public UUID getActionItemId() {
         return actionItemId;
     }
@@ -54,6 +56,7 @@ public class ActionItem {
      * 
      * @param actionItemId
      */
+    @Override
     public void setActionItemId(UUID actionItemId) {
         this.actionItemId = actionItemId;
     }
@@ -63,46 +66,57 @@ public class ActionItem {
      * 
      * @return String
      */
+    @Override
     public String getDescription() {
         return description;
     }
 
     /**
      * Sets the description
+     * 
      * @param description
      */
+    @Override
     public void setDescription(String description) {
         this.description = description;
     }
 
     /**
      * Returns id the action item is complete
+     * 
      * @return boolean
      */
+    @Override
     public boolean isComplete() {
         return complete;
     }
 
     /**
      * Sets the complete status of the action item
+     * 
      * @param complete
      */
+    @Override
     public void setComplete(boolean complete) {
         this.complete = complete;
     }
 
     /**
      * Returns the project task ID
+     * 
      * @return UUID
      */
+    @Override
     public UUID getProjectTaskId() {
         return projectTaskID;
     }
 
     /**
      * Sets the project task ID
+     * 
      * @param projectTaskID
      */
+    @Override
     public void setProjectTaskId(UUID projectTaskID) {
         this.projectTaskID = projectTaskID;
     }

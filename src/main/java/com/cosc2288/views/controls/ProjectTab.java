@@ -9,9 +9,10 @@
  */
 package com.cosc2288.views.controls;
 
-import com.cosc2288.App;
-import com.cosc2288.models.Project;
-import com.cosc2288.models.ProjectColumn;
+import com.cosc2288.IApp;
+import com.cosc2288.models.IProject;
+import com.cosc2288.models.IProjectColumn;
+
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Tab;
 import javafx.scene.layout.AnchorPane;
@@ -22,10 +23,11 @@ public class ProjectTab extends Tab {
 
     /**
      * Initializes a project tab
+     * 
      * @param app
      * @param project
      */
-    public ProjectTab(App app, Project project) {
+    public ProjectTab(IApp app, IProject project) {
         // Create a new anchor pane
         AnchorPane anchorPane = new AnchorPane();
 
@@ -45,7 +47,7 @@ public class ProjectTab extends Tab {
         this.hbox = new HBox();
         scrollPane.setContent(hbox);
 
-        for (ProjectColumn projectColumn : project.getProjectColumns()) {
+        for (IProjectColumn projectColumn : project.getProjectColumns()) {
             Column col = new Column(app, projectColumn);
             hbox.getChildren().add(col);
         }

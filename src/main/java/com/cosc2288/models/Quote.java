@@ -9,7 +9,7 @@
  */
 package com.cosc2288.models;
 
-public class Quote {
+public class Quote implements IQuote {
 
     private String message;
 
@@ -31,16 +31,20 @@ public class Quote {
 
     /**
      * Gets the quote message
+     * 
      * @return String
      */
+    @Override
     public String getMessage() {
         return message;
     }
 
     /**
      * Sets the quote message
+     * 
      * @param message
      */
+    @Override
     public void setMessage(String message) {
         this.message = message;
     }

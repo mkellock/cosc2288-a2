@@ -9,16 +9,22 @@
  */
 package com.cosc2288;
 
+import com.cosc2288.controllers.IProjectColumnController;
+import com.cosc2288.controllers.IProjectController;
+import com.cosc2288.controllers.IQuoteController;
+import com.cosc2288.controllers.IUserController;
 import com.cosc2288.controllers.ProjectColumnController;
 import com.cosc2288.controllers.ProjectController;
 import com.cosc2288.controllers.ProjectTaskController;
 import com.cosc2288.controllers.QuoteController;
 import com.cosc2288.controllers.UserController;
-import com.cosc2288.models.ActionItem;
+import com.cosc2288.models.IActionItem;
+import com.cosc2288.models.IProject;
+import com.cosc2288.models.IProjectColumn;
+import com.cosc2288.models.IProjectTask;
+import com.cosc2288.models.IUser;
 import com.cosc2288.models.Project;
 import com.cosc2288.models.ProjectColumn;
-import com.cosc2288.models.ProjectTask;
-import com.cosc2288.models.User;
 import com.cosc2288.views.*;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -36,10 +42,10 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
-public class App extends Application {
+public class App extends Application implements IApp {
 
     private static String connectionString;
-    private static User loggedInUser;
+    private static IUser loggedInUser;
     private static Main mainView;
     private static Main main;
     private static Stage loginStage;
@@ -47,31 +53,31 @@ public class App extends Application {
     private static Stage projectStage;
     private static Stage columnStage;
     private static Stage taskStage;
-    private static Project selectedProject;
+    private static IProject selectedProject;
     private static List<Project> projects;
     private static List<ProjectColumn> projectColumns;
 
-    
-    /** 
+    /**
      * Gets the currently logged in user
+     * 
      * @return User
      */
-    public static User getLoggedInUser() {
+    public static IUser getLoggedInUser() {
         return loggedInUser;
     }
 
-    
-    /** 
+    /**
      * Sets the currently loged in user
+     * 
      * @param user
      */
-    public static void setLoggedInUser(User user) {
+    public static void setLoggedInUser(IUser user) {
         // Set the user object
         loggedInUser = user;
 
         // Set a project with the default project
         if (user != null) {
-            Project tempProj = new Project();
+            IProject tempProj = new Project();
             tempProj.setProjectId(user.getDefaultProjectId());
             setSelectedProject(tempProj);
         }
@@ -80,26 +86,25 @@ public class App extends Application {
         getMainView().setUser(user);
     }
 
-    
-    /** 
+    /**
      * Returns the Main view controller
+     * 
      * @return Main
      */
     public static Main getMain() {
         return main;
     }
 
-    
-    /** 
+    /**
      * Sets the main view controller
+     * 
      * @param main
      */
     public static void setMain(Main main) {
         App.main = main;
     }
 
-    
-    /** 
+    /**
      * 
      * @return Main view
      */
@@ -107,175 +112,175 @@ public class App extends Application {
         return mainView;
     }
 
-    
-    /** 
+    /**
      * Sets the main view
+     * 
      * @param main
      */
     public static void setMainView(Main main) {
         mainView = main;
     }
 
-    
-    /** 
+    /**
      * Returns the login stage
+     * 
      * @return Stage
      */
     public static Stage getLoginStage() {
         return loginStage;
     }
 
-    
-    /** 
+    /**
      * Sets the login stage
+     * 
      * @param loginStage
      */
     public static void setLoginStage(Stage loginStage) {
         App.loginStage = loginStage;
     }
 
-    
-    /** 
+    /**
      * Gets the user stage
+     * 
      * @return Stage
      */
     public static Stage getUserStage() {
         return userStage;
     }
 
-    
-    /** 
+    /**
      * Sets the user stage
+     * 
      * @param userStage
      */
     public static void setUserStage(Stage userStage) {
         App.userStage = userStage;
     }
 
-    
-    /** 
+    /**
      * Gets the project stage
+     * 
      * @return Stage
      */
     public static Stage getProjectStage() {
         return projectStage;
     }
 
-    
-    /** 
+    /**
      * Sets the project stage
+     * 
      * @param projectStage
      */
     public static void setProjectStage(Stage projectStage) {
         App.projectStage = projectStage;
     }
 
-    
-    /** 
+    /**
      * Gets the task stage
+     * 
      * @return Stage
      */
     public static Stage getTaskStage() {
         return taskStage;
     }
 
-    
-    /** 
+    /**
      * Sets the task stage
+     * 
      * @param taskStage
      */
     public static void setTaskStage(Stage taskStage) {
         App.taskStage = taskStage;
     }
 
-    
-    /** 
+    /**
      * Gets the column stage
+     * 
      * @return Stage
      */
     public static Stage getColumnStage() {
         return columnStage;
     }
 
-    
-    /** 
+    /**
      * Sets the column stage
+     * 
      * @param columnStage
      */
     public static void setColumnStage(Stage columnStage) {
         App.columnStage = columnStage;
     }
 
-    
-    /** 
+    /**
      * Sets the selected project by ID
+     * 
      * @param projectId
      */
     public static void setSelectedProjectById(UUID projectId) {
-        for (Project project : getProjects()) {
+        for (IProject project : getProjects()) {
             if (projectId.compareTo(project.getProjectId()) == 0) {
                 setSelectedProject(project);
             }
         }
     }
 
-    
-    /** 
+    /**
      * Sets the selected project by project object
+     * 
      * @param project
      */
-    public static void setSelectedProject(Project project) {
+    public static void setSelectedProject(IProject project) {
         App.selectedProject = project;
     }
 
-    
-    /** 
+    /**
      * Gets the selected project
+     * 
      * @return Project
      */
-    public static Project getSelectedProject() {
+    public static IProject getSelectedProject() {
         return selectedProject;
     }
 
-    
-    /** 
+    /**
      * Sets the list of the user's projects
+     * 
      * @param projects
      */
     public static void setProjects(List<Project> projects) {
         App.projects = projects;
     }
 
-    
-    /** 
+    /**
      * Returns a list of the user's projects
+     * 
      * @return List<Project>
      */
     public static List<Project> getProjects() {
         return projects;
     }
 
-    
-    /** 
+    /**
      * Sets the active project columns
+     * 
      * @param projectColumns
      */
     public static void setProjectColumns(List<ProjectColumn> projectColumns) {
         App.projectColumns = projectColumns;
     }
 
-    
-    /** 
+    /**
      * Returns the active projects columns
+     * 
      * @return List<ProjectColumn>
      */
     public static List<ProjectColumn> getProjectColumns() {
         return projectColumns;
     }
 
-    
-    /** 
+    /**
      * Main method that runs the application
+     * 
      * @param args
      */
     public static void main(String[] args) {
@@ -297,9 +302,9 @@ public class App extends Application {
         launch(args);
     }
 
-    
-    /** 
+    /**
      * JavaFX start method to run the UI
+     * 
      * @param primaryStage
      * @throws Exception
      */
@@ -317,7 +322,7 @@ public class App extends Application {
 
             // Load the quote
             App.setMainView(loader.<Main>getController());
-            QuoteController quoteController = new QuoteController(
+            IQuoteController quoteController = new QuoteController(
                     connectionString);
             App.getMainView()
                     .setQuote(quoteController.randomQuote().getMessage());
@@ -348,10 +353,16 @@ public class App extends Application {
         }
     }
 
+    /**
+     * Shows the login dialog
+     */
     private void showLogin() {
         getLoginStage().showAndWait();
     }
 
+    /**
+     * Loads the main scene
+     */
     private void showMainScene() {
         getLoginStage().close();
 
@@ -362,18 +373,19 @@ public class App extends Application {
         loadProjects();
     }
 
-    
-    /** 
+    /**
      * Logs in the user
+     * 
      * @param username
      * @param password
      */
+    @Override
     public void loginOk(String username, String password) {
         try {
-            UserController userController = new UserController(
+            IUserController userController = new UserController(
                     connectionString);
             Alert addUserAlert = new Alert(AlertType.ERROR);
-            User user = userController.logInUser(username, password);
+            IUser user = userController.logInUser(username, password);
 
             if (user == null) {
                 addUserAlert
@@ -390,11 +402,12 @@ public class App extends Application {
         }
     }
 
-    
-    /** 
+    /**
      * Shows the new/edit user dialog
+     * 
      * @param edit
      */
+    @Override
     public void newEditUser(Boolean edit) {
         try {
             // Load the main scene
@@ -430,20 +443,22 @@ public class App extends Application {
      * New user methods
      */
 
+    @Override
     public void newUserCancel() {
         getUserStage().close();
         getLoginStage().showAndWait();
     }
 
-    
-    /** 
+    /**
      * Commits a new/edited user to the database and closes the dialog
+     * 
      * @param user
      */
-    public void newEditUserOk(User user) {
+    @Override
+    public void newEditUserOk(IUser user) {
         try {
             Alert addUserAlert = new Alert(AlertType.ERROR);
-            UserController userController = new UserController(
+            IUserController userController = new UserController(
                     connectionString);
 
             if (App.getLoggedInUser() == null) {
@@ -470,6 +485,7 @@ public class App extends Application {
     /**
      * Logs out the current user
      */
+    @Override
     public void logOut() {
         setLoggedInUser(null);
         setSelectedProject(null);
@@ -480,16 +496,17 @@ public class App extends Application {
     /**
      * Edits the current user's profile
      */
+    @Override
     public void profile() {
         newEditUser(true);
     }
 
-
-    
-    /** 
+    /**
      * Shows the new/edit project dialog
+     * 
      * @param edit
      */
+    @Override
     public void projectAddEdit(Boolean edit) {
         try {
             // Load the main scene
@@ -521,14 +538,15 @@ public class App extends Application {
         }
     }
 
-    
-    /** 
+    /**
      * Commits a new/edited project to the database and closes the dialog
+     * 
      * @param project
      */
-    public void projectOk(Project project) {
+    @Override
+    public void projectOk(IProject project) {
         try {
-            ProjectController projectController = new ProjectController(
+            IProjectController projectController = new ProjectController(
                     connectionString);
 
             if (project.getProjectId() == null) {
@@ -550,16 +568,18 @@ public class App extends Application {
     /**
      * Cancels the project dialog
      */
+    @Override
     public void projectCancel() {
         getProjectStage().close();
     }
 
-    
-    /** 
+    /**
      * Commits a new/edited project task to the datbase and closes the dialog
+     * 
      * @param projectTask
      */
-    public void projectTaskOk(ProjectTask projectTask) {
+    @Override
+    public void projectTaskOk(IProjectTask projectTask) {
         try {
             ProjectTaskController projectController = new ProjectTaskController(
                     connectionString);
@@ -567,7 +587,7 @@ public class App extends Application {
             if (projectTask.getProjectTaskId() == null) {
                 projectTask.setProjectTaskId(UUID.randomUUID());
 
-                for (ActionItem actionItem : projectTask.getActionItems()) {
+                for (IActionItem actionItem : projectTask.getActionItems()) {
                     actionItem.setProjectTaskId(projectTask.getProjectTaskId());
                 }
 
@@ -587,19 +607,21 @@ public class App extends Application {
     /**
      * Cancels the project task dialog
      */
+    @Override
     public void projectTaskCancel() {
         getTaskStage().close();
     }
 
-    
-    /** 
+    /**
      * Commits the project column to the database and closes the dialog
+     * 
      * @param projectColumn
      */
-    public void projectColumnOk(ProjectColumn projectColumn) {
+    @Override
+    public void projectColumnOk(IProjectColumn projectColumn) {
         try {
-            ProjectColumnController projectColumnController =
-                    new ProjectColumnController(connectionString);
+            IProjectColumnController projectColumnController = new ProjectColumnController(
+                    connectionString);
 
             if (projectColumn.getProjectColumnId() == null) {
                 projectColumnController.addProjectColumn(new ProjectColumn(
@@ -620,6 +642,7 @@ public class App extends Application {
     /**
      * Closes the project column dialog
      */
+    @Override
     public void projectColumnCancel() {
         getColumnStage().close();
     }
@@ -627,22 +650,23 @@ public class App extends Application {
     /**
      * Loads the user's projects
      */
+    @Override
     public void loadProjects() {
         try {
             if (getLoggedInUser() == null) {
                 main.loadProjects(null, null, null);
             } else {
-                ProjectController projectController = new ProjectController(
+                IProjectController projectController = new ProjectController(
                         connectionString);
                 setProjects(projectController
                         .loadProjects(getLoggedInUser().getUserId()));
 
-                ProjectColumnController projectColumnController =
-                        new ProjectColumnController(connectionString);
-                ProjectTaskController projectTaskController =
-                        new ProjectTaskController(connectionString);
+                IProjectColumnController projectColumnController = new ProjectColumnController(
+                        connectionString);
+                ProjectTaskController projectTaskController = new ProjectTaskController(
+                        connectionString);
 
-                for (Project project : getProjects()) {
+                for (IProject project : getProjects()) {
                     project.setProjectColumns(projectColumnController
                             .loadProjectColumns(project.getProjectId()));
 
@@ -653,7 +677,7 @@ public class App extends Application {
                         setSelectedProject(project);
                     }
 
-                    for (ProjectColumn projectColumn : project
+                    for (IProjectColumn projectColumn : project
                             .getProjectColumns()) {
                         projectColumn.setProjectTasks(
                                 projectTaskController.loadProjectTasks(
@@ -679,19 +703,20 @@ public class App extends Application {
     /**
      * Deletes the active project
      */
+    @Override
     public void deleteProject() {
         try {
-            ProjectColumnController projectColumnController =
-                    new ProjectColumnController(connectionString);
+            IProjectColumnController projectColumnController = new ProjectColumnController(
+                    connectionString);
 
-            for (ProjectColumn projectColumn : getSelectedProject()
+            for (IProjectColumn projectColumn : getSelectedProject()
                     .getProjectColumns()) {
                 projectColumnController
                         .deleteProjectColumn(
                                 projectColumn.getProjectColumnId());
             }
 
-            ProjectController projectController = new ProjectController(
+            IProjectController projectController = new ProjectController(
                     connectionString);
             projectController
                     .deleteProject(getSelectedProject().getProjectId());
@@ -706,6 +731,7 @@ public class App extends Application {
     /**
      * Sets the active project as default
      */
+    @Override
     public void setDefaultProject() {
         // Set the default project
         getLoggedInUser()
@@ -718,6 +744,7 @@ public class App extends Application {
     /**
      * Unsets the default project
      */
+    @Override
     public void unsetDefaultProject() {
         // Set the default project to null
         getLoggedInUser().setDefaultProjectId(null);
@@ -732,7 +759,7 @@ public class App extends Application {
     private void saveUser() {
         try {
             // Save the current user
-            UserController userController = new UserController(
+            IUserController userController = new UserController(
                     connectionString);
             userController.editUser(getLoggedInUser());
         } catch (SQLException e) {
@@ -741,14 +768,15 @@ public class App extends Application {
         }
     }
 
-    
-    /** 
+    /**
      * Shows the new/edit column dialog
+     * 
      * @param edit
      * @param selectedProjectColumn
      */
+    @Override
     public void columnAddEdit(Boolean edit,
-            ProjectColumn selectedProjectColumn) {
+            IProjectColumn selectedProjectColumn) {
         try {
             // Load the main scene
             FXMLLoader loader = new FXMLLoader(
@@ -781,15 +809,16 @@ public class App extends Application {
         }
     }
 
-    
-    /** 
+    /**
      * Shows the task add/edit dialog
+     * 
      * @param edit
      * @param projectColumnId
      * @param projectTask
      */
+    @Override
     public void taskAddEdit(Boolean edit, UUID projectColumnId,
-            ProjectTask projectTask) {
+            IProjectTask projectTask) {
         try {
             // Load the main scene
             FXMLLoader loader = new FXMLLoader(
@@ -822,15 +851,16 @@ public class App extends Application {
         }
     }
 
-    
-    /** 
+    /**
      * Deletes a project column
+     * 
      * @param selectedProjectColumn
      */
-    public void deleteProjectColumn(ProjectColumn selectedProjectColumn) {
+    @Override
+    public void deleteProjectColumn(IProjectColumn selectedProjectColumn) {
         try {
-            ProjectColumnController projectColumnController =
-                    new ProjectColumnController(connectionString);
+            IProjectColumnController projectColumnController = new ProjectColumnController(
+                    connectionString);
             projectColumnController.deleteProjectColumn(
                     selectedProjectColumn.getProjectColumnId());
             loadProjects();
@@ -840,15 +870,16 @@ public class App extends Application {
         }
     }
 
-    
-    /** 
+    /**
      * Deletes a project task
+     * 
      * @param projectTask
      */
-    public void deleteProjectTask(ProjectTask projectTask) {
+    @Override
+    public void deleteProjectTask(IProjectTask projectTask) {
         try {
-            ProjectTaskController projectTaskController =
-                    new ProjectTaskController(connectionString);
+            ProjectTaskController projectTaskController = new ProjectTaskController(
+                    connectionString);
             projectTaskController
                     .deleteProjectTask(projectTask.getProjectTaskId());
             loadProjects();
@@ -858,19 +889,20 @@ public class App extends Application {
         }
     }
 
-    
-    /** 
+    /**
      * Handles a drag event of a project task to another project task
+     * 
      * @param draggedProjectTaskId
      * @param projectTask
      */
+    @Override
     public void dragProjectTask(UUID draggedProjectTaskId,
-            ProjectTask projectTask) {
+            IProjectTask projectTask) {
         try {
             if (draggedProjectTaskId
                     .compareTo(projectTask.getProjectTaskId()) != 0) {
-                ProjectTaskController projectTaskController =
-                        new ProjectTaskController(connectionString);
+                ProjectTaskController projectTaskController = new ProjectTaskController(
+                        connectionString);
                 projectTaskController.moveTaskToPosition(draggedProjectTaskId,
                         projectTask);
                 loadProjects();
@@ -881,17 +913,18 @@ public class App extends Application {
         }
     }
 
-    
-    /** 
+    /**
      * Handles a drag event of a project task to another column
+     * 
      * @param draggedProjectTaskId
      * @param projectColumn
      */
+    @Override
     public void dragProjectTask(UUID draggedProjectTaskId,
-            ProjectColumn projectColumn) {
+            IProjectColumn projectColumn) {
         try {
-            ProjectTaskController projectTaskController =
-                    new ProjectTaskController(connectionString);
+            ProjectTaskController projectTaskController = new ProjectTaskController(
+                    connectionString);
             projectTaskController.moveTaskToColumn(draggedProjectTaskId,
                     projectColumn);
             loadProjects();
@@ -901,9 +934,9 @@ public class App extends Application {
         }
     }
 
-    
-    /** 
+    /**
      * Handles exceptions
+     * 
      * @param ex
      */
     private void handleException() {
