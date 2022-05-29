@@ -428,7 +428,7 @@ public class App extends Application {
 
     public void projectColumnOk(ProjectColumn projectColumn) {
         try {
-            ProjectColumnController projectColumnController = 
+            ProjectColumnController projectColumnController =
                     new ProjectColumnController(connectionString);
 
             if (projectColumn.getProjectColumnId() == null) {
@@ -689,12 +689,10 @@ public class App extends Application {
     }
 
     private void handleException(Exception ex) {
-        Alert alert = new Alert(AlertType.ERROR);
-        alert.setContentText(
-                "An application error has occured, shutting down!");
-        ex.printStackTrace();
-        alert.show();
-
+        System.out.println("---------");
+        System.out.println("There was an exception in the application, " +
+                "it is safer for the app to close than continue!");
+        System.out.println("---------");
         System.exit(-1);
     }
 }
