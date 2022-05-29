@@ -133,7 +133,7 @@ public class Main {
         workArea.getTabs().clear();
 
         // If we have projects
-        if (projects != null) {
+        if (projects != null && !projects.isEmpty()) {
             // Create an eventhandler for selecting a project
             EventHandler<Event> event = e -> {
                 // Enable the project menu items

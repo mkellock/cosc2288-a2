@@ -425,6 +425,13 @@ public class App extends Application {
                 project.setProjectColumns(projectColumnController
                         .loadProjectColumns(project.getProjectId()));
 
+                if (getSelectedProject() == null
+                        && getLoggedInUser().getDefaultProjectId() != null
+                        && getLoggedInUser().getDefaultProjectId()
+                                .compareTo(project.getProjectId()) == 0) {
+                    setSelectedProject(project);
+                }
+
                 for (ProjectColumn projectColumn : project
                         .getProjectColumns()) {
                     projectColumn.setProjectTasks(
@@ -433,7 +440,13 @@ public class App extends Application {
                 }
             }
 
-            main.loadProjects(getProjects(), selectedProject.getProjectId(),
+            if (getSelectedProject() == null && !getProjects().isEmpty()) {
+                setSelectedProject(getProjects().get(0));
+            }
+
+            main.loadProjects(getProjects(),
+                    selectedProject != null ? selectedProject.getProjectId()
+                            : null,
                     getLoggedInUser().getDefaultProjectId());
         }
     }

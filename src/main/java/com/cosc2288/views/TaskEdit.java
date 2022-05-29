@@ -111,6 +111,8 @@ public class TaskEdit {
     public void initialize() {
         actionItems.setCellFactory(
                 CheckBoxListCell.forListView(CheckListActionItem::onProperty));
+
+        onDueDateChange();
     }
 
     public void setApp(App app) {
@@ -150,7 +152,7 @@ public class TaskEdit {
 
         // Validate we have a project name
         if (task.getLength() == 0) {
-            loginAlert.setContentText("Please enter a task description");
+            loginAlert.setContentText("Please enter a task name");
             loginAlert.show();
         } else {
             // Create a new project object if we haven't specified one
@@ -163,6 +165,8 @@ public class TaskEdit {
 
             if (dueDate.getValue() != null) {
                 projectTask.setDueDate(dueDate.getValue().toEpochDay());
+            } else {
+                projectTask.setDueDate(null);
             }
 
             projectTask.setDescription(description.getText());

@@ -23,6 +23,11 @@ public class Login {
 
     @FXML
     private void newUser() throws IOException {
+        // Clear the form
+        username.setText("");
+        password.setText("");
+
+        // Trigger the new user form
         app.newEditUser(false);
     }
 
