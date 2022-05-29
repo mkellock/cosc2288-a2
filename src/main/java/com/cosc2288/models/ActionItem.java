@@ -16,6 +16,7 @@ public class ActionItem {
     private UUID actionItemId;
     private String description;
     private boolean complete;
+    private UUID projectTaskID;
 
     /**
      * Constructs an action item
@@ -31,10 +32,12 @@ public class ActionItem {
      * @param description
      * @param complete
      */
-    public ActionItem(UUID actionItemId, String description, boolean complete) {
+    public ActionItem(UUID actionItemId, String description, boolean complete,
+            UUID projectTaskID) {
         this.actionItemId = actionItemId;
         this.description = description;
         this.complete = complete;
+        this.projectTaskID = projectTaskID;
     }
 
     /**
@@ -77,6 +80,20 @@ public class ActionItem {
      */
     public void setComplete(boolean complete) {
         this.complete = complete;
+    }
+
+    /**
+     * @return the projectTaskID
+     */
+    public UUID getProjectTaskId() {
+        return projectTaskID;
+    }
+
+    /**
+     * @param projectTaskID the actionItemId to set
+     */
+    public void setProjectTaskId(UUID projectTaskID) {
+        this.projectTaskID = projectTaskID;
     }
 
 }

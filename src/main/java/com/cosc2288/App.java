@@ -13,6 +13,7 @@ import com.cosc2288.controllers.ProjectController;
 import com.cosc2288.controllers.ProjectTaskController;
 import com.cosc2288.controllers.QuoteController;
 import com.cosc2288.controllers.UserController;
+import com.cosc2288.models.ActionItem;
 import com.cosc2288.models.Project;
 import com.cosc2288.models.ProjectColumn;
 import com.cosc2288.models.ProjectTask;
@@ -367,6 +368,11 @@ public class App extends Application {
 
         if (projectTask.getProjectTaskId() == null) {
             projectTask.setProjectTaskId(UUID.randomUUID());
+
+            for (ActionItem actionItem : projectTask.getActionItems()) {
+                actionItem.setProjectTaskId(projectTask.getProjectTaskId());
+            }
+
             projectController.addProjectTask(projectTask);
         } else {
             projectController.editProjectTask(projectTask);

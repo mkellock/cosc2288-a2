@@ -8,6 +8,7 @@ import java.time.format.FormatStyle;
 import java.util.UUID;
 
 import com.cosc2288.App;
+import com.cosc2288.models.ActionItem;
 import com.cosc2288.models.ProjectColumn;
 import com.cosc2288.models.ProjectTask;
 
@@ -110,19 +111,40 @@ public class Task extends AnchorPane {
             AnchorPane.setLeftAnchor(dueLabel, 0D);
         }
 
-        // Create a label for the due date
-        Label subTaskLabel = new Label();
-        subTaskLabel.setText("Subitems: 1/10");
-        subTaskLabel.setFont(smallFont);
-        subTaskLabel.styleProperty()
-                .bind(Bindings.format("-fx-background-color: lightgreen"));
+        // If we have action items
+        if (!projectTask.getActionItems().isEmpty()) {
+            // Create a label for the due date
+            Label subTaskLabel = new Label();
 
-        // Add the due label to the anchor
-        this.getChildren().add(subTaskLabel);
+            // Set the completed item count to 0
+            int completedItemCount = 0;
 
-        // Anchor the title label
-        AnchorPane.setTopAnchor(subTaskLabel, 15D);
-        AnchorPane.setLeftAnchor(subTaskLabel, 0D);
+            // Loop through the action items
+            for (ActionItem actionItem : projectTask.getActionItems()) {
+                // If the action item is complete
+                if (actionItem.isComplete()) {
+                    // Add a count to the action item
+                    completedItemCount++;
+                }
+            }
+
+            subTaskLabel.setText("Actions: " + completedItemCount + "/"
+                    + projectTask.getActionItems().size());
+            subTaskLabel.setFont(smallFont);
+
+            if (completedItemCount == projectTask.getActionItems().size()) {
+                subTaskLabel.styleProperty()
+                        .bind(Bindings
+                                .format("-fx-background-color: lightgreen"));
+            }
+
+            // Add the due label to the anchor
+            this.getChildren().add(subTaskLabel);
+
+            // Anchor the title label
+            AnchorPane.setTopAnchor(subTaskLabel, 15D);
+            AnchorPane.setLeftAnchor(subTaskLabel, 0D);
+        }
 
         this.setOnDragDetected(event -> {
             /* drag was detected, start a drag-and-drop gesture */

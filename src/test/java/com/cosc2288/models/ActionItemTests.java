@@ -19,11 +19,13 @@ class ActionItemTests {
             .fromString("15386c5f-f3e4-40a2-afaa-d0345e3be0cd");
     private static final String DESCRIPTION = "Description";
     private static final boolean COMPLETE = false;
+    private static final UUID PROJECT_TASK_ID = UUID
+            .fromString("d51df5eb-e709-40c1-b1a9-db5af1bf406f");
 
     @Test
     void ShouldConstructAndGetAllProperties() {
         ActionItem actionItem = new ActionItem(ACTION_ITEM_ID, DESCRIPTION,
-                COMPLETE);
+                COMPLETE, PROJECT_TASK_ID);
         Assertions.assertEquals(ACTION_ITEM_ID, actionItem.getActionItemId());
         Assertions.assertEquals(DESCRIPTION, actionItem.getDescription());
         Assertions.assertEquals(COMPLETE, actionItem.isComplete());

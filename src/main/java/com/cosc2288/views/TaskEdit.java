@@ -2,9 +2,13 @@ package com.cosc2288.views;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.LinkedList;
 import java.util.UUID;
 
+import javax.swing.Action;
+
 import com.cosc2288.App;
+import com.cosc2288.models.ActionItem;
 import com.cosc2288.models.ProjectTask;
 
 import javafx.beans.property.BooleanProperty;
@@ -29,12 +33,12 @@ import javafx.scene.paint.Paint;
 
 public class TaskEdit {
 
-    public static class ActionItem {
+    public static class CheckListActionItem {
         private final UUID actionItemId;
         private final StringProperty name = new SimpleStringProperty();
         private final BooleanProperty on = new SimpleBooleanProperty();
 
-        public ActionItem(UUID id, String name, boolean on) {
+        public CheckListActionItem(UUID id, String name, boolean on) {
             this.actionItemId = id;
             setName(name);
             setOn(on);
@@ -91,18 +95,22 @@ public class TaskEdit {
     private TextField addItemText;
 
     @FXML
-    private ListView<ActionItem> actionItems;
+    private ListView<CheckListActionItem> actionItems;
 
     @FXML
     private Label onTrack;
 
     private App app;
     private UUID projectColumnId;
-    private ProjectTask projectTask;
+    private ProjectTask projectTask = new ProjectTask();
+
+    public TaskEdit() {
+        projectTask.setActionItems(new LinkedList<>());
+    }
 
     public void initialize() {
         actionItems.setCellFactory(
-                CheckBoxListCell.forListView(ActionItem::onProperty));
+                CheckBoxListCell.forListView(CheckListActionItem::onProperty));
     }
 
     public void setApp(App app) {
@@ -115,9 +123,9 @@ public class TaskEdit {
     }
 
     public void setProjectTask(ProjectTask projectTask) {
-        this.projectTask = projectTask;
-
         if (projectTask != null) {
+            this.projectTask = projectTask;
+
             task.setText(projectTask.getName());
 
             if (projectTask.getDueDate() > 0) {
@@ -128,6 +136,11 @@ public class TaskEdit {
             onDueDateChange();
 
             description.setText(projectTask.getDescription());
+
+            for (ActionItem actionItem : projectTask.getActionItems()) {
+                addActionItemToList(actionItem.getActionItemId(),
+                        actionItem.getDescription(), actionItem.isComplete());
+            }
         }
     }
 
@@ -160,6 +173,9 @@ public class TaskEdit {
         }
     }
 
+    /**
+     * Handler for due date changes
+     */
     @FXML
     private void onDueDateChange() {
         if (dueDate.getValue() != null) {
@@ -179,26 +195,98 @@ public class TaskEdit {
         onTrack.setVisible(dueDate.getValue() != null);
     }
 
+    /**
+     * Cancels editing the project item
+     */
     @FXML
     private void cancel() {
         app.projectTaskCancel();
     }
 
+    /**
+     * Event to add an item to the action item list
+     */
     @FXML
     private void addItem() {
-        ActionItem item = new ActionItem(UUID.randomUUID(),
-                addItemText.getText(), false);
+        Alert loginAlert = new Alert(AlertType.ERROR);
 
-        // observe item's on property and display message if it changes:
+        // Validate we have a action item description
+        if (addItemText.getText().length() == 0) {
+            loginAlert
+                    .setContentText("Please enter an action item description");
+            loginAlert.show();
+        } else {
+            UUID actionItemID = UUID.randomUUID();
+
+            addActionItemToList(actionItemID, addItemText.getText(), false);
+
+            // Add an ActionItem to the project task
+            projectTask.getActionItems().add(new ActionItem(
+                    actionItemID,
+                    addItemText.getText(),
+                    false,
+                    projectTask.getProjectTaskId()));
+
+            // Set the text to empty
+            addItemText.setText("");
+        }
+    }
+
+    private void addActionItemToList(UUID id, String description,
+            Boolean checked) {
+        // Create a new CheckListActionItem for the list
+        CheckListActionItem item = new CheckListActionItem(id, description,
+                checked);
+
+        // Add an observer to the checklist item
         item.onProperty()
-                .addListener((obs, wasOn,
-                        isNowOn) -> System.out.println(item.getId().toString()
-                                + " changed on state from " + wasOn + " to "
-                                + isNowOn));
+                .addListener((obs, oldVal,
+                        currentVal) -> {
+                    // Loop through the action items
+                    for (ActionItem actionItem : projectTask
+                            .getActionItems()) {
+                        // If we have the correct action item
+                        if (actionItem.getActionItemId()
+                                .compareTo(item.getId()) == 0) {
+                            // Set its completion state
+                            actionItem.setComplete(currentVal);
 
+                            // Update the progress bar
+                            updateCompletion();
+
+                            // Bug out
+                            break;
+                        }
+                    }
+                });
+
+        // Add the item to the list
         actionItems.getItems().add(item);
 
-        addItemText.setText("");
+        // Update the progress bar
+        updateCompletion();
+    }
+
+    private void updateCompletion() {
+        // Set the completed item count to 0
+        int completedItemCount = 0;
+
+        // If we have action items
+        if (!projectTask.getActionItems().isEmpty()) {
+            // Loop through the action items
+            for (ActionItem actionItem : projectTask.getActionItems()) {
+                // If the action item is complete
+                if (actionItem.isComplete()) {
+                    // Add a count to the action item
+                    completedItemCount++;
+                }
+            }
+
+            // Update the prgress bar with the % complete
+            progress.setProgress(
+                    completedItemCount / Double
+                            .valueOf(projectTask.getActionItems().size()));
+        }
     }
 
 }

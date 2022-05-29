@@ -64,8 +64,13 @@ public class ProjectTaskController extends BaseController {
      * @throws SQLException
      */
     public boolean addProjectTask(ProjectTask projectTask) throws SQLException {
-        projectTask
-                .setOrder(maxColumnOrder(projectTask.getProjectColumnId()) + 1);
+        // Create an Action Items controller
+        ActionItemController actionItemController = new ActionItemController(
+                this.connectionString);
+
+        // Set the order of the project task
+        projectTask.setOrder(
+                maxColumnOrder(projectTask.getProjectColumnId()) + 1);
 
         // The insert script
         String sql = "INSERT INTO project_tasks "
@@ -100,6 +105,11 @@ public class ProjectTaskController extends BaseController {
 
                 pstmt.setString(7, projectTask.getProjectColumnId().toString());
                 pstmt.executeUpdate();
+
+                // Insert the action items
+                for (ActionItem actionItem : projectTask.getActionItems()) {
+                    actionItemController.addActionItem(actionItem);
+                }
             } catch (SQLException e) {
                 // Return that the operation failed
                 e.printStackTrace();
@@ -122,6 +132,10 @@ public class ProjectTaskController extends BaseController {
      */
     public boolean editProjectTask(ProjectTask projectTask)
             throws SQLException {
+        // Create an Action Items controller
+        ActionItemController actionItemController = new ActionItemController(
+                this.connectionString);
+
         // The update script
         String sql = "UPDATE project_tasks SET name = ?, "
                 + "description = ?, \"order\" = ?, due_date = ?, "
@@ -155,6 +169,16 @@ public class ProjectTaskController extends BaseController {
                 pstmt.setString(6, projectTask.getProjectColumnId().toString());
                 pstmt.setString(7, projectTask.getProjectTaskId().toString());
                 pstmt.executeUpdate();
+
+                // Insert/update the action items
+                for (ActionItem actionItem : projectTask.getActionItems()) {
+                    if (actionItemController.loadActionItem(
+                            actionItem.getActionItemId()) == null) {
+                        actionItemController.addActionItem(actionItem);
+                    } else {
+                        actionItemController.editActionItem(actionItem);
+                    }
+                }
             } catch (SQLException e) {
                 // Return that the operation failed
                 e.printStackTrace();
@@ -177,6 +201,10 @@ public class ProjectTaskController extends BaseController {
      * @throws SQLException
      */
     public boolean deleteProjectTask(UUID projectTaskId) throws SQLException {
+        // Create an Action Items controller
+        ActionItemController actionItemController = new ActionItemController(
+                this.connectionString);
+
         // The delete script
         String sql = "DELETE FROM project_tasks WHERE project_task_id = ?";
 
@@ -190,6 +218,9 @@ public class ProjectTaskController extends BaseController {
             e.printStackTrace();
             throw e;
         }
+
+        // Delete the associated action items
+        actionItemController.deleteActionItems(projectTaskId);
 
         // Object deleted successfully
         return true;
@@ -227,6 +258,7 @@ public class ProjectTaskController extends BaseController {
 
             // Assign the DB results to the result list
             while (queryResults.next()) {
+                // Load the action items
                 List<ActionItem> actionItems = actionItemController
                         .loadActionItems(UUID.fromString(
                                 queryResults.getString("project_task_id")));

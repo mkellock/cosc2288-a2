@@ -35,8 +35,8 @@ public class ActionItemController extends BaseController {
     public boolean addActionItem(ActionItem actionItem) throws SQLException {
         // The insert script
         String sql = "INSERT INTO action_items "
-                + "(action_item_id, description, complete) "
-                + "VALUES (?, ?, ?)";
+                + "(action_item_id, description, complete, project_task_id) "
+                + "VALUES (?, ?, ?, ?)";
 
         // Test the object's validity
         Boolean valid = validate(actionItem);
@@ -49,6 +49,7 @@ public class ActionItemController extends BaseController {
                 pstmt.setString(1, actionItem.getActionItemId().toString());
                 pstmt.setString(2, actionItem.getDescription());
                 pstmt.setBoolean(3, actionItem.isComplete());
+                pstmt.setString(4, actionItem.getProjectTaskId().toString());
                 pstmt.executeUpdate();
             } catch (SQLException e) {
                 // Return that the operation failed
@@ -102,19 +103,19 @@ public class ActionItemController extends BaseController {
     }
 
     /**
-     * Deletes an action item
+     * Deletes action items based on project task ID
      * 
-     * @param actionItemId the aciton item id to be deleted
+     * @param projectTaskId the project task id to be deleted
      * @throws SQLException
      */
-    public boolean deleteActionItem(UUID actionItemId) throws SQLException {
+    public boolean deleteActionItems(UUID projectTaskId) throws SQLException {
         // The delete script
-        String sql = "DELETE FROM action_items WHERE action_item_id = ?";
+        String sql = "DELETE FROM action_items WHERE project_task_id = ?";
 
         // Run the DB delete statement
         try (Connection conn = this.newConnection();
                 PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setString(1, actionItemId.toString());
+            pstmt.setString(1, projectTaskId.toString());
             pstmt.executeUpdate();
         } catch (SQLException e) {
             // Return that the operation failed
@@ -139,8 +140,8 @@ public class ActionItemController extends BaseController {
         LinkedList<ActionItem> returnVal = new LinkedList<>();
 
         // The select query
-        String sql = "SELECT action_item_id, description, complete "
-                + "FROM action_items WHERE project_task_id = ?";
+        String sql = "SELECT action_item_id, description, complete, "
+                + "project_task_id FROM action_items WHERE project_task_id = ?";
 
         // Run the DB select statement
         try (Connection conn = this.newConnection();
@@ -155,7 +156,52 @@ public class ActionItemController extends BaseController {
                         UUID.fromString(
                                 queryResults.getString("action_item_id")),
                         queryResults.getString("description"),
-                        queryResults.getBoolean("complete")));
+                        queryResults.getBoolean("complete"),
+                        UUID.fromString(
+                                queryResults.getString("project_task_id"))));
+            }
+
+            // Return the result list
+            return returnVal;
+        } catch (SQLException e) {
+            // Return that the operation failed
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
+    /**
+     * Loads a project tasks action items
+     * 
+     * @param projectTaskId the project task id attached to the action items
+     * @return a list of action items
+     * @throws SQLException
+     */
+    public ActionItem loadActionItem(UUID actionItemId)
+            throws SQLException {
+        // The result we'll eventually return
+        ActionItem returnVal = null;
+
+        // The select query
+        String sql = "SELECT action_item_id, description, complete,  "
+                + "project_task_id FROM action_items WHERE action_item_id = ?";
+
+        // Run the DB select statement
+        try (Connection conn = this.newConnection();
+                PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, actionItemId.toString());
+            ResultSet queryResults = pstmt.executeQuery();
+
+            // Assign the DB results to the result list
+            while (queryResults.next()) {
+                // Add a new item
+                returnVal = new ActionItem(
+                        UUID.fromString(
+                                queryResults.getString("action_item_id")),
+                        queryResults.getString("description"),
+                        queryResults.getBoolean("complete"),
+                        UUID.fromString(
+                                queryResults.getString("project_task_id")));
             }
 
             // Return the result list
@@ -176,6 +222,7 @@ public class ActionItemController extends BaseController {
     private static boolean validate(ActionItem actionItem) {
         // Check the validity of the object
         return actionItem.getActionItemId() != null
-                && actionItem.getDescription().length() != 0;
+                && actionItem.getDescription().length() != 0
+                && actionItem.getProjectTaskId() != null;
     }
 }
